@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "agreeno",
+    "texture": "6c4eec6e-9b90-431f-b1f6-a5eb7c65a785",
+    "atlas": "",
+    "rect": [
+      3,
+      0,
+      294,
+      80
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      300,
+      80
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

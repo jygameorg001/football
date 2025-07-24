@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "kuan1di",
+    "texture": "472be226-d0d0-4b0a-b317-fd635213d8c6",
+    "atlas": "",
+    "rect": [
+      0,
+      1,
+      10,
+      112
+    ],
+    "offset": [
+      0,
+      -0.5
+    ],
+    "originalSize": [
+      10,
+      113
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

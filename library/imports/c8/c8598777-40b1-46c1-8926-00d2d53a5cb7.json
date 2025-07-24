@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "balldoor",
+    "texture": "ced83803-ba20-4280-9691-f6f49aedd1ef",
+    "atlas": "",
+    "rect": [
+      27,
+      138,
+      682,
+      381
+    ],
+    "offset": [
+      -7,
+      171.5
+    ],
+    "originalSize": [
+      750,
+      1000
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

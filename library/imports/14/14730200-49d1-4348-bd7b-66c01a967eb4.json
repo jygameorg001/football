@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "bettotal",
+    "texture": "d0b9d29d-c75a-4cb4-b740-346c55b6b9bb",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      218,
+      50
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      218,
+      50
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

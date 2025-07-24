@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "xingtips",
+    "texture": "e42835c0-ad25-4793-8bb6-7eabd9588ccd",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      220,
+      58
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      220,
+      58
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

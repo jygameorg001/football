@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "7fb03088-445b-493d-9777-4b96ed1d91ae",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 766,
+  "height": 1640,
+  "platformSettings": {},
+  "subMetas": {
+    "点球大战-玩法公告": {
+      "ver": "1.0.6",
+      "uuid": "1740c9f8-e09e-49ac-8f18-35d80512511b",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "7fb03088-445b-493d-9777-4b96ed1d91ae",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 766,
+      "height": 1640,
+      "rawWidth": 766,
+      "rawHeight": 1640,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

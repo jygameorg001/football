@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "Noticetop",
+    "texture": "033239cc-b3ed-4e99-9181-fd493d13fe0d",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      750,
+      80
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      750,
+      80
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}
