@@ -1,3 +1,4 @@
+import {BallRun} from "./BallRun";
 import {EventMgr} from "./common/EventManager";
 import {HttpHelper} from "./common/HttpHelper";
 const Token ="eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAxODgzLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjlkODU1NDg0LWRhZGQtNDgxMC04YTg3LTM1OGJkMzRmYmViZSIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcwOTgwMiJ9.SFlJPBuh9na9JW7P5pWJTHdWribEN28JVvfq4a5zLr22qyeh2Vfkq22Z6KiqKB2QszOMtEoJqlMEbv1l-8qPPg";
@@ -20,12 +21,29 @@ export interface IUserInfo {
 @ccclass
 export default class Game extends cc.Component {
     public static instance: Game = null;
+
+    @property(cc.Node)football: cc.Node = null;
+    @property(cc.Node)gifts: cc.Node = null;
+    private giftsList: cc.Node[] = [];
     img: HTMLImageElement;
+    trailGraphics: cc.Graphics;
     protected onLoad(): void {
         Game.instance = this;
+        this.initView();
         this.initEvents();
-        this.initWebpImg();
+        // this.initWebpImg();
         this.initUserInfo();
+        const node = new cc.Node();
+        node.addComponent(cc.Graphics);
+        node.parent = this.gifts;
+        this.trailGraphics = node.getComponent(cc.Graphics);
+        BallRun.getInstance().initFootBall(this.football,this.trailGraphics)
+    }
+    initView(){
+        for(let i=1;i<=9;i++){
+            let node = this.gifts.getChildByName("gift"+i);
+            this.giftsList[i-1] = node;
+        }
     }
     initEvents(){
         EventMgr.on("onGetUserInfo",this.onGetUserInfo,this);
@@ -82,6 +100,8 @@ export default class Game extends cc.Component {
         this.img.src = "webp/"+src;
         this.img.style.display = 'block';
     }
-
-    // update (dt) {}
+     
+    onBtnShoot(){
+        BallRun.getInstance().runCircleEasing(this.football.position, this.giftsList[2].position);
+    }
 }
