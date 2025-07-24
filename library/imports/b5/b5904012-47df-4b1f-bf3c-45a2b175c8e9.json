@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "点球大战-首页",
+    "texture": "3aa7165f-3266-4345-a475-84af4e9cd795",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      766,
+      1640
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      766,
+      1640
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

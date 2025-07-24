@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "3aa7165f-3266-4345-a475-84af4e9cd795",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 766,
+  "height": 1640,
+  "platformSettings": {},
+  "subMetas": {
+    "点球大战-首页": {
+      "ver": "1.0.6",
+      "uuid": "b5904012-47df-4b1f-bf3c-45a2b175c8e9",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "3aa7165f-3266-4345-a475-84af4e9cd795",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 766,
+      "height": 1640,
+      "rawWidth": 766,
+      "rawHeight": 1640,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

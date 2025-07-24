@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "wenhao",
+    "texture": "79b6d04f-cc66-4fb9-9d84-12c3b1a0c7ab",
+    "atlas": "",
+    "rect": [
+      2,
+      2,
+      44,
+      44
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      48,
+      48
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

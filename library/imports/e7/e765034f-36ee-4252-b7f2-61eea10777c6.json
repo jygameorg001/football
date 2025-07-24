@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "btnshe",
+    "texture": "56e75dee-756e-42df-8468-eb0ffa19b9f9",
+    "atlas": "",
+    "rect": [
+      2,
+      0,
+      376,
+      100
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      380,
+      100
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

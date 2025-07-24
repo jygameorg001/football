@@ -1,0 +1,98 @@
+{
+    "paths": {},
+    "uuids": [
+        "079xf3771GwafbN0EnoHaO",
+        "0d62dkuOhON6tOjnD+690G",
+        "1bgAzy22ZGn6zUDDYAoxrL",
+        "1cbnDkdUNAGJJT9xkKVz/w",
+        "23o0kVaT1G4Zvv2yPLtLRw",
+        "29m6kwHcNMZKj7v8HC9cXc",
+        "2dL3kvpAxJu6GJ7RdqJG5J",
+        "41D7kWhyFGY7q4NDlzkazn",
+        "41bW6kpFpLNo5svkugmOLg",
+        "430qEOBv9DnLeLMxWnRRtJ",
+        "53PRT9wBtFwbiBbWyFgTJ5",
+        "7433HjVvRHx4WkUpZbjusr",
+        "94DtFbQN9I/7mh/rR/Qx2B",
+        "98asfKGsRGKrtGEjjKTVZM",
+        "9d58w+OZtHqKt8IhRMBg/O",
+        "a8Anh32NZGRZegUtSgEj26",
+        "aa9Ju4RVBF8r9OK1Gmdeou",
+        "d2fOIBckdJmopeI2oQoR8+",
+        "e7ZQNPNu5CUrfyYe6hB3fG",
+        "ecpdLyjvZBwrvm+cedCcQy",
+        "edxGqKSM5IwbPzaem7fFro"
+    ],
+    "scenes": {
+        "db://assets/Scene/game.fire": "2dL3kvpAxJu6GJ7RdqJG5J"
+    },
+    "redirect": [
+        "079xf3771GwafbN0EnoHaO",
+        0,
+        "1bgAzy22ZGn6zUDDYAoxrL",
+        0,
+        "23o0kVaT1G4Zvv2yPLtLRw",
+        0,
+        "29m6kwHcNMZKj7v8HC9cXc",
+        0,
+        "41bW6kpFpLNo5svkugmOLg",
+        0,
+        "430qEOBv9DnLeLMxWnRRtJ",
+        0,
+        "53PRT9wBtFwbiBbWyFgTJ5",
+        0,
+        "7433HjVvRHx4WkUpZbjusr",
+        0,
+        "94DtFbQN9I/7mh/rR/Qx2B",
+        0,
+        "98asfKGsRGKrtGEjjKTVZM",
+        0,
+        "9d58w+OZtHqKt8IhRMBg/O",
+        0,
+        "aa9Ju4RVBF8r9OK1Gmdeou",
+        0,
+        "d2fOIBckdJmopeI2oQoR8+",
+        0,
+        "e7ZQNPNu5CUrfyYe6hB3fG",
+        0,
+        "ecpdLyjvZBwrvm+cedCcQy",
+        1,
+        "edxGqKSM5IwbPzaem7fFro",
+        0
+    ],
+    "deps": [
+        "resources",
+        "internal"
+    ],
+    "packs": {
+        "0f4110095": [
+            "1cbnDkdUNAGJJT9xkKVz/w",
+            "2dL3kvpAxJu6GJ7RdqJG5J",
+            "41D7kWhyFGY7q4NDlzkazn"
+        ],
+        "0ffd5930a": [
+            "0d62dkuOhON6tOjnD+690G",
+            "a8Anh32NZGRZegUtSgEj26"
+        ]
+    },
+    "name": "main",
+    "importBase": "import",
+    "nativeBase": "native",
+    "debug": true,
+    "isZip": false,
+    "encrypted": false,
+    "versions": {
+        "import": [
+            "0f4110095",
+            "6cc66",
+            "0ffd5930a",
+            "60ab2"
+        ],
+        "native": [
+            "0d62dkuOhON6tOjnD+690G",
+            "dd5f3",
+            "a8Anh32NZGRZegUtSgEj26",
+            "cea68"
+        ]
+    }
+}
