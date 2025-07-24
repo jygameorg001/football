@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "jianlibg",
+    "texture": "a7c1de0c-e88e-439f-8187-9c29f0f6c7f1",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      564,
+      360
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      564,
+      360
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

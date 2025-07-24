@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "redbg",
+    "texture": "64300628-b818-4a7d-9ea0-015045c0b7db",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      8,
+      60
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      8,
+      60
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

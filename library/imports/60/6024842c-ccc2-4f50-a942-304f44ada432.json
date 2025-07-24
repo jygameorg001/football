@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "greebg",
+    "texture": "f1fbba7d-875f-45b0-89cf-b60b0d5e707b",
+    "atlas": "",
+    "rect": [
+      0,
+      1,
+      10,
+      112
+    ],
+    "offset": [
+      0,
+      -0.5
+    ],
+    "originalSize": [
+      10,
+      113
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

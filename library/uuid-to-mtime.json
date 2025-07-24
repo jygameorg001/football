@@ -818,5 +818,45 @@
     "asset": 1753329469749,
     "meta": 1753357148107,
     "relativePath": "Texture\\notice\\noticeBg.png"
+  },
+  "f90a080c-aec8-48f9-85e9-949079ba1e61": {
+    "asset": 1753357906416,
+    "meta": 1753357906421,
+    "relativePath": "Texture\\jianli"
+  },
+  "ee03347f-3d21-4735-9adc-a6d0cc19799f": {
+    "asset": 1753357811529,
+    "meta": 1753358031394,
+    "relativePath": "Texture\\jianli\\kuan2.png"
+  },
+  "f1fbba7d-875f-45b0-89cf-b60b0d5e707b": {
+    "asset": 1753357838848,
+    "meta": 1753358031399,
+    "relativePath": "Texture\\jianli\\greebg.png"
+  },
+  "2f70a3b8-1be4-4813-b902-cf5992c19810": {
+    "asset": 1753357864903,
+    "meta": 1753358031403,
+    "relativePath": "Texture\\jianli\\tips1.png"
+  },
+  "86988eaa-0709-4d3c-8d6f-ed9c5e86e8bf": {
+    "asset": 1753357817670,
+    "meta": 1753358031412,
+    "relativePath": "Texture\\jianli\\kuan1.png"
+  },
+  "64300628-b818-4a7d-9ea0-015045c0b7db": {
+    "asset": 1753357831978,
+    "meta": 1753358031416,
+    "relativePath": "Texture\\jianli\\redbg.png"
+  },
+  "c2b11f5e-aa0a-4338-9e26-7c5e78370524": {
+    "asset": 1753357852475,
+    "meta": 1753358031418,
+    "relativePath": "Texture\\jianli\\tips2.png"
+  },
+  "a7c1de0c-e88e-439f-8187-9c29f0f6c7f1": {
+    "asset": 1753357844383,
+    "meta": 1753358031421,
+    "relativePath": "Texture\\jianli\\jianlibg.png"
   }
 }
