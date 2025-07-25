@@ -116,7 +116,7 @@ var HttpHelper = /** @class */ (function () {
             xhr.send();
         }
     };
-    HttpHelper.BaseURL = "https://test-youyin.daqiezi.cc/game/logic-api/"; // logic/getPlayerInfo
+    HttpHelper.BaseURL = "https://test-youyin.daqiezi.cc/game/"; // logic/getPlayerInfo
     HttpHelper.token = "";
     return HttpHelper;
 }());

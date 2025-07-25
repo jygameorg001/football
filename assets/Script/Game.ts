@@ -1,7 +1,7 @@
 import { BallRun } from "./BallRun";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
-const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAxODgzLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6ImJkM2Y0YjMzLWZlODMtNDk2OS1iZDBkLTdiMWY0NDY5NjhhNyIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcwOTgwMiJ9.8ONIlBHAELrLT805m3zlg9ETKiz95prJEQYoNcalTayMrIcVS08H9hCw_cs-Gp-XUibpvO3SNljRhxbMY19P-A";
+const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAxODgzLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjE0MDk4ODNhLTY2NTEtNGVlZC1hNTA0LWY1ZjBhZmZkZGRjZiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcwOTgwMiJ9.NK80IJrDndV9ZINXi69Iq2J3YomS3FlbCWWm6jwDFZ5X9Ls3UZkwREUCy3ail5XvgBd-E787cYMkl7tCEIVNXA";
 const { ccclass, property } = cc._decorator;
 
 export interface IUserInfo {
@@ -38,6 +38,9 @@ export default class Game extends cc.Component {
         node.parent = this.gifts;
         this.trailGraphics = node.getComponent(cc.Graphics);
         BallRun.getInstance().initFootBall(this.football, this.trailGraphics)
+        // this.scheduleOnce(() => {
+        //     this.onShooting(1000152, 1601096);
+        // },3)
     }
     initView() {
         for (let i = 1; i <= 9; i++) {
@@ -73,13 +76,13 @@ export default class Game extends cc.Component {
     }
     onGetUserInfo() {
         // 获取用户数据
-        HttpHelper.HttpPost("logic/getPlayerInfoV2", {}, (err, data) => {
+        HttpHelper.HttpPost("logic-api/logic/getPlayerInfoV2", {}, (err, data) => {
             console.log("====获取用户数据", data);
         });
     }
 
     onQueryGiftList() {
-        HttpHelper.httpGet("football/queryGiftList", (data) => {
+        HttpHelper.httpGet("football-api/football/queryGiftList", (data) => {
             console.log("====获取礼物列表");
         })
         // HttpHelper.HttpPost("football/queryGiftList", {}, (err, data)=>{
@@ -93,7 +96,7 @@ export default class Game extends cc.Component {
             roomId: roomId,
             anchorId: anchorId,
         }
-        HttpHelper.HttpPost("football/shooting", params, (err, data) => {
+        HttpHelper.HttpPost("football-api/football/shooting", params, (err, data) => {
             console.log("====投球");
         })
     }
