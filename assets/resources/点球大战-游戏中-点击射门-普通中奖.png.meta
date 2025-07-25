@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "06784b6e-6e7e-432e-a0ab-cdbf4f7766c5",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 750,
+  "height": 1624,
+  "platformSettings": {},
+  "subMetas": {
+    "点球大战-游戏中-点击射门-普通中奖": {
+      "ver": "1.0.6",
+      "uuid": "905f1b86-b6ad-47a2-a77b-3fceb94ff488",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "06784b6e-6e7e-432e-a0ab-cdbf4f7766c5",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 750,
+      "height": 1624,
+      "rawWidth": 750,
+      "rawHeight": 1624,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
