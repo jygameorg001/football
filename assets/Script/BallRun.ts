@@ -85,7 +85,8 @@ export class  BallRun {
             this.trailGraphics.stroke();
         }
     }
-    runCircleEasing(startPoint, endPoint){
+    //添加结束callback
+    runCircleEasing(startPoint, endPoint,callback?){
         console.log("runFootbal:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         // 控制点 0，3，6:（-450,120）
         //1 4 7 :(-100,900)
@@ -107,6 +108,9 @@ export class  BallRun {
         .call(()=>{
             this.football.setPosition(startPoint);
             this.football.scale = 1;
+            if(callback){
+                callback();
+            }
         })
         .start();
 

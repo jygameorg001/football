@@ -25,20 +25,17 @@ export default class Game extends cc.Component {
 
     @property(cc.Node) football: cc.Node = null;
     @property(cc.Node) gifts: cc.Node = null;
+    @property(cc.Prefab) winPrefab: cc.Prefab = null;
+
     @property(SVGAPlayer)
     svga1: SVGAPlayer = null;
-    @property(SVGAPlayer)
 
-    svga2: SVGAPlayer = null;
-    @property(SVGAPlayer)
-
-    svga3: SVGAPlayer = null;
-    @property(SVGAPlayer)
-
-    svga4: SVGAPlayer = null;
     private giftsList: cc.Node[] = [];
     img: HTMLImageElement;
     trailGraphics: cc.Graphics;
+    private winresult=null;
+
+
     protected onLoad(): void {
         Game.instance = this;
         this.initView();
@@ -50,15 +47,9 @@ export default class Game extends cc.Component {
         node.parent = this.gifts;
         this.trailGraphics = node.getComponent(cc.Graphics);
         BallRun.getInstance().initFootBall(this.football, this.trailGraphics)
-        // this.scheduleOnce(() => {
-        //     this.onShooting(1000152, 1601096);
-        // },3)
         // this.svga1.playSVGA();//示例
-        // this.svga2.playSVGA();//示例
-        //  this.svga3.setFrame(100,100,200,200);
-        // this.svga3.playSVGA();//示例
-        // this.svga4.playSVGA();//示例
-       
+        // this.svga1.setFrame(100,100,200,200);
+
     }
     initView() {
         for (let i = 1; i <= 9; i++) {
@@ -145,6 +136,7 @@ export default class Game extends cc.Component {
         }
         HttpHelper.HttpPost("football-api/football/shooting", params, (err, data) => {
             console.log("====投球");
+            this.winresult=data.result;
         })
     }
     protected onDestroy(): void {
@@ -176,6 +168,17 @@ export default class Game extends cc.Component {
     }
 
     onBtnShoot() {
-        BallRun.getInstance().runCircleEasing(this.football.position, this.giftsList[2].position);
+        this.onShooting(1000152, 1601096);//射门
+        BallRun.getInstance().runCircleEasing(this.football.position, this.giftsList[2].position, this.showWin);
+    }
+    // 结束显示中奖物品
+    showWin() {
+       if(!this.winresult) return;
+       //加载结算预制体
+       let node = cc.instantiate(this.winPrefab);
+       node.parent = this.node;
+       //传参
+       node.getComponent("WinView").initData(this.winresult);
+       
     }
 }
