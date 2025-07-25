@@ -83,12 +83,34 @@ export default class Game extends cc.Component {
 
     onQueryGiftList() {
         HttpHelper.httpGet("football-api/football/queryGiftList", (data) => {
-            console.log("====获取礼物列表");
+            console.log("====获取礼物列表", data);
+            this.setGiftsList(data);
         })
-        // HttpHelper.HttpPost("football/queryGiftList", {}, (err, data)=>{
-        //     console.log("====获取用户数据",data);
-        // });
     }
+
+    setGiftsList(data) {
+        if (!data) return;
+        let dataList = data.result;
+        for (let i = 0; i < dataList.length; i++) {
+            let node = this.giftsList[i];
+            // 图片是远程的需要加载
+
+            // 根据图片地址获取图片
+            let imageUrl = dataList[i].giftImage;
+            console.log(imageUrl, "====图片地址");
+            cc.loader.load({ url: imageUrl, type: 'png' }, (err, texture) => {
+                if (err) {
+                    cc.error(err.message || err);
+                    return;
+                }
+                let spriteFrame = new cc.SpriteFrame(texture);
+                node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+                node.scale= 0.5;
+            });
+        }
+
+    }
+
 
     // 房间id 主播id
     onShooting(roomId: number, anchorId: number) {
