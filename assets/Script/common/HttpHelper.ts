@@ -32,12 +32,14 @@ export class HttpHelper {
     }
 
     static httpGet(url: string, callback: (res: any) => void) {
+        let urls = HttpHelper.BaseURL + url;
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status >= 200 && xhr.status < 400) {
                     let respone = xhr.responseText;
                     let rsp = JSON.parse(respone);
+                    console.log("===GET rsp:", url,rsp);
                     callback?.(rsp);
                 } else {
                     callback?.(xhr);
@@ -53,9 +55,17 @@ export class HttpHelper {
             }
         };
 
-        xhr.open("GET", url, true);
-
+        xhr.open("GET", urls, true);
         xhr.timeout = 8000;
+        xhr.setRequestHeader("Content-Type", "application/json;charset=Utf-8");
+         if(HttpHelper.token){
+            xhr.setRequestHeader("Authorization", HttpHelper.token);
+            xhr.setRequestHeader("appVersion" ,"0.0.0");
+            xhr.setRequestHeader("deviceId" ,"test_123456");
+            xhr.setRequestHeader("deviceName" ,"test_iPhone");
+            xhr.setRequestHeader("deviceType" ,"1");
+            xhr.setRequestHeader("systemVersion" , "605.1.15");
+        }
         xhr.send();
     }
 
