@@ -9,6 +9,8 @@ export class AudioMgr {
         this.effectMap = new Map();
     }
 
+    static isPaused = false;
+
     //停止播放背景音乐
     static stopMusic() {
         cc.audioEngine.stopMusic();

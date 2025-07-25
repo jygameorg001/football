@@ -1,27 +1,38 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/2.4/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/2.4/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
+import {AudioMgr} from "./common/AudioMgr";
+import Game from "./Game";
+import {GameLogic} from "./GameLogic";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
-
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
-
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
-
+export default class Home extends cc.Component {
+    @property([cc.Node])pics:cc.Node[] = [];
     start () {
 
+    }
+    onBtnLeft(){}
+    onBtnRight(){}
+    onBtnBack(){
+        GameLogic.instance.closeGame();
+    }
+    onBtnGo(){
+        Game.instance.showView("Shoot");
+    }
+    onBtnHelp(){
+        Game.instance.showView("Help");
+    }
+    onBtnSound(){
+        AudioMgr.isPaused = !AudioMgr.isPaused;
+        if(AudioMgr.isPaused){
+            AudioMgr.pauseMusic();
+        }else{
+            AudioMgr.resumeMusic();
+        }
+        // 切换图标
+    }
+
+    onBtnHome(){
+        GameLogic.instance.closeGame();
     }
 
     // update (dt) {}

@@ -1,0 +1,178 @@
+import {EventMgr} from "./common/EventManager";
+import {HttpHelper} from "./common/HttpHelper";
+
+const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAxODgzLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjE0MDk4ODNhLTY2NTEtNGVlZC1hNTA0LWY1ZjBhZmZkZGRjZiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcwOTgwMiJ9.NK80IJrDndV9ZINXi69Iq2J3YomS3FlbCWWm6jwDFZ5X9Ls3UZkwREUCy3ail5XvgBd-E787cYMkl7tCEIVNXA";
+
+export interface IUserInfo {
+    appToken: string; // appToken
+    authStatus: 0 | 1; // 实名状态：0->未实名，1->已实名
+    avatar: string;
+    emToken: string; // 环信emToken
+    firstLogin: boolean;
+    phoneNumber: string;
+    registerType: 1 | 2 | 3 | 4; // 注册类型：1->手机登录注册，2->微信登录注册，3->苹果登录注册，4->QQ登录注册
+    teenModeSwitch: 1 | 0;
+    userId: number;
+    userName: string;
+    userType: 1 | 2; // 用户类型：1-用户，2-主播
+}
+
+export interface IPlayerInfo {  
+    energy: number,
+    currency: number,
+    pop: number,
+    luckValue: number,
+    luckScore: number // 幸运分
+}
+
+export interface IGiftInfo {
+    id: number;
+    giftId: number;
+    giftName: string;
+    giftPrice: number;
+    giftImage: string;
+}
+
+export class GameLogic{
+    private static _instance: GameLogic = new GameLogic();
+    public static get instance(){
+        return this._instance;
+    }
+    private _userInfo: IUserInfo = null;
+    get  userInfo(){
+        return this._userInfo;
+    }
+    set  userInfo(data:IUserInfo){
+        this._userInfo = data;
+    }
+    private _playerInfo: IPlayerInfo = null;
+    get  playerInfo(){
+        return this._playerInfo;
+    }
+    set  playerInfo(data:IPlayerInfo){
+        this._playerInfo = data;
+    }
+
+    private _giftList: Array<IGiftInfo> = [];
+    get giftList() {
+        return this._giftList;
+    }
+    set giftList(data: Array<IGiftInfo>) {
+        this._giftList = data;
+    }
+    isBridgeReady() {
+        let WebViewJavascriptBridge = window["WebViewJavascriptBridge"];
+        if (WebViewJavascriptBridge) {
+            return true;
+        }
+        return false;
+    }
+    callBridge(methodName, params, callback) {
+        let WebViewJavascriptBridge = window["WebViewJavascriptBridge"];
+        if (WebViewJavascriptBridge) {
+            WebViewJavascriptBridge.callHandler(methodName, params, (res)=>{
+                callback(res);
+            });
+        }
+    }
+
+    initUserInfo() {
+        if(!this.isBridgeReady()){
+            HttpHelper.token = Token;
+            EventMgr.emit("onGetUserInfo")
+            this.onGetUserInfo();
+            return;
+        }
+        this.callBridge("getUserInfo", {}, (res: IUserInfo) => {
+            if (typeof res == "object") {
+                HttpHelper.token = res.appToken;
+            }
+            if (typeof res == "string") {
+                let userInfo = JSON.parse(res);
+                HttpHelper.token = userInfo.appToken;
+            }
+            EventMgr.emit("onGetUserInfo")
+        });
+        
+    }
+    onGetUserInfo() {
+        this.reqPlayerInfo();
+        this.reqQueryGiftList();
+    }
+    reqPlayerInfo() {
+        HttpHelper.httpPost("logic-api/logic/getPlayerInfoV2", {}, (err, data) => {
+            if(err){
+                return;
+            }
+            GameLogic.instance.playerInfo = data;
+            EventMgr.emit("onGetPlayerInfo")
+        });
+    }
+    reqQueryGiftList() {
+        HttpHelper.httpGet("football-api/football/queryGiftList", (err,data) => {
+            if(err){
+                return;
+            }
+            GameLogic.instance.giftList = data;
+            EventMgr.emit("onGetGiftList")
+        })
+    }
+
+    reqShooting(roomId: number, anchorId: number) {
+        let params = {
+            roomId: roomId,
+            anchorId: anchorId,
+        }
+        HttpHelper.httpPost("football-api/football/shooting", params, (err, data) => {
+            if(err){
+                return;
+            }
+            EventMgr.emit("onShootingt", data)
+        })
+    }
+
+    loadRemoteSprite(url,spriteNode: cc.Sprite){
+        cc.assetManager.loadRemote(url,(err: Error, asset: cc.Texture2D) => {
+            if(err){
+                const pathPrefix = url.split("/").slice(0, -1).join("/"); 
+                this.loadRemoteSprite(pathPrefix+"/3part.png", spriteNode);
+                return;
+            }
+            if(asset && cc.isValid(spriteNode)) {   
+                let frame:any = cc.assetManager.assets.get(url+"_f");
+                if(!frame) {
+                    frame = new cc.SpriteFrame(asset);
+                    frame["_uuid"] = url+"_f";
+                    frame.addRef();
+                }
+                spriteNode.spriteFrame = frame;
+                cc.assetManager.assets.add(frame["_uuid"],frame);
+                GameLogic.addRemoteDeps(frame["_uuid"],asset["_uuid"]);
+            }
+        });
+    }
+
+    public static addRemoteDeps(curUuid,depUuid) {
+        let dependUtil = cc.assetManager.dependUtil;
+        let _depends:any= dependUtil["_depends"];
+        let _map = _depends._map;
+        var out = _map[curUuid];
+        if(!out){
+            _map[curUuid] = {
+                deps: [],
+                parsedFromExistAsset: true,
+                preventPreloadNativeObject: false,
+                preventDeferredLoadDependents: false
+            };
+            out =_map[curUuid];
+        }
+        if(out.deps.indexOf(depUuid) < 0){
+            out.deps.push(depUuid)
+        }
+    }
+
+    closeGame(){
+        this.callBridge("goBack", {}, ()  => {})
+    }
+    
+}

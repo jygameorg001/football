@@ -31,7 +31,7 @@ export class HttpHelper {
         });
     }
 
-    static httpGet(url: string, callback: (res: any) => void) {
+    static httpGet(url: string, callback: (error: any, res: any) => void) {
         let urls = HttpHelper.BaseURL + url;
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
@@ -39,19 +39,22 @@ export class HttpHelper {
                 if (xhr.status >= 200 && xhr.status < 400) {
                     let respone = xhr.responseText;
                     let rsp = JSON.parse(respone);
-                    console.log("===GET rsp:", url,rsp);
-                    callback?.(rsp);
+                    if(rsp.code != 0){
+                        callback?.(rsp.code,rsp);
+                        return;
+                    }
+                    callback?.(0,rsp.result);
                 } else {
-                    callback?.(xhr);
+                    callback?.(1,null);
                 }
             } else {
-                callback?.(null);
+                callback?.(2,null);
             }
         };
 
         xhr.onerror = function (error) {
             if (typeof callback == "function") {
-                callback?.(null);
+                callback?.(2,null);
             }
         };
 
@@ -69,7 +72,7 @@ export class HttpHelper {
         xhr.send();
     }
 
-    static HttpPost(path, params, callback) {
+    static httpPost(path, params, callback) {
         let url = HttpHelper.BaseURL + path;
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
@@ -77,21 +80,25 @@ export class HttpHelper {
                 if (xhr.status == 200) {          
                     let respone = xhr.responseText;
                     let rsp = JSON.parse(respone);
-                    console.log("===POST rsp:", path,rsp);
+                    if(rsp.code != 200){
+                        // show error---
+                        return;
+                    }
+                    callback(0,rsp.result);
                 } else {
-                    callback?.(null, xhr.status);
+                    callback(1, xhr.status);
                 }
             }
         };
         xhr.onerror = function (error) {
             if (typeof callback == "function") {
-                callback?.(null, error);
+                callback?.(2, error);
                 EventMgr.emit("HttpError", path);
             }
         };
         xhr.ontimeout = function (error) {
             if (typeof callback == "function") {
-                callback?.(null, "timeout");
+                callback?.(2, "timeout");
                 EventMgr.emit("HttpTimeOut", path);
             }
         };
