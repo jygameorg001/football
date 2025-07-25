@@ -83,18 +83,30 @@
       },
       {
         "__id__": 139
+      },
+      {
+        "__id__": 164
+      },
+      {
+        "__id__": 166
+      },
+      {
+        "__id__": 168
+      },
+      {
+        "__id__": 170
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 164
+        "__id__": 172
       },
       {
-        "__id__": 165
+        "__id__": 173
       },
       {
-        "__id__": 166
+        "__id__": 174
       }
     ],
     "_prefab": null,
@@ -6497,6 +6509,310 @@
     "_id": "91ToNhjuBCiaRWAreWp6qv"
   },
   {
+    "__type__": "cc.Node",
+    "_name": "svga",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 165
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        -76.754,
+        -341.131,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "a7XtWfGFRM+IQbt2Dm7pA6"
+  },
+  {
+    "__type__": "2c86cZXbjBPDYuGDEcfxrGJ",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 164
+    },
+    "_enabled": true,
+    "svgaData": {
+      "__uuid__": "9b1fd38e-1b8e-49e8-ade7-1cf9359a92c9"
+    },
+    "loops": 100,
+    "_id": "3fTVKjGp5It6X8O31/Lo6f"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "svga",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 167
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        -36.245,
+        -405.093,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "d487l9yC1EQoneQ35BGu7u"
+  },
+  {
+    "__type__": "2c86cZXbjBPDYuGDEcfxrGJ",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 166
+    },
+    "_enabled": true,
+    "svgaData": {
+      "__uuid__": "c4fa0f34-b57e-4c39-9a93-535fee1afd42"
+    },
+    "loops": 100,
+    "_id": "1beakpdKhD67dfaQiALuNZ"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "svga",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 169
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        -36.245,
+        -405.093,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "de3zdALCdHa54ggDmE1ZCE"
+  },
+  {
+    "__type__": "2c86cZXbjBPDYuGDEcfxrGJ",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 168
+    },
+    "_enabled": true,
+    "svgaData": {
+      "__uuid__": "6dc0e472-c2cd-4a2e-8dbd-da17241071a2"
+    },
+    "loops": 100,
+    "_id": "8fzlTskQBOe5Nhhe0JV66q"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "svga",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 2
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 171
+      }
+    ],
+    "_prefab": null,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        -36.245,
+        -405.093,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": "60yJ7YkrpFYKA2HtDz7isj"
+  },
+  {
+    "__type__": "2c86cZXbjBPDYuGDEcfxrGJ",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 170
+    },
+    "_enabled": true,
+    "svgaData": {
+      "__uuid__": "c4fa0f34-b57e-4c39-9a93-535fee1afd42"
+    },
+    "loops": 100,
+    "_id": "38qMFV2rdCzYIKRapaGsle"
+  },
+  {
     "__type__": "cc.Canvas",
     "_name": "",
     "_objFlags": 0,
@@ -6553,6 +6869,18 @@
     },
     "gifts": {
       "__id__": 44
+    },
+    "svga1": {
+      "__id__": 165
+    },
+    "svga2": {
+      "__id__": 167
+    },
+    "svga3": {
+      "__id__": 169
+    },
+    "svga4": {
+      "__id__": 171
     },
     "_id": "89Aj9MuudD05m8ZFRGjxbT"
   }

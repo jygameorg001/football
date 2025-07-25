@@ -1,6 +1,7 @@
 import { BallRun } from "./BallRun";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
+import SVGAPlayer from "./svga-cocos/cocos/svga-player";
 const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAxODgzLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjE0MDk4ODNhLTY2NTEtNGVlZC1hNTA0LWY1ZjBhZmZkZGRjZiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcwOTgwMiJ9.NK80IJrDndV9ZINXi69Iq2J3YomS3FlbCWWm6jwDFZ5X9Ls3UZkwREUCy3ail5XvgBd-E787cYMkl7tCEIVNXA";
 const { ccclass, property } = cc._decorator;
 
@@ -24,6 +25,17 @@ export default class Game extends cc.Component {
 
     @property(cc.Node) football: cc.Node = null;
     @property(cc.Node) gifts: cc.Node = null;
+    @property(SVGAPlayer)
+    svga1: SVGAPlayer = null;
+    @property(SVGAPlayer)
+
+    svga2: SVGAPlayer = null;
+    @property(SVGAPlayer)
+
+    svga3: SVGAPlayer = null;
+    @property(SVGAPlayer)
+
+    svga4: SVGAPlayer = null;
     private giftsList: cc.Node[] = [];
     img: HTMLImageElement;
     trailGraphics: cc.Graphics;
@@ -41,6 +53,12 @@ export default class Game extends cc.Component {
         // this.scheduleOnce(() => {
         //     this.onShooting(1000152, 1601096);
         // },3)
+        // this.svga1.playSVGA();//示例
+        // this.svga2.playSVGA();//示例
+        //  this.svga3.setFrame(100,100,200,200);
+        // this.svga3.playSVGA();//示例
+        // this.svga4.playSVGA();//示例
+       
     }
     initView() {
         for (let i = 1; i <= 9; i++) {
@@ -78,7 +96,16 @@ export default class Game extends cc.Component {
         // 获取用户数据
         HttpHelper.HttpPost("logic-api/logic/getPlayerInfoV2", {}, (err, data) => {
             console.log("====获取用户数据", data);
+            this.setUserInfo(data);
         });
+    }
+
+    // 设置用户信息
+    setUserInfo(data) {
+        if (!data) return;
+        let userInfo = data.result;
+        // this.userNameLabel.string = userInfo.userName;
+        // this.userAvatar.spriteFrame = userInfo.avatar;
     }
 
     onQueryGiftList() {
@@ -88,16 +115,14 @@ export default class Game extends cc.Component {
         })
     }
 
+    // 设置礼物列表
     setGiftsList(data) {
         if (!data) return;
         let dataList = data.result;
         for (let i = 0; i < dataList.length; i++) {
             let node = this.giftsList[i];
-            // 图片是远程的需要加载
-
             // 根据图片地址获取图片
             let imageUrl = dataList[i].giftImage;
-            console.log(imageUrl, "====图片地址");
             cc.loader.load({ url: imageUrl, type: 'png' }, (err, texture) => {
                 if (err) {
                     cc.error(err.message || err);
@@ -105,7 +130,7 @@ export default class Game extends cc.Component {
                 }
                 let spriteFrame = new cc.SpriteFrame(texture);
                 node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                node.scale= 0.5;
+                node.scale = 0.5;
             });
         }
 
