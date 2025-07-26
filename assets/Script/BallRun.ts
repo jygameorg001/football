@@ -3,8 +3,9 @@ import {GameLogic} from "./GameLogic";
 export class  BallRun {
     public static instance: BallRun = null;
     trailGraphics: cc.Graphics;
-    football: any;
+    football: cc.Node;
     startPos:any;
+    liziNode:cc.Node;
     public static getInstance(): BallRun {
         if (!BallRun.instance) {
             BallRun.instance = new BallRun();
@@ -39,7 +40,7 @@ export class  BallRun {
 
     //曲线匀速
     runCircleNoraml(startPoint: cc.Vec2, endPoint: cc.Vec2,callback) {
-        console.log("runFootbal:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+        // console.log("runFootbal:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         // 控制点
         const controlPoint = cc.v2((startPoint.x + endPoint.x) / 2-450, (startPoint.y+endPoint.y)/2+120);
         this.drawLine(startPoint, endPoint, controlPoint);
@@ -54,14 +55,16 @@ export class  BallRun {
             }
         }))
         .call(()=>{
-            callback?.();
+            // callback?.();
         })
         .delay(1)
         .call(()=>{
             this.football.setPosition(startPoint);
             this.football.scale = 1;
+            callback?.();
         })
         .start();
+        this.addLiziNode();
     }
     drawLine(startPoint, endPoint,controlPoint){
         // 清除之前的轨迹
@@ -93,7 +96,7 @@ export class  BallRun {
     }
     //添加结束callback
     runCircleEasing(startPoint, endPoint,callback?){
-        console.log("runFootbal:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+        // console.log("runFootbal:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         // 控制点 0，3，6:（-450,120）
         //1 4 7 :(-100,900)
         //2 5 8:(450,150)
@@ -111,15 +114,25 @@ export class  BallRun {
             }
         }))
         .call(()=>{
-            callback?.();
+            // callback?.();
         })
         .delay(1)
         .call(()=>{
             this.football.setPosition(startPoint);
             this.football.scale = 1;
+            callback?.();
         })
         .start();
+        this.addLiziNode();
+    }
 
+    addLiziNode(){
+        let tuowei = cc.instantiate(this.liziNode);
+        tuowei.active = true;
+        tuowei.parent = this.football;
+        cc.tween(tuowei).delay(1.8).call(()=>{
+            tuowei.destroy();
+        }).start();
     }
 
     runLineNoraml(startPoint, endPoint,callback){
@@ -127,16 +140,17 @@ export class  BallRun {
         cc.tween(this.football)
         .to(1.5, {position:cc.v3(endPoint.x,endPoint.y) ,scale: 0.6},{easing:"smooth"})
         .call(()=>{
-            callback?.();
+            // callback?.();
         })
         .delay(1)
         .call(()=>{
             this.football.setPosition(startPoint);
             this.football.scale = 1;
+            callback?.();
         })
         .start();
+        this.addLiziNode();
     }
-
     runFootBall(endPoint,callback?){
         let star = GameLogic.instance.getCurrentStar();
         if(star.shootId==0){

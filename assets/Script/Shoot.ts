@@ -11,9 +11,11 @@ export default class Shoot extends cc.Component {
     @property(cc.Node) giftNode: cc.Node = null;
     @property(cc.Label) currency: cc.Label = null;
     @property(cc.Label) energy: cc.Label = null;
-
+    @property(cc.Node)tuowei:cc.Node = null;
+    @property(cc.SpriteAtlas)ballAltlas:cc.SpriteAtlas = null;
     giftList: cc.Node[] = [];
     canShoot: boolean = false;
+    ballSprite: cc.Sprite = null;
     protected onLoad(): void {
         EventMgr.on("onGetGiftList", this.updateGifts, this);
         this.initBtnClickHandle();
@@ -22,9 +24,12 @@ export default class Shoot extends cc.Component {
         node.addComponent(cc.Graphics);
         node.parent = this.giftNode;
         let trailGraphics = node.getComponent(cc.Graphics);
+        this.ballSprite = this.football.getChildByName("icon").getComponent(cc.Sprite);
+        this.ballSprite.node.zIndex =1;
         BallRun.getInstance().initFootBall(this.football, trailGraphics)
-
+        BallRun.getInstance().liziNode = this.tuowei;
         EventMgr.on("onShooting", this.onShooting, this);
+        this.tuowei.active = false;
 
         this.canShoot = true;
     }
@@ -74,8 +79,7 @@ export default class Shoot extends cc.Component {
         });
     }
 
-    start() {
-
+    start () {
     }
     
     onBtnShoot(){
@@ -84,7 +88,7 @@ export default class Shoot extends cc.Component {
         if(!this.canShoot){
             return;
         }
-         this.canShoot = false;
+        this.canShoot = false;
         if(isTest){
             this.onShooting({giftId:1})
             return;
@@ -106,12 +110,30 @@ export default class Shoot extends cc.Component {
         let giftId = data.giftId;
         let id = this.getIdByGiftId(giftId);
         let position = this.giftList[id].position;
+        this.beginRunning();
         BallRun.getInstance().runFootBall(position,()=>{
             // show win reward
-
+            this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
             this.canShoot = true;
         })
+    }
+    private ballIdx:number =2;
+    beginRunning(){
+        this.unschedule(this.onBallRunning);
+        this.schedule(this.onBallRunning);
+    }
+    onBallRunning(dt){
+        this.ballIdx = this.ballIdx+4;
+        if(this.ballIdx>=61){
+            this.ballIdx =1;   
+        }
+        let idx = this.ballIdx;
+        let key = idx<10?"0"+idx:""+idx;
+        let frameName = "images-ball-000"+key;
+        // console.log("====frameName====",frameName)
+        let spriteFrame = this.ballAltlas.getSpriteFrame(frameName);
+        this.ballSprite.spriteFrame = spriteFrame;
     }
     onBtnClickHandle(name, btn) {
         switch (name) {
