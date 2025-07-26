@@ -6,6 +6,8 @@ export class  BallRun {
     football: cc.Node;
     startPos:any;
     liziNode:cc.Node;
+    giftList:cc.Node[];
+    targetIdx: number;
     public static getInstance(): BallRun {
         if (!BallRun.instance) {
             BallRun.instance = new BallRun();
@@ -42,7 +44,7 @@ export class  BallRun {
     runCircleNoraml(startPoint: cc.Vec2, endPoint: cc.Vec2,callback) {
         // console.log("runFootbal:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         // 控制点
-        const controlPoint = cc.v2((startPoint.x + endPoint.x) / 2-450, (startPoint.y+endPoint.y)/2+120);
+        const controlPoint = this.getControlPoint(startPoint, endPoint)
         this.drawLine(startPoint, endPoint, controlPoint);
          cc.tween(this.football)
         .parallel(
@@ -94,19 +96,24 @@ export class  BallRun {
             this.trailGraphics.stroke();
         }
     }
+    getControlPoint(startPoint, endPoint){
+        let idx =this.targetIdx%3;
+        const pts =[cc.v2(-450,120),cc.v2(-100,900),cc.v2(450,150)];
+        return pts[idx];
+    }
     //添加结束callback
     runCircleEasing(startPoint, endPoint,callback?){
         // console.log("runFootbal:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         // 控制点 0，3，6:（-450,120）
         //1 4 7 :(-100,900)
         //2 5 8:(450,150)
-        const controlPoint = cc.v2((startPoint.x + endPoint.x) / 2+450, (startPoint.y+endPoint.y)/2+150);
+        const controlPoint = this.getControlPoint(startPoint, endPoint)
         this.drawLine(startPoint, endPoint, controlPoint);
 
         cc.tween(this.football)
         .parallel(
             cc.tween().to(0.05, { scale: 1.1 }).to(0.1, { scale: 1 }).to(0.2, {scale: 0.6}),
-            cc.tween().to(1.5, { angle:0 }, {
+            cc.tween().to(1.5, { angle:360 }, {
             easing:(t)=>{
                 const pos = this.quadraticBezier(startPoint, controlPoint, endPoint, this.easeOutCubic(t));
                 this.football.setPosition(pos);
@@ -120,6 +127,7 @@ export class  BallRun {
         .call(()=>{
             this.football.setPosition(startPoint);
             this.football.scale = 1;
+            this.football.angle = 0;
             callback?.();
         })
         .start();
@@ -162,5 +170,9 @@ export class  BallRun {
         if(star.shootId==2){
             this.runCircleNoraml(this.startPos, endPoint,callback);
         }
+    }
+    shootGiftId(id,callback?){
+        this.targetIdx =id;
+        this.runFootBall(this.giftList[id].position,callback);
     }
 }

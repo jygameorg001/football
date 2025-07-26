@@ -28,6 +28,7 @@ export default class Shoot extends cc.Component {
         this.ballSprite.node.zIndex =1;
         BallRun.getInstance().initFootBall(this.football, trailGraphics)
         BallRun.getInstance().liziNode = this.tuowei;
+        BallRun.getInstance().giftList = this.giftList;
         EventMgr.on("onShooting", this.onShooting, this);
         this.tuowei.active = false;
 
@@ -109,9 +110,9 @@ export default class Shoot extends cc.Component {
     onShooting(data){
         let giftId = data.giftId;
         let id = this.getIdByGiftId(giftId);
-        let position = this.giftList[id].position;
+        // let position = this.giftList[id].position;
         this.beginRunning();
-        BallRun.getInstance().runFootBall(position,()=>{
+        BallRun.getInstance().shootGiftId(id,()=>{
             // show win reward
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
