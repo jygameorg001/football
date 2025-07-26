@@ -123,6 +123,10 @@ export default class Shoot extends cc.Component {
         return 0;
     }
     onShooting(data) {
+        GameLogic.instance.callBridge("onEnergyChange", {}, (code,message,data)=>{
+
+        })
+
         GameLogic.instance.reqPlayerInfo();
         let giftId = data.giftId;
         let id = this.getIdByGiftId(giftId);

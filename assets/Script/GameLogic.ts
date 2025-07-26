@@ -41,6 +41,12 @@ export interface ShootingInfo {
     reward: number;
 }
 
+export interface IBridgeResponse<T> {
+  code: number;
+  message: string;
+  data: T;
+}
+
 export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
     public static get instance() {

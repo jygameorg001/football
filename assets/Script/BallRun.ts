@@ -74,7 +74,7 @@ export class  BallRun {
     }
     getControlPoint(startPoint, endPoint){
         let idx =this.targetIdx%3;
-        const pts =[cc.v2(-450,120),cc.v2(-100,900),cc.v2(450,150)];
+        const pts =[cc.v2(-450,120),cc.v2(-100,700),cc.v2(450,150)];
         return pts[idx];
     }
     

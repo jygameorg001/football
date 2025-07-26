@@ -5407,10 +5407,10 @@
       "__uuid__": "88d82e0b-27c7-4c94-9ff3-a6e3b9f66540"
     },
     "_spriteFrame": {
-      "__uuid__": "e2e6a39a-812c-49d1-add3-e1bf63a30104"
+      "__uuid__": "1aceb8a4-41b2-4866-91a8-22434c3a9e9b"
     },
     "_texture": null,
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
     "totalParticles": 100,
@@ -5450,7 +5450,7 @@
     "angleVar": 360,
     "startSize": 40,
     "startSizeVar": 70,
-    "endSize": 50,
+    "endSize": 40,
     "endSizeVar": 0,
     "startSpin": -47.369998931884766,
     "startSpinVar": 0,
