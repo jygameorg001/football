@@ -142,7 +142,9 @@ export default class Shoot extends cc.Component {
     showReward() {
         let rewardView = cc.instantiate(this.rewardview);
         rewardView.parent = this.rewardViewNode;
-        //
+        let bg =rewardView.getChildByName("bg");
+        bg.scale =0;
+        cc.tween(bg).to(0.3,{scale:1.1}).to(0.2,{scale:0.9}).to(0.2, {scale:1}).start();
     }
 
     private ballIdx: number = 2;
