@@ -1,18 +1,32 @@
+import {BallRun} from "./BallRun";
 import {EventMgr} from "./common/EventManager";
 import Game from "./Game";
 import {GameLogic} from "./GameLogic";
 
 const {ccclass, property} = cc._decorator;
-
+const isTest = true;
 @ccclass
 export default class Shoot extends cc.Component {
     @property(cc.Node) football: cc.Node = null;
     @property(cc.Node)giftNode: cc.Node = null;
     giftList: cc.Node[] = [];
+    canShoot: boolean = false;
     protected onLoad(): void {
         EventMgr.on("onGetGiftList", this.updateGifts, this);
         this.initBtnClickHandle();
         this.initGiftNodes();
+        const node = new cc.Node();
+        node.addComponent(cc.Graphics);
+        node.parent = this.giftNode;
+        let trailGraphics = node.getComponent(cc.Graphics);
+        BallRun.getInstance().initFootBall(this.football, trailGraphics)
+
+        EventMgr.on("onShooting", this.onShooting, this);
+
+        this.canShoot = true;
+    }
+    protected onDestroy(): void {
+        EventMgr.clearByTarget(this);
     }
     initGiftNodes(){
         for(let i=0;i<9;i++){
@@ -55,7 +69,39 @@ export default class Shoot extends cc.Component {
     }
     
     onBtnShoot(){
-        
+        console.log("===onBtnShoot====",this.canShoot)
+        // 是否可以射击
+        if(!this.canShoot){
+            return;
+        }
+         this.canShoot = false;
+        if(isTest){
+            this.onShooting({giftId:1})
+            return;
+        }
+       
+        GameLogic.instance.reqShooting(1000152, 1601096)
+    }
+
+    getIdByGiftId(giftId){
+        for(let i=0;i<GameLogic.instance.giftList.length;i++){
+            let gift =GameLogic.instance.giftList[i];
+            if(gift.giftId == giftId){
+                return i;
+            }
+        }
+        return 0;
+    }
+    onShooting(data){
+        let giftId = data.giftId;
+        let id = this.getIdByGiftId(giftId);
+        let position = this.giftList[id].position;
+        BallRun.getInstance().runFootBall(position,()=>{
+            // show win reward
+
+            // 等待奖励完成 射门流程完成 可以继续射击
+            this.canShoot = true;
+        })
     }
     onBtnClickHandle(name, btn) {
         switch (name) {
@@ -72,6 +118,7 @@ export default class Shoot extends cc.Component {
                 
                 break;
             case "btnShoot":
+                this.onBtnShoot();
                 break;
         }
     }

@@ -1,8 +1,10 @@
+import {GameLogic} from "./GameLogic";
 
 export class  BallRun {
     public static instance: BallRun = null;
     trailGraphics: cc.Graphics;
     football: any;
+    startPos:any;
     public static getInstance(): BallRun {
         if (!BallRun.instance) {
             BallRun.instance = new BallRun();
@@ -11,6 +13,7 @@ export class  BallRun {
     }
     initFootBall(football,trailGraphics){
         this.football = football;
+        this.startPos =this.football.position;
         this.trailGraphics = trailGraphics;
     }
      quadraticBezier(p0: cc.Vec2, p1: cc.Vec2, p2: cc.Vec2, t: number): cc.Vec2 {
@@ -35,7 +38,7 @@ export class  BallRun {
     }
 
     //曲线匀速
-    runCircleNoraml(startPoint: cc.Vec2, endPoint: cc.Vec2) {
+    runCircleNoraml(startPoint: cc.Vec2, endPoint: cc.Vec2,callback) {
         console.log("runFootbal:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         // 控制点
         const controlPoint = cc.v2((startPoint.x + endPoint.x) / 2-450, (startPoint.y+endPoint.y)/2+120);
@@ -50,6 +53,9 @@ export class  BallRun {
                 return t;
             }
         }))
+        .call(()=>{
+            callback?.();
+        })
         .delay(1)
         .call(()=>{
             this.football.setPosition(startPoint);
@@ -104,15 +110,43 @@ export class  BallRun {
                 return t;
             }
         }))
+        .call(()=>{
+            callback?.();
+        })
         .delay(1)
         .call(()=>{
             this.football.setPosition(startPoint);
             this.football.scale = 1;
-            if(callback){
-                callback();
-            }
         })
         .start();
 
+    }
+
+    runLineNoraml(startPoint, endPoint,callback){
+        console.log("runLineNoraml:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+        cc.tween(this.football)
+        .to(1.5, {position:cc.v3(endPoint.x,endPoint.y) ,scale: 0.6},{easing:"smooth"})
+        .call(()=>{
+            callback?.();
+        })
+        .delay(1)
+        .call(()=>{
+            this.football.setPosition(startPoint);
+            this.football.scale = 1;
+        })
+        .start();
+    }
+
+    runFootBall(endPoint,callback?){
+        let star = GameLogic.instance.getCurrentStar();
+        if(star.shootId==0){
+            this.runCircleEasing(this.startPos, endPoint,callback);
+        }
+        if(star.shootId==1){
+            this.runLineNoraml(this.startPos, endPoint,callback);
+        }
+        if(star.shootId==2){
+            this.runCircleNoraml(this.startPos, endPoint,callback);
+        }
     }
 }

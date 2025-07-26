@@ -1,5 +1,6 @@
 import {EventMgr} from "./common/EventManager";
 import {HttpHelper} from "./common/HttpHelper";
+import {NameConfig} from "./Home";
 
 const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAxODgzLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjE0MDk4ODNhLTY2NTEtNGVlZC1hNTA0LWY1ZjBhZmZkZGRjZiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcwOTgwMiJ9.NK80IJrDndV9ZINXi69Iq2J3YomS3FlbCWWm6jwDFZ5X9Ls3UZkwREUCy3ail5XvgBd-E787cYMkl7tCEIVNXA";
 
@@ -173,6 +174,19 @@ export class GameLogic{
 
     closeGame(){
         this.callBridge("goBack", {}, ()  => {})
+    }
+
+    private currentStar =null;
+    setChooseStar(id){
+        for(let key in NameConfig){
+            let cfg =NameConfig[key];
+            if(cfg.id==id){
+                this.currentStar = cfg;
+            }
+        }
+    }
+    getCurrentStar(){
+        return this.currentStar;
     }
     
 }

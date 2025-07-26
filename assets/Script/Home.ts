@@ -7,6 +7,24 @@ export interface IPicItem{
     id:number;//图片id 0-内马尔,1-C 罗，2-梅西
     index:number;//当前位置 0 -1-2
 }
+//球星定义
+export const NameConfig =[
+    {
+        id:0,
+        name:"内马尔",
+        shootId:0,//曲线 变速
+    },
+    {
+        id:1,
+        name:"C 罗",
+        shootId:1,//直线匀速
+    },
+    {
+        id:2,
+        name:"梅西",
+        shootId:2,//曲线匀速
+    }
+]
 const MoveTime = 0.5;
 const {ccclass, property} = cc._decorator;
 
@@ -148,6 +166,8 @@ export default class Home extends cc.Component {
     }
 
     onBtnGo(){
+        let id = this.getChooseId();
+        GameLogic.instance.setChooseStar(id);
         Game.instance.showView("Shoot");
     }
 
