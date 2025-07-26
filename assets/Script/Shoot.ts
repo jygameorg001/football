@@ -11,6 +11,7 @@ export default class Shoot extends cc.Component {
     @property(cc.Node) giftNode: cc.Node = null;
     @property(cc.Label) currency: cc.Label = null;
     @property(cc.Label) energy: cc.Label = null;
+    @property(cc.Label) luckScore: cc.Label = null;
     @property(cc.Node) tuowei: cc.Node = null;
     @property(cc.SpriteAtlas) ballAltlas: cc.SpriteAtlas = null;
     giftList: cc.Node[] = [];
@@ -32,19 +33,22 @@ export default class Shoot extends cc.Component {
         EventMgr.on("onShooting", this.onShooting, this);
         this.tuowei.active = false;
         this.canShoot = true;
-        this.setinfoview();
+        this.upinfo();
+
     }
-    protected onDestroy(): void {
-        EventMgr.clearByTarget(this);
+    onEvent() {
+        EventMgr.on("onGetGiftList", this.upinfo, this);
     }
 
-    setinfoview() {
-        this.upinfo();
+    protected onDestroy(): void {
+        EventMgr.off("onGetGiftList", this.upinfo, this);
+        EventMgr.clearByTarget(this);
     }
 
     upinfo() {
         this.energy.string = GameLogic.instance.playerInfo.energy + "";
         this.currency.string = GameLogic.instance.playerInfo.currency + "";
+        this.luckScore.string = "消耗: " + GameLogic.instance.playerInfo.luckScore + "U币";
     }
 
 
@@ -106,6 +110,7 @@ export default class Shoot extends cc.Component {
         return 0;
     }
     onShooting(data) {
+        GameLogic.instance.reqPlayerInfo();
         let giftId = data.giftId;
         let id = this.getIdByGiftId(giftId);
         // let position = this.giftList[id].position;
