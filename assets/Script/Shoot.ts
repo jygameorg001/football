@@ -7,6 +7,8 @@ const { ccclass, property } = cc._decorator;
 const isTest = true;
 @ccclass
 export default class Shoot extends cc.Component {
+    @property(cc.Node) baiDoor:cc.Node = null;
+    @property(sp.Skeleton) ribbon:sp.Skeleton = null;
     @property(cc.Node) football: cc.Node = null;
     @property(cc.Node) giftNode: cc.Node = null;
     @property(cc.Label) currency: cc.Label = null;
@@ -35,6 +37,7 @@ export default class Shoot extends cc.Component {
         this.tuowei.active = false;
         this.canShoot = true;
         this.upinfo();
+        // this.showDoorBlink();
 
     }
     onEvent() {
@@ -117,12 +120,12 @@ export default class Shoot extends cc.Component {
         // let position = this.giftList[id].position;
         this.beginRunning();
         BallRun.getInstance().shootGiftId(id,()=>{
-
             // show win reward
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
             this.canShoot = true;
             this.showReward();
+            this.showDoorBlink();
         })
     }
 
@@ -167,6 +170,19 @@ export default class Shoot extends cc.Component {
                 this.onBtnShoot();
                 break;
         }
+    }
+
+    showDoorBlink(){
+        cc.tween(this.baiDoor)
+        .repeatForever(
+            cc.tween().blink(1, 10)
+        )
+        .start(); 
+        this.ribbon.node.active = true;
+        this.ribbon.setAnimation(0, "Ribbon", false);
+    }
+    stopShowDoor(){
+        cc.Tween.stopAllByTarget(this.baiDoor);
     }
 
     // update (dt) {}
