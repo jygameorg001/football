@@ -3,12 +3,12 @@ export class AudioMgr {
     static bgmVolume = 1;
     static effectsVolume = 1;
 
-    static effectMap: Map<cc.AudioClip | string, number>;
+    // static effectMap: Map<cc.AudioClip | string, number>;
 
     static init() {
-        this.effectMap = new Map();
+        let str = cc.sys.localStorage.getItem("isPaused");
+        AudioMgr.isPaused = str=="1"?true:false;
     }
-
     static isPaused = false;
 
     //停止播放背景音乐
@@ -38,6 +38,9 @@ export class AudioMgr {
      * @param {*} target 跟随目标节点释放资源
      */
     static playSound(sound: cc.AudioClip | string, isLoop = false, target: any = null, bundleName: string = null) {
+        if(AudioMgr.isPaused){
+            return;
+        }
         if (typeof sound == "string") {
             cc.resources.load(sound, cc.AudioClip, function (err, clip: cc.AudioClip) {
                 cc.audioEngine.playEffect(clip, isLoop);
@@ -47,23 +50,4 @@ export class AudioMgr {
         }
     }
 
-    //按钮点击声音
-    static playClickAudio(clickSoundName = null) {
-        if (clickSoundName == null) {
-            clickSoundName = "sound/sound_click";
-        }
-        this.playSound(clickSoundName);
-    }
-
-    static stopEffect(name: string) {
-        if (!this.effectMap) return;
-        if (!this.effectMap.get(name)) return;
-        cc.audioEngine.stopEffect(this.effectMap.get(name));
-        this.effectMap.delete(name);
-    }
-
-    static stopAllEffect() {
-        this.effectMap.clear();
-        cc.audioEngine.stopAllEffects();
-    }
 }

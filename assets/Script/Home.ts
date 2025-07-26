@@ -30,6 +30,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Home extends cc.Component {
+    @property(cc.Node) soundBtn:cc.Node = null;
     @property(cc.Node) leftBtn: cc.Node = null;
     @property(cc.Node) rightBtn: cc.Node = null;
     @property([cc.Node]) pics: cc.Node[] = [];
@@ -43,6 +44,7 @@ export default class Home extends cc.Component {
         this.initPicsPosition();
         this.addBreathingEffect(this.leftBtn);
         this.addBreathingEffect(this.rightBtn);
+        this.initSoundIcon();
     }
     addBreathingEffect(btn: cc.Node) {
         cc.tween(btn).repeatForever(
@@ -177,12 +179,20 @@ export default class Home extends cc.Component {
 
     onBtnSound() {
         AudioMgr.isPaused = !AudioMgr.isPaused;
+        cc.sys.localStorage.setItem("isPaused",AudioMgr.isPaused?"1":"0");
+        this.initSoundIcon();
+    }
+    initSoundIcon(){
         if (AudioMgr.isPaused) {
             AudioMgr.pauseMusic();
         } else {
             AudioMgr.resumeMusic();
         }
         // 切换图标
+        let on = this.soundBtn.getChildByName("on");
+        let off = this.soundBtn.getChildByName("off");
+        on.active = !AudioMgr.isPaused;
+        off.active = AudioMgr.isPaused;
     }
 
     onBtnHome() {

@@ -1,4 +1,5 @@
 import { BallRun } from "./BallRun";
+import {AudioMgr} from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
@@ -7,6 +8,9 @@ const { ccclass, property } = cc._decorator;
 const isTest = true;
 @ccclass
 export default class Shoot extends cc.Component {
+    @property(cc.Sprite)starName:cc.Sprite =null;
+    @property(cc.Node)listNode:cc.Node = null;
+    @property(cc.Node) soundBtn:cc.Node = null;
     @property(cc.Node) baiDoor:cc.Node = null;
     @property(sp.Skeleton) ribbon:sp.Skeleton = null;
     @property(cc.Node) football: cc.Node = null;
@@ -40,8 +44,9 @@ export default class Shoot extends cc.Component {
         this.tuowei.active = false;
         this.canShoot = true;
         this.upinfo();
-        // this.showDoorBlink();
+        this.listNode.active = false;
 
+        this.initListItems();
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);
@@ -95,6 +100,7 @@ export default class Shoot extends cc.Component {
     }
 
     start() {
+        this.initSoundIcon();
     }
 
     onBtnShoot() {
@@ -157,6 +163,7 @@ export default class Shoot extends cc.Component {
         this.ballSprite.spriteFrame = spriteFrame;
     }
     onBtnClickHandle(name, btn) {
+        console.log("==onBtnClickHandle==",name);
         switch (name) {
             case "btnBack":
                 this.node.destroy();
@@ -165,16 +172,49 @@ export default class Shoot extends cc.Component {
                 Game.instance.showView("Help");
                 break;
             case "btnSound":
-
+                AudioMgr.isPaused = !AudioMgr.isPaused;
+                cc.sys.localStorage.setItem("isPaused",AudioMgr.isPaused?"1":"0");
+                this.initSoundIcon();
                 break;
             case "btnName":
-
+                this.listNode.active = true;
+                break;
+            case "listNode":
+                this.listNode.active = false;
                 break;
             case "btnShoot":
                 this.onBtnShoot();
                 break;
+            case "item0":
+                this.onClickItem(0)
+                break;
+            case "item1":
+                this.onClickItem(1)
+                break;
+            case "item2":
+                this.onClickItem(2)
+                break;
         }
     }
+    initListItems(){
+        let id = GameLogic.instance.getCurrentStar().id;
+        let content = this.listNode.getChildByName("content");
+
+        let item = content.getChildByName("item"+id);
+        let sprite = item.getChildByName("name_m").getComponent(cc.Sprite);
+        this.starName.spriteFrame = sprite.spriteFrame;
+        for(let i=0;i<content.children.length;i++){
+            let item = content.children[i];
+            let check = item.getChildByName("check");
+            check.active = item.name == "item"+id 
+        }
+    }
+    onClickItem(id){
+        this.listNode.active = false;
+        GameLogic.instance.setChooseStar(id);
+        this.initListItems();
+    }
+    
 
     showDoorBlink(){
         // cc.tween(this.baiDoor)
@@ -188,6 +228,19 @@ export default class Shoot extends cc.Component {
     }
     stopShowDoor(){
         cc.Tween.stopAllByTarget(this.baiDoor);
+    }
+
+    initSoundIcon(){
+        if (AudioMgr.isPaused) {
+            AudioMgr.pauseMusic();
+        } else {
+            AudioMgr.resumeMusic();
+        }
+        // 切换图标
+        let on = this.soundBtn.getChildByName("on");
+        let off = this.soundBtn.getChildByName("off");
+        on.active = !AudioMgr.isPaused;
+        off.active = AudioMgr.isPaused;
     }
 
     // update (dt) {}

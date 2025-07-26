@@ -1,4 +1,5 @@
 import { BallRun } from "./BallRun";
+import {AudioMgr} from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
 import {GameLogic} from "./GameLogic";
@@ -12,6 +13,7 @@ export default class Game extends cc.Component {
     public static instance: Game = null;
     protected onLoad(): void {
         Game.instance = this;
+        AudioMgr.init();
         this.initView();
         this.initEvents();
         GameLogic.instance.initUserInfo();
@@ -22,10 +24,6 @@ export default class Game extends cc.Component {
         // BallRun.getInstance().initFootBall(this.football, this.trailGraphics)
     }
     initView() {
-        // for (let i = 1; i <= 9; i++) {
-        //     let node = this.gifts.getChildByName("gift" + i);
-        //     this.giftsList[i - 1] = node;
-        // }
     }
     initEvents() {
         // EventMgr.on("onGetUserInfo", this.onGetUserInfo, this);
