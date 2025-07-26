@@ -21,6 +21,7 @@ export default class Shoot extends cc.Component {
         EventMgr.on("onGetGiftList", this.updateGifts, this);
         this.initBtnClickHandle();
         this.initGiftNodes();
+        this.onEvent();
         const node = new cc.Node();
         node.addComponent(cc.Graphics);
         node.parent = this.giftNode;
@@ -37,11 +38,11 @@ export default class Shoot extends cc.Component {
 
     }
     onEvent() {
-        EventMgr.on("onGetGiftList", this.upinfo, this);
+        EventMgr.on("onGetPlayerInfo", this.upinfo, this);
     }
 
     protected onDestroy(): void {
-        EventMgr.off("onGetGiftList", this.upinfo, this);
+        EventMgr.off("onGetPlayerInfo", this.upinfo, this);
         EventMgr.clearByTarget(this);
     }
 
