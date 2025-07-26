@@ -10,6 +10,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
+    @property(cc.Node)playNotice:cc.Node = null;
     public static instance: Game = null;
     protected onLoad(): void {
         Game.instance = this;
@@ -17,11 +18,36 @@ export default class Game extends cc.Component {
         this.initView();
         this.initEvents();
         GameLogic.instance.initUserInfo();
+        cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
+        cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
+        
+        this.checkNotice();
         // const node = new cc.Node();
         // node.addComponent(cc.Graphics);
         // node.parent = this.gifts;
         // this.trailGraphics = node.getComponent(cc.Graphics);
         // BallRun.getInstance().initFootBall(this.football, this.trailGraphics)
+    }
+    checkNotice(){
+        this.playNotice.active = true;
+        let str = cc.sys.localStorage.getItem("agree_notice");
+        let day = new Date().getDate();
+        let dayStr = cc.sys.localStorage.getItem("agree_notice_today");
+        if(str && Number(dayStr)==day){
+            this.playNotice.active = false;
+        }
+    }
+    
+    onHide(){
+
+    }
+    onShow(){
+        GameLogic.instance.callBridge("refreshAmount", {}, (res)=>{
+            console.log("refreshAmount res",res)
+            if(res.code==0){
+                EventMgr.emit("onGetPlayerInfo",res.data);
+            }
+        })
     }
     initView() {
     }
@@ -33,6 +59,8 @@ export default class Game extends cc.Component {
     }
    
     protected onDestroy(): void {
+        cc.game.off(cc.game.EVENT_HIDE, this.onHide, this);
+        cc.game.off(cc.game.EVENT_SHOW, this.onShow, this);
         Game.instance = null;
         EventMgr.clearByTarget(this);
     }

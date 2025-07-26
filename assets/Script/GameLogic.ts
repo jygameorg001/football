@@ -105,13 +105,13 @@ export class GameLogic {
             this.onGetUserInfo();
             return;
         }
-        this.callBridge("getUserInfo", {}, (res: IUserInfo) => {
+        this.callBridge("getUserInfo", {}, (res: IBridgeResponse<IUserInfo>) => {
             if (typeof res == "object") {
-                HttpHelper.token = res.appToken;
+                HttpHelper.token = res.data.appToken;
             }
             if (typeof res == "string") {
                 let userInfo = JSON.parse(res);
-                HttpHelper.token = userInfo.appToken;
+                HttpHelper.token = userInfo.data.appToken;
             }
             EventMgr.emit("onGetUserInfo")
         });

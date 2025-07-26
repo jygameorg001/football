@@ -171,6 +171,9 @@ export default class Shoot extends cc.Component {
     onBtnClickHandle(name, btn) {
         console.log("==onBtnClickHandle==",name);
         switch (name) {
+            case "btnBuy":
+                this.go2Buy();
+                break;
             case "btnBack":
                 this.node.destroy();
                 break;
@@ -247,6 +250,10 @@ export default class Shoot extends cc.Component {
         let off = this.soundBtn.getChildByName("off");
         on.active = !AudioMgr.isPaused;
         off.active = AudioMgr.isPaused;
+    }
+    go2Buy(){
+        GameLogic.instance.callBridge("navigateNativeRoute", {to:"customerChargeCenter"}, (res)=>{
+        })
     }
 
     // update (dt) {}
