@@ -1,6 +1,6 @@
-import {EventMgr} from "./common/EventManager";
-import {HttpHelper} from "./common/HttpHelper";
-import {NameConfig} from "./Home";
+import { EventMgr } from "./common/EventManager";
+import { HttpHelper } from "./common/HttpHelper";
+import { NameConfig } from "./Home";
 
 const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAxODgzLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjE0MDk4ODNhLTY2NTEtNGVlZC1hNTA0LWY1ZjBhZmZkZGRjZiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcwOTgwMiJ9.NK80IJrDndV9ZINXi69Iq2J3YomS3FlbCWWm6jwDFZ5X9Ls3UZkwREUCy3ail5XvgBd-E787cYMkl7tCEIVNXA";
 
@@ -34,6 +34,13 @@ export interface IGiftInfo {
     giftImage: string;
 }
 
+export interface ShootingInfo {
+    giftId: number;
+    giftImage: string;
+    id: number;
+    reward: number;
+}
+
 export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
     public static get instance() {
@@ -52,6 +59,14 @@ export class GameLogic {
     }
     set playerInfo(data: IPlayerInfo) {
         this._playerInfo = data;
+    }
+
+    private _ShootingInfo: ShootingInfo = null;
+    get ShootingInfo() {
+        return this._ShootingInfo;
+    }
+    set ShootingInfo(data: ShootingInfo) {
+        this._ShootingInfo = data;
     }
 
     private _giftList: Array<IGiftInfo> = [];
@@ -127,10 +142,10 @@ export class GameLogic {
             anchorId: anchorId,
         }
         HttpHelper.httpPost("football-api/football/shooting", params, (err, data) => {
-             console.log("返回shootings", data);
             if (err) {
                 return;
             }
+            GameLogic.instance.ShootingInfo = data;
             console.log("返回shooting", data);
             EventMgr.emit("onShooting", data)
         })
@@ -180,17 +195,17 @@ export class GameLogic {
         this.callBridge("goBack", {}, () => { })
     }
 
-    private currentStar =null;
-    setChooseStar(id){
-        for(let key in NameConfig){
-            let cfg =NameConfig[key];
-            if(cfg.id==id){
+    private currentStar = null;
+    setChooseStar(id) {
+        for (let key in NameConfig) {
+            let cfg = NameConfig[key];
+            if (cfg.id == id) {
                 this.currentStar = cfg;
             }
         }
     }
-    getCurrentStar(){
+    getCurrentStar() {
         return this.currentStar;
     }
-    
+
 }
