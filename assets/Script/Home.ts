@@ -30,13 +30,17 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Home extends cc.Component {
-    @property(cc.Node) soundBtn:cc.Node = null;
+    @property(cc.Node) soundBtn: cc.Node = null;
     @property(cc.Node) leftBtn: cc.Node = null;
     @property(cc.Node) rightBtn: cc.Node = null;
     @property([cc.Node]) pics: cc.Node[] = [];
+    @property(cc.Node) roleChangeEffect: cc.Node = null;//选中球星特效
+
+
     // private currentIndex: number = 1; // 当前中间图片索引
     private readonly totalPics: number = 3; // 总共三张图片
     private isAnimating: boolean = false; // 动画是否在播放
+    private timeChanger = null
 
     private positions: cc.Vec2[] = []; // 存储图片的初始位置
     private picItems: IPicItem[] = [];
@@ -45,6 +49,7 @@ export default class Home extends cc.Component {
         this.addBreathingEffect(this.leftBtn);
         this.addBreathingEffect(this.rightBtn);
         this.initSoundIcon();
+        this.initroleChange();
     }
     addBreathingEffect(btn: cc.Node) {
         cc.tween(btn).repeatForever(
@@ -110,6 +115,7 @@ export default class Home extends cc.Component {
                 .call(() => {
                     // this.pics[0].setPosition(cc.v2(this.screenMidX * 2, this.pics[0].y));
                     this.isAnimating = false
+
                 })
                 .start();
         }
@@ -123,13 +129,43 @@ export default class Home extends cc.Component {
                 .call(() => {
                     // this.pics[0].setPosition(cc.v2(this.screenMidX * 2, this.pics[0].y));
                     this.isAnimating = false
+                    this.initroleChange();
                 })
                 .start();
         }
 
-
-
     }
+
+    initroleChange() {
+        this.timeChanger = this.scheduleOnce(() => {
+            this.showRoleChangeEffect();
+        }, 1);
+    }
+
+
+    //选中球星底图要闪动
+    showRoleChangeEffect() {
+        this.clearRoleChangeEffect();
+        this.roleChangeEffect.active = true;
+        // 设置初始透明度和缩放
+        this.roleChangeEffect.opacity = 150;
+        this.roleChangeEffect.scale = 1;
+        cc.tween(this.roleChangeEffect)
+            .to(0.5, { opacity: 255, scale: 1.05 })
+            .to(0.5, { opacity: 150, scale: 1 })
+            .union()
+            .repeatForever()
+            .start();
+    }
+
+    // 清除动画
+    clearRoleChangeEffect() {
+        this.unschedule(this.timeChanger);
+        this.roleChangeEffect.stopAllActions();
+        this.roleChangeEffect.active = false;
+    }
+
+
 
     getChooseId() {
         for (let i = 0; i < this.picItems.length; i++) {
@@ -147,6 +183,7 @@ export default class Home extends cc.Component {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index - 1)
         }
+        this.clearRoleChangeEffect();
         // 更新当前索引
         // this.currentIndex = (this.currentIndex + 1) % this.totalPics;
 
@@ -159,6 +196,7 @@ export default class Home extends cc.Component {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index + 1)
         }
+        this.clearRoleChangeEffect();
     }
 
     onBtnBack() {
@@ -179,10 +217,10 @@ export default class Home extends cc.Component {
 
     onBtnSound() {
         AudioMgr.isPaused = !AudioMgr.isPaused;
-        cc.sys.localStorage.setItem("isPaused",AudioMgr.isPaused?"1":"0");
+        cc.sys.localStorage.setItem("isPaused", AudioMgr.isPaused ? "1" : "0");
         this.initSoundIcon();
     }
-    initSoundIcon(){
+    initSoundIcon() {
         if (AudioMgr.isPaused) {
             AudioMgr.pauseMusic();
         } else {
