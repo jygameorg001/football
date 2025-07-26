@@ -154,8 +154,6 @@ export class GameLogic {
     loadRemoteSprite(url, spriteNode: cc.Sprite) {
         cc.assetManager.loadRemote(url, (err: Error, asset: cc.Texture2D) => {
             if (err) {
-                const pathPrefix = url.split("/").slice(0, -1).join("/");
-                this.loadRemoteSprite(pathPrefix + "/3part.png", spriteNode);
                 return;
             }
             if (asset && cc.isValid(spriteNode)) {

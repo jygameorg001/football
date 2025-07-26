@@ -43,7 +43,7 @@ export default class Game extends cc.Component {
 
     }
 
-    showView(path: string,callback?){
+    showView(path: string,parent?,callback?){
         let bundle = cc.assetManager.getBundle("resources");
         bundle.load(path, cc.Prefab, (err,prefab: cc.Prefab)=>{
             if (err) {
@@ -51,14 +51,34 @@ export default class Game extends cc.Component {
                 return;
             }
             let node = cc.instantiate(prefab);
-            node.parent = Game.instance.node;
+            let root =parent||Game.instance.node;
+            node.parent =root;
             if (callback) {
                 callback(node);
             }
         })
     }
-    
+
     // onBtnShoot() {
     //     BallRun.getInstance().runCircleEasing(this.football.position, this.giftsList[2].position);
     // }
+
+    shakeNode(node,len=15){
+        function Rand(){
+            return Math.random()*len-len/2;
+        }
+        // 停止当前节点的其他动画，避免冲突
+        cc.Tween.stopAllByTarget(node);
+        cc.tween(node)
+            .to(0.05, { position: cc.v3(node.x + Rand(), node.y+ Rand())})  
+            .to(0.05, { position: cc.v3(node.x + Rand(), node.y+ Rand())}) 
+            .to(0.05, { position: cc.v3(node.x + Rand(), node.y+ Rand())})  
+            .to(0.05, { position: cc.v3(node.x + + Rand(), node.y+ Rand())})  
+            .to(0.05, { position: cc.v3(node.x+ Rand(), node.y+ Rand())})     
+            .to(0.05, { position: cc.v3(node.x + Rand(), node.y+ Rand())})  
+            .to(0.05, { position: cc.v3(node.x + Rand(), node.y+ Rand()) })  
+            .to(0.05, { position: cc.v3(node.x + + Rand(), node.y+ Rand())})  
+            .to(0.05, { position: cc.v3(node.x, node.y), scale: 1.0 })      // 回到原位
+            .start();             // 启动动画
+    }
 }

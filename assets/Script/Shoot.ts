@@ -30,7 +30,7 @@ export default class Shoot extends cc.Component {
         let trailGraphics = node.getComponent(cc.Graphics);
         this.ballSprite = this.football.getChildByName("icon").getComponent(cc.Sprite);
         this.ballSprite.node.zIndex = 1;
-        BallRun.getInstance().initFootBall(this.football, trailGraphics)
+        BallRun.getInstance().initFootBall(this.football,this.baiDoor.parent,trailGraphics)
         BallRun.getInstance().liziNode = this.tuowei;
         BallRun.getInstance().giftList = this.giftList;
         EventMgr.on("onShooting", this.onShooting, this);
@@ -134,7 +134,6 @@ export default class Shoot extends cc.Component {
         Game.instance.showView("rewardview");
     }
 
-
     private ballIdx: number = 2;
     beginRunning() {
         this.unschedule(this.onBallRunning);
@@ -173,11 +172,12 @@ export default class Shoot extends cc.Component {
     }
 
     showDoorBlink(){
-        cc.tween(this.baiDoor)
-        .repeatForever(
-            cc.tween().blink(1, 10)
-        )
-        .start(); 
+        // cc.tween(this.baiDoor)
+        // .repeatForever(
+        //     cc.tween().blink(2, 10)
+        // )
+        // .start(); 
+        cc.tween(this.baiDoor).blink(1.5, 15).start();
         this.ribbon.node.active = true;
         this.ribbon.setAnimation(0, "Ribbon", false);
     }

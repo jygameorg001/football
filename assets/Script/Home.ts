@@ -145,7 +145,6 @@ export default class Home extends cc.Component {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index - 1)
         }
-        console.log("===== current id:", this.getChooseId())
         // 更新当前索引
         // this.currentIndex = (this.currentIndex + 1) % this.totalPics;
 
@@ -158,7 +157,6 @@ export default class Home extends cc.Component {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index + 1)
         }
-        console.log("===== current id:", this.getChooseId())
     }
 
     onBtnBack() {
