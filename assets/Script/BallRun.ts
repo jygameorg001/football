@@ -64,6 +64,7 @@ export class  BallRun {
             this.football.setPosition(startPoint);
             this.football.scale = 1;
             callback?.();
+            this.trailGraphics.clear();
         })
         .start();
         this.addLiziNode();
@@ -129,6 +130,7 @@ export class  BallRun {
             this.football.scale = 1;
             this.football.angle = 0;
             callback?.();
+            this.trailGraphics.clear();
         })
         .start();
         this.addLiziNode();
@@ -155,6 +157,7 @@ export class  BallRun {
             this.football.setPosition(startPoint);
             this.football.scale = 1;
             callback?.();
+            this.trailGraphics.clear();
         })
         .start();
         this.addLiziNode();

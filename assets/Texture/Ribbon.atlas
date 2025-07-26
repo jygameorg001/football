@@ -1,0 +1,27 @@
+
+Ribbon.png
+size: 80,80
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+caidai_a
+  rotate: false
+  xy: 62, 68
+  size: 12, 12
+  orig: 12, 12
+  offset: 0, 0
+  index: -1
+glow_blue01
+  rotate: false
+  xy: 0, 20
+  size: 60, 60
+  orig: 64, 64
+  offset: 2, 1
+  index: -1
+glow_xiao41
+  rotate: false
+  xy: 0, 0
+  size: 18, 18
+  orig: 20, 20
+  offset: 1, 1
+  index: -1
