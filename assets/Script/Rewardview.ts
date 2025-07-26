@@ -1,7 +1,7 @@
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class WinView extends cc.Component {
+export default class Rewardview extends cc.Component {
 
     private data = null;
 

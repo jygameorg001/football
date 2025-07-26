@@ -119,6 +119,7 @@ export default class Shoot extends cc.Component {
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
             this.canShoot = true;
+            this.showReward();
         })
     }
 
