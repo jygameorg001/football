@@ -93,11 +93,6 @@ export default class Shoot extends cc.Component {
             return;
         }
         this.canShoot = false;
-        // if (isTest) {
-        //     this.onShooting({ giftId: 1 })
-        //     return;
-        // }
-        this.onShooting({ giftId: 1 })
         GameLogic.instance.reqShooting(1000152, 1603148)
     }
 
