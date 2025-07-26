@@ -1,14 +1,17 @@
 import {BallRun} from "./BallRun";
 import {EventMgr} from "./common/EventManager";
 import Game from "./Game";
-import {GameLogic} from "./GameLogic";
+import { GameLogic } from "./GameLogic";
 
 const {ccclass, property} = cc._decorator;
 const isTest = true;
 @ccclass
 export default class Shoot extends cc.Component {
     @property(cc.Node) football: cc.Node = null;
-    @property(cc.Node)giftNode: cc.Node = null;
+    @property(cc.Node) giftNode: cc.Node = null;
+    @property(cc.Label) currency: cc.Label = null;
+    @property(cc.Label) energy: cc.Label = null;
+
     giftList: cc.Node[] = [];
     canShoot: boolean = false;
     protected onLoad(): void {
@@ -28,22 +31,30 @@ export default class Shoot extends cc.Component {
     protected onDestroy(): void {
         EventMgr.clearByTarget(this);
     }
-    initGiftNodes(){
-        for(let i=0;i<9;i++){
-            this.giftList[i] = this.giftNode.getChildByName("gift"+(i+1));
+
+    setinfoview() {
+        console.log(GameLogic.instance.giftList, "玩家信息2");
+        this.energy.string = GameLogic.instance.playerInfo.energy + "";
+        this.currency.string = GameLogic.instance.playerInfo.currency + "";
+    }
+
+
+    initGiftNodes() {
+        for (let i = 0; i < 9; i++) {
+            this.giftList[i] = this.giftNode.getChildByName("gift" + (i + 1));
         }
-        if(GameLogic.instance.giftList.length>0){
+        if (GameLogic.instance.giftList.length > 0) {
             this.updateGifts();
         }
-        else{
+        else {
             GameLogic.instance.reqQueryGiftList();
         }
     }
-    updateGifts(){
-        for(let i=0;i<this.giftList.length;i++){
+    updateGifts() {
+        for (let i = 0; i < this.giftList.length; i++) {
             let gift = GameLogic.instance.giftList[i];
             let node = this.giftList[i];
-            GameLogic.instance.loadRemoteSprite(gift.giftImage,node.getComponent(cc.Sprite));
+            GameLogic.instance.loadRemoteSprite(gift.giftImage, node.getComponent(cc.Sprite));
         }
     }
     protected initBtnClickHandle() {
@@ -62,9 +73,8 @@ export default class Shoot extends cc.Component {
             );
         });
     }
-    
 
-    start () {
+    start() {
 
     }
     
@@ -112,10 +122,10 @@ export default class Shoot extends cc.Component {
                 Game.instance.showView("Help");
                 break;
             case "btnSound":
-                
+
                 break;
             case "btnName":
-                
+
                 break;
             case "btnShoot":
                 this.onBtnShoot();

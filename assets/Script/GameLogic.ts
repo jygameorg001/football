@@ -18,7 +18,7 @@ export interface IUserInfo {
     userType: 1 | 2; // 用户类型：1-用户，2-主播
 }
 
-export interface IPlayerInfo {  
+export interface IPlayerInfo {
     energy: number,
     currency: number,
     pop: number,
@@ -34,23 +34,23 @@ export interface IGiftInfo {
     giftImage: string;
 }
 
-export class GameLogic{
+export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
-    public static get instance(){
+    public static get instance() {
         return this._instance;
     }
     private _userInfo: IUserInfo = null;
-    get  userInfo(){
+    get userInfo() {
         return this._userInfo;
     }
-    set  userInfo(data:IUserInfo){
+    set userInfo(data: IUserInfo) {
         this._userInfo = data;
     }
     private _playerInfo: IPlayerInfo = null;
-    get  playerInfo(){
+    get playerInfo() {
         return this._playerInfo;
     }
-    set  playerInfo(data:IPlayerInfo){
+    set playerInfo(data: IPlayerInfo) {
         this._playerInfo = data;
     }
 
@@ -71,14 +71,14 @@ export class GameLogic{
     callBridge(methodName, params, callback) {
         let WebViewJavascriptBridge = window["WebViewJavascriptBridge"];
         if (WebViewJavascriptBridge) {
-            WebViewJavascriptBridge.callHandler(methodName, params, (res)=>{
+            WebViewJavascriptBridge.callHandler(methodName, params, (res) => {
                 callback(res);
             });
         }
     }
 
     initUserInfo() {
-        if(!this.isBridgeReady()){
+        if (!this.isBridgeReady()) {
             HttpHelper.token = Token;
             EventMgr.emit("onGetUserInfo")
             this.onGetUserInfo();
@@ -94,7 +94,7 @@ export class GameLogic{
             }
             EventMgr.emit("onGetUserInfo")
         });
-        
+
     }
     onGetUserInfo() {
         this.reqPlayerInfo();
@@ -102,19 +102,21 @@ export class GameLogic{
     }
     reqPlayerInfo() {
         HttpHelper.httpPost("logic-api/logic/getPlayerInfoV2", {}, (err, data) => {
-            if(err){
+            if (err) {
                 return;
             }
+            console.log("返回getPlayerInfoV2", data);
             GameLogic.instance.playerInfo = data;
             EventMgr.emit("onGetPlayerInfo")
         });
     }
     reqQueryGiftList() {
-        HttpHelper.httpGet("football-api/football/queryGiftList", (err,data) => {
-            if(err){
+        HttpHelper.httpGet("football-api/football/queryGiftList", (err, data) => {
+            if (err != 200) {
                 return;
             }
-            GameLogic.instance.giftList = data;
+            console.log("返回queryGiftList", data.result);
+            GameLogic.instance.giftList = data.result;
             EventMgr.emit("onGetGiftList")
         })
     }
@@ -125,55 +127,56 @@ export class GameLogic{
             anchorId: anchorId,
         }
         HttpHelper.httpPost("football-api/football/shooting", params, (err, data) => {
-            if(err){
+            if (err) {
                 return;
             }
+            console.log("返回shooting", data);
             EventMgr.emit("onShootingt", data)
         })
     }
 
-    loadRemoteSprite(url,spriteNode: cc.Sprite){
-        cc.assetManager.loadRemote(url,(err: Error, asset: cc.Texture2D) => {
-            if(err){
-                const pathPrefix = url.split("/").slice(0, -1).join("/"); 
-                this.loadRemoteSprite(pathPrefix+"/3part.png", spriteNode);
+    loadRemoteSprite(url, spriteNode: cc.Sprite) {
+        cc.assetManager.loadRemote(url, (err: Error, asset: cc.Texture2D) => {
+            if (err) {
+                const pathPrefix = url.split("/").slice(0, -1).join("/");
+                this.loadRemoteSprite(pathPrefix + "/3part.png", spriteNode);
                 return;
             }
-            if(asset && cc.isValid(spriteNode)) {   
-                let frame:any = cc.assetManager.assets.get(url+"_f");
-                if(!frame) {
+            if (asset && cc.isValid(spriteNode)) {
+                let frame: any = cc.assetManager.assets.get(url + "_f");
+                if (!frame) {
                     frame = new cc.SpriteFrame(asset);
-                    frame["_uuid"] = url+"_f";
+                    frame["_uuid"] = url + "_f";
                     frame.addRef();
                 }
                 spriteNode.spriteFrame = frame;
-                cc.assetManager.assets.add(frame["_uuid"],frame);
-                GameLogic.addRemoteDeps(frame["_uuid"],asset["_uuid"]);
+                cc.assetManager.assets.add(frame["_uuid"], frame);
+                GameLogic.addRemoteDeps(frame["_uuid"], asset["_uuid"]);
             }
         });
     }
 
-    public static addRemoteDeps(curUuid,depUuid) {
+    public static addRemoteDeps(curUuid, depUuid) {
         let dependUtil = cc.assetManager.dependUtil;
-        let _depends:any= dependUtil["_depends"];
+        let _depends: any = dependUtil["_depends"];
         let _map = _depends._map;
         var out = _map[curUuid];
-        if(!out){
+        if (!out) {
             _map[curUuid] = {
                 deps: [],
                 parsedFromExistAsset: true,
                 preventPreloadNativeObject: false,
                 preventDeferredLoadDependents: false
             };
-            out =_map[curUuid];
+            out = _map[curUuid];
         }
-        if(out.deps.indexOf(depUuid) < 0){
+        if (out.deps.indexOf(depUuid) < 0) {
             out.deps.push(depUuid)
         }
     }
 
-    closeGame(){
-        this.callBridge("goBack", {}, ()  => {})
+    closeGame() {
+        this.callBridge("goBack", {}, () => { })
     }
 
     private currentStar =null;

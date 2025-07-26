@@ -1,6 +1,6 @@
-import {AudioMgr} from "./common/AudioMgr";
+import { AudioMgr } from "./common/AudioMgr";
 import Game from "./Game";
-import {GameLogic} from "./GameLogic";
+import { GameLogic } from "./GameLogic";
 
 export interface IPicItem{
     node:cc.Node;
@@ -177,15 +177,15 @@ export default class Home extends cc.Component {
 
     onBtnSound(){
         AudioMgr.isPaused = !AudioMgr.isPaused;
-        if(AudioMgr.isPaused){
+        if (AudioMgr.isPaused) {
             AudioMgr.pauseMusic();
-        }else{
+        } else {
             AudioMgr.resumeMusic();
         }
         // 切换图标
     }
 
-    onBtnHome(){
+    onBtnHome() {
         GameLogic.instance.closeGame();
     }
 
