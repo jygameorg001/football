@@ -15,6 +15,9 @@ export default class Shoot extends cc.Component {
     @property(cc.Label) energy: cc.Label = null;
     @property(cc.Label) luckScore: cc.Label = null;
     @property(cc.Node) tuowei: cc.Node = null;
+    @property(cc.Prefab) rewardview: cc.Prefab = null;
+    @property(cc.Node) rewardViewNode: cc.Node = null;//奖励弹窗
+
     @property(cc.SpriteAtlas) ballAltlas: cc.SpriteAtlas = null;
     giftList: cc.Node[] = [];
     canShoot: boolean = false;
@@ -131,7 +134,9 @@ export default class Shoot extends cc.Component {
 
     //奖励
     showReward() {
-        Game.instance.showView("rewardview");
+        let rewardView = cc.instantiate(this.rewardview);
+        rewardView.parent = this.rewardViewNode;
+        //
     }
 
 
