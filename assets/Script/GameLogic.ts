@@ -127,6 +127,7 @@ export class GameLogic {
             anchorId: anchorId,
         }
         HttpHelper.httpPost("football-api/football/shooting", params, (err, data) => {
+             console.log("返回shootings", data);
             if (err) {
                 return;
             }
