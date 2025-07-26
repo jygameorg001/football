@@ -132,7 +132,7 @@ export class GameLogic {
                 return;
             }
             console.log("返回shooting", data);
-            EventMgr.emit("onShootingt", data)
+            EventMgr.emit("onShooting", data)
         })
     }
 
