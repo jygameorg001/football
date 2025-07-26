@@ -17,6 +17,7 @@ export default class RewardItem extends cc.Component {
         console.log("initView----------------", isstar);
         if (isstar) {
             this.nameLabel.string = "幸运分x" + GameLogic.instance.ShootingInfo.reward;
+             this.icon.scale = 1;
             // 设置nameLabel的颜色
             this.nameLabel.node.color = new cc.Color(255, 239, 64);
         } else {
