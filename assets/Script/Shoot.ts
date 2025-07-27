@@ -1,18 +1,19 @@
 import { BallRun } from "./BallRun";
-import {AudioMgr} from "./common/AudioMgr";
+import { AudioMgr } from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
+import RewardItemtips from "./RewardItemtips";
 
 const { ccclass, property } = cc._decorator;
 const isTest = true;
 @ccclass
 export default class Shoot extends cc.Component {
-    @property(cc.Sprite)starName:cc.Sprite =null;
-    @property(cc.Node)listNode:cc.Node = null;
-    @property(cc.Node) soundBtn:cc.Node = null;
-    @property(cc.Node) baiDoor:cc.Node = null;
-    @property(sp.Skeleton) ribbon:sp.Skeleton = null;
+    @property(cc.Sprite) starName: cc.Sprite = null;
+    @property(cc.Node) listNode: cc.Node = null;
+    @property(cc.Node) soundBtn: cc.Node = null;
+    @property(cc.Node) baiDoor: cc.Node = null;
+    @property(sp.Skeleton) ribbon: sp.Skeleton = null;
     @property(cc.Node) football: cc.Node = null;
     @property(cc.Node) giftNode: cc.Node = null;
     @property(cc.Label) currency: cc.Label = null;
@@ -21,6 +22,15 @@ export default class Shoot extends cc.Component {
     @property(cc.Node) tuowei: cc.Node = null;
     @property(cc.Prefab) rewardview: cc.Prefab = null;
     @property(cc.Node) rewardViewNode: cc.Node = null;//奖励弹窗
+    //自动射门按钮
+    @property(cc.Node) autoBtn: cc.Node = null;
+    //自动射门窗口
+    @property(cc.Node) autoWindow: cc.Node = null;
+    //自动射门预制体item
+    @property(cc.Prefab) autorewardItem: cc.Prefab = null;
+    isauto: boolean = false;
+
+
 
     @property(cc.SpriteAtlas) ballAltlas: cc.SpriteAtlas = null;
     giftList: cc.Node[] = [];
@@ -37,7 +47,7 @@ export default class Shoot extends cc.Component {
         let trailGraphics = node.getComponent(cc.Graphics);
         this.ballSprite = this.football.getChildByName("icon").getComponent(cc.Sprite);
         this.ballSprite.node.zIndex = 1;
-        BallRun.getInstance().initFootBall(this.football,this.baiDoor.parent,trailGraphics)
+        BallRun.getInstance().initFootBall(this.football, this.baiDoor.parent, trailGraphics)
         BallRun.getInstance().liziNode = this.tuowei;
         BallRun.getInstance().giftList = this.giftList;
         EventMgr.on("onShooting", this.onShooting, this);
@@ -103,6 +113,21 @@ export default class Shoot extends cc.Component {
         this.initSoundIcon();
     }
 
+    autoBtnClick() {
+        this.isauto = !this.isauto;
+        this.autoBtn.getChildByName("auto_btn_close").active = !this.isauto;
+        this.autoBtn.getChildByName("auto_btn_open").active = this.isauto;
+        this.canShoot = !this.isauto;
+        if(this.isauto) {
+            this.autoShoot();
+        }
+    }
+
+
+    autoShoot() {
+        GameLogic.instance.reqShooting(1000152, 1603148)
+    }
+
     onBtnShoot() {
         console.log("===onBtnShoot====", this.canShoot)
         // 是否可以射击
@@ -111,6 +136,7 @@ export default class Shoot extends cc.Component {
         }
         this.canShoot = false;
         GameLogic.instance.reqShooting(1000152, 1603148)
+        this.clearAutoReward();
     }
 
     getIdByGiftId(giftId) {
@@ -123,7 +149,7 @@ export default class Shoot extends cc.Component {
         return 0;
     }
     onShooting(data) {
-        GameLogic.instance.callBridge("onEnergyChange", {}, (code,message,data)=>{
+        GameLogic.instance.callBridge("onEnergyChange", {}, (code, message, data) => {
 
         })
 
@@ -132,23 +158,61 @@ export default class Shoot extends cc.Component {
         let id = this.getIdByGiftId(giftId);
         // let position = this.giftList[id].position;
         this.beginRunning();
-        BallRun.getInstance().shootGiftId(id,()=>{
+        BallRun.getInstance().shootGiftId(id, () => {
             // show win reward
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
-            this.canShoot = true;
-            this.showReward();
-            this.showDoorBlink();
+            if (this.isauto) {
+                this.noShowReward();
+                this.canShoot = false;
+            } else {
+                this.showReward();
+                this.showDoorBlink();
+                this.canShoot = true;
+            }
+
         })
     }
 
-    //奖励
+    //不弹框显示奖励
+    noShowReward() {
+        // 检查是不是自动模式
+        if (!this.isauto) return;
+        // 检查this.autoWindow子节点是不是超过了3个，是的话就删除第一个
+        if (this.autoWindow.childrenCount >= 3) {
+            this.autoWindow.children[0].destroy();
+        }
+        // 创建一个奖励节点
+        if (GameLogic.instance.ShootingInfo) {
+            let rewarTips = cc.instantiate(this.autorewardItem);
+            rewarTips.parent = this.autoWindow;
+            (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setData(false);
+            if (GameLogic.instance.ShootingInfo.reward > 0) {
+                let rewardView = cc.instantiate(this.autorewardItem);
+                rewardView.parent = this.autoWindow;
+                (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setData(true);
+            }
+        }
+        // this.canShoot = !this.isauto;
+        if (this.isauto) {
+            this.autoShoot();
+        }
+
+    }
+
+    //清空自动模式奖励
+    clearAutoReward() {
+        this.autoWindow.removeAllChildren();
+    }
+
+
+    //弹框显示奖励
     showReward() {
         let rewardView = cc.instantiate(this.rewardview);
         rewardView.parent = this.rewardViewNode;
-        let bg =rewardView.getChildByName("bg");
-        bg.scale =0;
-        cc.tween(bg).to(0.3,{scale:1.1}).to(0.2,{scale:0.9}).to(0.2, {scale:1}).start();
+        let bg = rewardView.getChildByName("bg");
+        bg.scale = 0;
+        cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
     }
 
     private ballIdx: number = 2;
@@ -169,7 +233,7 @@ export default class Shoot extends cc.Component {
         this.ballSprite.spriteFrame = spriteFrame;
     }
     onBtnClickHandle(name, btn) {
-        console.log("==onBtnClickHandle==",name);
+        console.log("==onBtnClickHandle==", name);
         switch (name) {
             case "btnBuy":
                 this.go2Buy();
@@ -182,7 +246,7 @@ export default class Shoot extends cc.Component {
                 break;
             case "btnSound":
                 AudioMgr.isPaused = !AudioMgr.isPaused;
-                cc.sys.localStorage.setItem("isPaused",AudioMgr.isPaused?"1":"0");
+                cc.sys.localStorage.setItem("isPaused", AudioMgr.isPaused ? "1" : "0");
                 this.initSoundIcon();
                 break;
             case "btnName":
@@ -205,27 +269,27 @@ export default class Shoot extends cc.Component {
                 break;
         }
     }
-    initListItems(){
+    initListItems() {
         let id = GameLogic.instance.getCurrentStar().id;
         let content = this.listNode.getChildByName("content");
 
-        let item = content.getChildByName("item"+id);
+        let item = content.getChildByName("item" + id);
         let sprite = item.getChildByName("name_m").getComponent(cc.Sprite);
         this.starName.spriteFrame = sprite.spriteFrame;
-        for(let i=0;i<content.children.length;i++){
+        for (let i = 0; i < content.children.length; i++) {
             let item = content.children[i];
             let check = item.getChildByName("check");
-            check.active = item.name == "item"+id 
+            check.active = item.name == "item" + id
         }
     }
-    onClickItem(id){
+    onClickItem(id) {
         this.listNode.active = false;
         GameLogic.instance.setChooseStar(id);
         this.initListItems();
     }
-    
 
-    showDoorBlink(){
+
+    showDoorBlink() {
         // cc.tween(this.baiDoor)
         // .repeatForever(
         //     cc.tween().blink(2, 10)
@@ -235,11 +299,11 @@ export default class Shoot extends cc.Component {
         this.ribbon.node.active = true;
         this.ribbon.setAnimation(0, "Ribbon", false);
     }
-    stopShowDoor(){
+    stopShowDoor() {
         cc.Tween.stopAllByTarget(this.baiDoor);
     }
 
-    initSoundIcon(){
+    initSoundIcon() {
         if (AudioMgr.isPaused) {
             AudioMgr.pauseMusic();
         } else {
@@ -251,8 +315,8 @@ export default class Shoot extends cc.Component {
         on.active = !AudioMgr.isPaused;
         off.active = AudioMgr.isPaused;
     }
-    go2Buy(){
-        GameLogic.instance.callBridge("navigateNativeRoute", {to:"customerChargeCenter"}, (res)=>{
+    go2Buy() {
+        GameLogic.instance.callBridge("navigateNativeRoute", { to: "customerChargeCenter" }, (res) => {
         })
     }
 

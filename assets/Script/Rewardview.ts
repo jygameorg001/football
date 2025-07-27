@@ -15,7 +15,6 @@ export default class Rewardview extends cc.Component {
 
 
     protected start(): void {
-
         this.setView();
     }
 
