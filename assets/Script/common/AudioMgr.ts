@@ -7,7 +7,7 @@ export class AudioMgr {
 
     static init() {
         let str = cc.sys.localStorage.getItem("isPaused");
-        AudioMgr.isPaused = str=="1"?true:false;
+        AudioMgr.isPaused = str == "1" ? true : false;
     }
     static isPaused = false;
 
@@ -33,12 +33,18 @@ export class AudioMgr {
         this.effectsVolume = volume;
         cc.audioEngine.setEffectsVolume(this.effectsVolume);
     }
+     /**
+     * 停止播放所有声音效果
+     */
+    static stopAllSounds() {
+        cc.audioEngine.stopAllEffects();
+    }
 
     /**
      * @param {*} target 跟随目标节点释放资源
      */
     static playSound(sound: cc.AudioClip | string, isLoop = false, target: any = null, bundleName: string = null) {
-        if(AudioMgr.isPaused){
+        if (AudioMgr.isPaused) {
             return;
         }
         if (typeof sound == "string") {
@@ -49,5 +55,30 @@ export class AudioMgr {
             cc.audioEngine.playEffect(sound, isLoop);
         }
     }
+
+    /**
+     * 播放背景音乐
+     * @param sound 背景音乐的路径或音频剪辑
+     * @param isLoop 是否循环播放
+     */
+    static playMusic(sound: cc.AudioClip | string, isLoop = true) {
+        if (AudioMgr.isPaused) {
+            return;
+        }
+        if (typeof sound == "string") {
+            cc.resources.load(sound, cc.AudioClip, function (err, clip: cc.AudioClip) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                cc.audioEngine.playMusic(clip, isLoop);
+            });
+        } else {
+            cc.audioEngine.playMusic(sound, isLoop);
+        }
+    }
+
+
+
 
 }

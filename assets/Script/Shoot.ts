@@ -57,6 +57,7 @@ export default class Shoot extends cc.Component {
         this.listNode.active = false;
 
         this.initListItems();
+        AudioMgr.playMusic("audio/gameMusic",true);
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);

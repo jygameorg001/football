@@ -50,6 +50,7 @@ export default class Home extends cc.Component {
         this.addBreathingEffect(this.rightBtn);
         this.initSoundIcon();
         this.initroleChange();
+        AudioMgr.playMusic("audio/homeMusic", true);
     }
     addBreathingEffect(btn: cc.Node) {
         cc.tween(btn).repeatForever(
@@ -139,7 +140,7 @@ export default class Home extends cc.Component {
     initroleChange() {
         this.timeChanger = this.scheduleOnce(() => {
             this.showRoleChangeEffect();
-        }, 1);
+        }, .7);
     }
 
 
@@ -150,19 +151,28 @@ export default class Home extends cc.Component {
         // 设置初始透明度和缩放
         this.roleChangeEffect.opacity = 150;
         this.roleChangeEffect.scale = 1;
+        AudioMgr.playSound("audio/roleChange");
         cc.tween(this.roleChangeEffect)
-            .to(0.5, { opacity: 255, scale: 1.05 })
-            .to(0.5, { opacity: 150, scale: 1 })
+            .to(0.2, { opacity: 255, scale: 1.05 })
+            .to(0.2, { opacity: 150, scale: 1 })
             .union()
             .repeatForever()
             .start();
+
+            //停止之前的定时器
+        
     }
 
     // 清除动画
     clearRoleChangeEffect() {
+        AudioMgr.stopAllSounds();
+        this.roleChangeEffect.active = false;
         this.unschedule(this.timeChanger);
         this.roleChangeEffect.stopAllActions();
-        this.roleChangeEffect.active = false;
+        this.roleChangeEffect.opacity = 0;
+        // this.roleChangeEffect停止所有动作与定时器
+
+        
     }
 
 
@@ -177,6 +187,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnLeft() {
+        AudioMgr.playSound("audio/btn_click");
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
@@ -186,10 +197,10 @@ export default class Home extends cc.Component {
         this.clearRoleChangeEffect();
         // 更新当前索引
         // this.currentIndex = (this.currentIndex + 1) % this.totalPics;
-
     }
 
     onBtnRight() {
+        AudioMgr.playSound("audio/btn_click");
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
@@ -197,6 +208,7 @@ export default class Home extends cc.Component {
             this.move2Index(picItem, picItem.index + 1)
         }
         this.clearRoleChangeEffect();
+
     }
 
     onBtnBack() {
