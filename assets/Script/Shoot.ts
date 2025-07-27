@@ -216,15 +216,21 @@ export default class Shoot extends cc.Component {
         cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
     }
 
-    private ballIdx: number = 2;
+    private ballIdx: number = 1;
+    private dxIdx = 10;
     beginRunning() {
+        this.dxIdx = 10;
+        this.ballIdx=Math.floor(Math.random()*60)+1;
+        console.log("===beginRunning===",this.dxIdx,this.ballIdx)
         this.unschedule(this.onBallRunning);
         this.schedule(this.onBallRunning);
     }
     onBallRunning(dt) {
-        this.ballIdx = this.ballIdx + 4;
-        if (this.ballIdx >= 61) {
-            this.ballIdx = 1;
+        this.ballIdx = this.ballIdx + this.dxIdx;
+
+        this.ballIdx = this.ballIdx % 60+1;
+        if (this.ballIdx >60) {
+            this.ballIdx = this.ballIdx%60;
         }
         let idx = this.ballIdx;
         let key = idx < 10 ? "0" + idx : "" + idx;
@@ -232,6 +238,13 @@ export default class Shoot extends cc.Component {
         // console.log("====frameName====",frameName)
         let spriteFrame = this.ballAltlas.getSpriteFrame(frameName);
         this.ballSprite.spriteFrame = spriteFrame;
+        if(this.dxIdx>5 && Math.random()>0.7){
+            this.dxIdx--;
+        }
+        if(this.dxIdx<5){
+            this.dxIdx =5;
+        }
+        console.log("======",this.dxIdx,this.ballIdx)
     }
     onBtnClickHandle(name, btn) {
         console.log("==onBtnClickHandle==", name);
