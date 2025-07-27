@@ -221,7 +221,7 @@ export default class Shoot extends cc.Component {
     beginRunning() {
         this.dxIdx = 10;
         this.ballIdx=Math.floor(Math.random()*60)+1;
-        console.log("===beginRunning===",this.dxIdx,this.ballIdx)
+        // console.log("===beginRunning===",this.dxIdx,this.ballIdx)
         this.unschedule(this.onBallRunning);
         this.schedule(this.onBallRunning);
     }
@@ -244,7 +244,7 @@ export default class Shoot extends cc.Component {
         if(this.dxIdx<5){
             this.dxIdx =5;
         }
-        console.log("======",this.dxIdx,this.ballIdx)
+        // console.log("======",this.dxIdx,this.ballIdx)
     }
     onBtnClickHandle(name, btn) {
         console.log("==onBtnClickHandle==", name);

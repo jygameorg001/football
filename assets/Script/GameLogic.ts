@@ -49,6 +49,7 @@ export interface IBridgeResponse<T> {
 
 export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
+    gameInfo: any;
     public static get instance() {
         return this._instance;
     }
@@ -154,6 +155,17 @@ export class GameLogic {
             GameLogic.instance.ShootingInfo = data;
             console.log("返回shooting", data);
             EventMgr.emit("onShooting", data)
+        })
+    }
+
+    reqGetGameCfg(){
+        HttpHelper.httpPost("/logic-api/logic/getGames", {gameType:114}, (err, data) => {
+            if (err) {
+                return;
+            }
+            GameLogic.instance.gameInfo = data;
+            console.log("onGetGameInfo:", data);
+            EventMgr.emit("onGetGameInfo", data)
         })
     }
 
