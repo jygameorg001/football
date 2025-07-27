@@ -21,12 +21,17 @@ export default class RewardItem extends cc.Component {
             // 设置nameLabel的颜色
             this.nameLabel.node.color = new cc.Color(255, 239, 64);
         } else {
-            this.nameLabel.string = "天鹅相会x1";
+            this.nameLabel.string = this.getGiftNameById(GameLogic.instance.ShootingInfo.id) + "x1";
             GameLogic.instance.loadRemoteSprite(GameLogic.instance.ShootingInfo.giftImage, this.icon.getComponent(cc.Sprite));
             this.icon.scale = 0.4;
             this.nameLabel.node.color = new cc.Color(255, 255, 255);
         }
 
+    }
+
+     getGiftNameById(id) {
+        let gift = GameLogic.instance.giftList.find(gift => gift.id === id);
+        return gift ? gift.giftName : null;
     }
 
     // update (dt) {}
