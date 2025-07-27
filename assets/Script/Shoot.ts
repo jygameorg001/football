@@ -214,6 +214,7 @@ export default class Shoot extends cc.Component {
         let bg = rewardView.getChildByName("bg");
         bg.scale = 0;
         cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
+       AudioMgr.playSound("audio/bigwin");
     }
 
     private ballIdx: number = 1;
