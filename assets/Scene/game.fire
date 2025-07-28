@@ -218,7 +218,7 @@
       "r": 0,
       "g": 0,
       "b": 0,
-      "a": 0
+      "a": 255
     },
     "_depth": -1,
     "_zoomRatio": 1,
@@ -303,7 +303,7 @@
         "__id__": 23
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 59
@@ -1177,7 +1177,7 @@
       "__id__": 24
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 29

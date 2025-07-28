@@ -26,9 +26,7 @@ export default class Game extends cc.Component {
         // node.addComponent(cc.Graphics);
         // node.parent = this.gifts;
         // this.trailGraphics = node.getComponent(cc.Graphics);
-        // BallRun.getInstance().initFootBall(this.football, this.trailGraphics);
-        GameLogic.instance.reqGetGameCfg();
-        GameLogic.instance.reqGetqueryRates();
+        // BallRun.getInstance().initFootBall(this.football, this.trailGraphics)
     }
     checkNotice(){
         this.playNotice.active = true;

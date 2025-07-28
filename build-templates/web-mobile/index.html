@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Cocos Creator | hello_world</title>
+  <title>FootBall</title>
 
   <!--http://www.html5rocks.com/en/mobile/mobifying/-->
   <meta name="viewport"
@@ -38,7 +38,6 @@
   <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
 
   <link rel="stylesheet" type="text/css" href="style-mobile.css"/>
-  <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
@@ -77,7 +76,7 @@
     }
 
     loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js', function () {
-        cc.macro.ENABLE_TRANSPARENT_CANVAS = true;
+        // cc.macro.ENABLE_TRANSPARENT_CANVAS = true;
         if (cc.sys.os === cc.sys.OS_IOS || cc.sys.os === cc.sys.OS_OSX) {
             cc.sys.capabilities.webp = true;
         }

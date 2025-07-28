@@ -1,5 +1,6 @@
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
+import Game from "./Game";
 import { NameConfig } from "./Home";
 
 const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAxODgzLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjE0MDk4ODNhLTY2NTEtNGVlZC1hNTA0LWY1ZjBhZmZkZGRjZiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcwOTgwMiJ9.NK80IJrDndV9ZINXi69Iq2J3YomS3FlbCWWm6jwDFZ5X9Ls3UZkwREUCy3ail5XvgBd-E787cYMkl7tCEIVNXA";
@@ -51,6 +52,7 @@ export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
     gameInfo: any;
     queryRatesInfo: any;
+    token: string;
     public static get instance() {
         return this._instance;
     }
@@ -97,7 +99,7 @@ export class GameLogic {
         if (WebViewJavascriptBridge) {
             console.log("====WebViewJavascriptBridge   callHandler:" + methodName)
             WebViewJavascriptBridge.callHandler(methodName, params, (res) => {
-                console.log("====WebViewJavascriptBridge res:" + methodName + "," + JSON.stringify(res));
+                console.log("====WebViewJavascriptBridge res:"+methodName,res);
                 callback(res);
             });
         }
@@ -106,25 +108,23 @@ export class GameLogic {
     initUserInfo() {
         if (!this.isBridgeReady()) {
             HttpHelper.token = Token;
-            EventMgr.emit("onGetUserInfo")
             this.onGetUserInfo();
             return;
         }
         this.callBridge("getUserInfo", {}, (res: IBridgeResponse<IUserInfo>) => {
-            if (typeof res == "object") {
-                HttpHelper.token = res.data.appToken;
-            }
-            if (typeof res == "string") {
-                let userInfo = JSON.parse(res);
-                HttpHelper.token = userInfo.data.appToken;
-            }
-            EventMgr.emit("onGetUserInfo")
+            HttpHelper.token = res.data.appToken;
+            this.token  = HttpHelper.token;
+            console.log("===== token:",HttpHelper.token);
+            this.onGetUserInfo();
         });
 
     }
     onGetUserInfo() {
+        GameLogic.instance.reqGetGameCfg();
         this.reqPlayerInfo();
         this.reqQueryGiftList();
+        GameLogic.instance.reqGetGameCfg();
+        GameLogic.instance.reqGetqueryRates();
     }
     reqPlayerInfo() {
         HttpHelper.httpPost("logic-api/logic/getPlayerInfoV2", {}, (err, data) => {
@@ -204,13 +204,6 @@ export class GameLogic {
 }
 
 
-
-
-
-
-
-
-
     reqGetqueryRates() {
         HttpHelper.httpGet("/football-api/football/queryRates", (err, data) => {
             if (err != 200) {
@@ -278,3 +271,4 @@ export class GameLogic {
     }
 
 }
+window["GLogic"] =window["GLogic"]||GameLogic.instance;

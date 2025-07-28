@@ -36,6 +36,7 @@ export default class Home extends cc.Component {
     @property([cc.Node]) pics: cc.Node[] = [];
     @property(cc.Node) roleChangeEffect: cc.Node = null;//选中球星特效
 
+    @property(cc.Node) goBtn: cc.Node = null;
 
     // private currentIndex: number = 1; // 当前中间图片索引
     private readonly totalPics: number = 3; // 总共三张图片
@@ -46,16 +47,20 @@ export default class Home extends cc.Component {
     private picItems: IPicItem[] = [];
     start() {
         this.initPicsPosition();
-        this.addBreathingEffect(this.leftBtn);
-        this.addBreathingEffect(this.rightBtn);
+        this.addBreathingEffect(this.leftBtn,-1);
+        this.addBreathingEffect(this.rightBtn,1);
         this.initSoundIcon();
         this.initroleChange();
         AudioMgr.playMusic("audio/homeMusic", true);
+
+        this.schedule(()=>{
+            this.playGoBtn();
+        },1.5);
     }
-    addBreathingEffect(btn: cc.Node) {
+    addBreathingEffect(btn: cc.Node,scaleX) {
         cc.tween(btn).repeatForever(
-            cc.tween().to(0.5, { scale: 1.2, opacity: 180 })
-                .to(0.5, { scale: 1, opacity: 255 }))
+            cc.tween().to(0.5, { scaleX: 1.2*scaleX,scaleY:1.2, opacity: 180 })
+                .to(0.5, { scale: scaleX,scaleY:1, opacity: 255 }))
             .start();
     }
 
@@ -171,8 +176,6 @@ export default class Home extends cc.Component {
         this.roleChangeEffect.stopAllActions();
         this.roleChangeEffect.opacity = 0;
         // this.roleChangeEffect停止所有动作与定时器
-
-        
     }
 
 
@@ -247,6 +250,46 @@ export default class Home extends cc.Component {
 
     onBtnHome() {
         GameLogic.instance.closeGame();
+    }
+
+    playGoBtn(){
+        let kuang = this.goBtn.getChildByName("kuang");
+        let bg = this.goBtn.getChildByName("bg");
+        let text = this.goBtn.getChildByName("text");
+        cc.tween(this.goBtn)
+            .to(0.1, { scale: 0.8 })
+            .to(0.1, { scale: 1 })
+            .call(()=>{
+                this.startKuangEffect();
+            })
+            .start();
+    }
+    startKuangEffect(){
+        let kuang = this.goBtn.getChildByName("kuang");
+        let k1 = cc.instantiate(kuang);
+        k1.parent = kuang;
+        cc.tween(k1).to(0.3, { scale:1.35 ,opacity:10}).call(()=>{
+            k1.destroy();
+        }).start();
+
+        let k2 = cc.instantiate(kuang);
+        k2.parent = kuang;
+
+        cc.tween(k2).delay(0.13).to(0.3, { scale:1.4 ,opacity:20}).call(()=>{
+            k2.destroy();
+        }).start();
+
+        let k3 = cc.instantiate(kuang);
+        k3.parent = kuang;
+        cc.tween(k3).delay(0.25).to(0.3, { scale:1.35 ,opacity:30}).call(()=>{
+            k3.destroy();
+        }).start();
+
+        // let bg = this.goBtn.getChildByName("bg");
+        let text = this.goBtn.getChildByName("text");
+        let text1=cc.instantiate(text);
+        text1.parent = text;
+        cc.tween(text1).to(0.5,{scale:1.5,opacity:0}).removeSelf().start();
     }
 
     // update (dt) {}

@@ -155,8 +155,9 @@ export default class Shoot extends cc.Component {
         return 0;
     }
     onShooting(data) {
-        GameLogic.instance.callBridge("onEnergyChange", {}, (code, message, data) => {
-
+        GameLogic.instance.callBridge("onEnergyChange", {}, (res) => {
+            const  { code, message, data } = res;
+            console.log("==onEnergyChange res",res)
         })
 
         GameLogic.instance.reqPlayerInfo();
@@ -164,10 +165,14 @@ export default class Shoot extends cc.Component {
         let id = this.getIdByGiftId(giftId);
         // let position = this.giftList[id].position;
         this.beginRunning();
+        let shadow = this.football.getChildByName("shadow")
+        shadow.active = false;
         BallRun.getInstance().shootGiftId(id, () => {
             // show win reward
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
+            let shadow = this.football.getChildByName("shadow")
+            shadow.active = true;
             if (this.isauto) {
                 this.noShowReward();
                 this.canShoot = false;
