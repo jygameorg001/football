@@ -162,7 +162,7 @@ export class GameLogic {
         })
     }
 
-   reqGetGameCfg() {
+  reqGetGameCfg() {
     HttpHelper.httpPost("/logic-api/logic/getGames", { gameType: 114 }, (err, data) => {
         if (err) {
             return;
@@ -173,16 +173,27 @@ export class GameLogic {
         // 提取 regulation 属性
         let regulation = data.regulation;
 
-        // 使用正则表达式匹配 <p> 标签及其后的内容，直到下一个 <p> 标签或字符串结束
-        let matches = regulation.match(/<p[^>]*>([\s\S]*?)<\/p>/g);
+        // 使用正则表达式匹配 <span> 标签及其后的内容，直到下一个 <span> 标签或字符串结束
+        let spanMatches = regulation.match(/<span[^>]*>([\s\S]*?)<\/span>/g);
+        // 使用正则表达式匹配 <a> 标签及其后的内容，直到下一个 <a> 标签或字符串结束
+        let aMatches = regulation.match(/<a[^>]*href=\"(.*?)\"[^>]*>([\s\S]*?)<\/a>/g);
         let extractedData = { gameId: data.gameId };
 
-        if (matches) {
-            matches.forEach((match, index) => {
-                // 去除 <p> 和 </p> 标签，得到纯文本
+        if (spanMatches) {
+            spanMatches.forEach((match, index) => {
+                // 去除 <span> 和 </span> 标签，得到纯文本
                 let text = match.replace(/<[^>]*>/g, '');
                 // 将文本作为属性添加到 extractedData 对象中
-                extractedData[`paragraph${index + 1}`] = text;
+                extractedData[`span${index + 1}`] = text;
+            });
+        }
+
+        if (aMatches) {
+            aMatches.forEach((match, index) => {
+                // 去除 <a> 和 </a> 标签，得到纯文本
+                let text = match.replace(/<[^>]*>/g, '');
+                // 将文本作为属性添加到 extractedData 对象中
+                extractedData[`a${index + 1}`] = text;
             });
         }
 
@@ -191,6 +202,8 @@ export class GameLogic {
         EventMgr.emit("onGetGameInfo", extractedData);
     });
 }
+
+
 
 
 
