@@ -92,8 +92,11 @@ export class GameLogic {
     }
     callBridge(methodName, params, callback) {
         let WebViewJavascriptBridge = window["WebViewJavascriptBridge"];
+        console.log("====WebViewJavascriptBridge begin")
         if (WebViewJavascriptBridge) {
+            console.log("====WebViewJavascriptBridge   callHandler:"+methodName)
             WebViewJavascriptBridge.callHandler(methodName, params, (res) => {
+                console.log("====WebViewJavascriptBridge res:"+methodName+","+JSON.stringify(res));
                 callback(res);
             });
         }

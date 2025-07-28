@@ -37,8 +37,8 @@
   <!--<link rel="apple-touch-icon" href=".png" />-->
   <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
 
-  <link rel="stylesheet" type="text/css" href="style-mobile.e9ea2.css"/>
-  <link rel="icon" href="favicon.8de18.ico"/>
+  <link rel="stylesheet" type="text/css" href="style-mobile.css"/>
+  <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
@@ -48,9 +48,9 @@
     </div>
   </div>
 
-<script src="src/settings.243c6.js" charset="utf-8"></script>
+<script src="src/settings.js" charset="utf-8"></script>
 
-<script src="main.9e579.js" charset="utf-8"></script>
+<script src="main.js" charset="utf-8"></script>
 
 <script type="text/javascript">
 (function () {
@@ -76,7 +76,7 @@
       document.body.appendChild(domScript);
     }
 
-    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.2e426.js', function () {
+    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js', function () {
         cc.macro.ENABLE_TRANSPARENT_CANVAS = true;
         if (cc.sys.os === cc.sys.OS_IOS || cc.sys.os === cc.sys.OS_OSX) {
             cc.sys.capabilities.webp = true;
