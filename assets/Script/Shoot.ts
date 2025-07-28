@@ -29,8 +29,7 @@ export default class Shoot extends cc.Component {
     //自动射门预制体item
     @property(cc.Prefab) autorewardItem: cc.Prefab = null;
     isauto: boolean = false;
-
-
+    @property(cc.Node) light: cc.Node = null;
 
     @property(cc.SpriteAtlas) ballAltlas: cc.SpriteAtlas = null;
     giftList: cc.Node[] = [];
@@ -51,6 +50,8 @@ export default class Shoot extends cc.Component {
         BallRun.getInstance().liziNode = this.tuowei;
         BallRun.getInstance().giftList = this.giftList;
         EventMgr.on("onShooting", this.onShooting, this);
+        EventMgr.on("closeRewardview", this.closeRewardview, this);
+        
         this.tuowei.active = false;
         this.canShoot = true;
         this.upinfo();
@@ -169,12 +170,17 @@ export default class Shoot extends cc.Component {
             } else {
                 this.showReward();
                 this.showDoorBlink();
+                this.light.active = true;
                 this.canShoot = true;
             }
-
         })
     }
 
+    closeRewardview() {
+        this.light.active = false;
+    }
+
+    
     //不弹框显示奖励
     noShowReward() {
         // 检查是不是自动模式

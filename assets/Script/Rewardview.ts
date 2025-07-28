@@ -1,3 +1,4 @@
+import { EventMgr } from "./common/EventManager";
 import { GameLogic } from "./GameLogic";
 import RewardItem from "./RewardItem";
 
@@ -36,6 +37,7 @@ export default class Rewardview extends cc.Component {
 
     //关闭窗口
     closeWin() {
+        EventMgr.emit("closeRewardview")
         this.node.destroy();
     }
 }
