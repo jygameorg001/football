@@ -42,14 +42,15 @@ export interface ShootingInfo {
 }
 
 export interface IBridgeResponse<T> {
-  code: number;
-  message: string;
-  data: T;
+    code: number;
+    message: string;
+    data: T;
 }
 
 export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
     gameInfo: any;
+    queryRatesInfo: any;
     public static get instance() {
         return this._instance;
     }
@@ -94,9 +95,9 @@ export class GameLogic {
         let WebViewJavascriptBridge = window["WebViewJavascriptBridge"];
         console.log("====WebViewJavascriptBridge begin")
         if (WebViewJavascriptBridge) {
-            console.log("====WebViewJavascriptBridge   callHandler:"+methodName)
+            console.log("====WebViewJavascriptBridge   callHandler:" + methodName)
             WebViewJavascriptBridge.callHandler(methodName, params, (res) => {
-                console.log("====WebViewJavascriptBridge res:"+methodName+","+JSON.stringify(res));
+                console.log("====WebViewJavascriptBridge res:" + methodName + "," + JSON.stringify(res));
                 callback(res);
             });
         }
@@ -161,14 +162,49 @@ export class GameLogic {
         })
     }
 
-    reqGetGameCfg(){
-        HttpHelper.httpPost("/logic-api/logic/getGames", {gameType:114}, (err, data) => {
-            if (err) {
+   reqGetGameCfg() {
+    HttpHelper.httpPost("/logic-api/logic/getGames", { gameType: 114 }, (err, data) => {
+        if (err) {
+            return;
+        }
+        GameLogic.instance.gameInfo = data;
+        console.log("onGetGameInfo:", data);
+
+        // 提取 regulation 属性
+        let regulation = data.regulation;
+
+        // 使用正则表达式匹配 <p> 标签及其后的内容，直到下一个 <p> 标签或字符串结束
+        let matches = regulation.match(/<p[^>]*>([\s\S]*?)<\/p>/g);
+        let extractedData = { gameId: data.gameId };
+
+        if (matches) {
+            matches.forEach((match, index) => {
+                // 去除 <p> 和 </p> 标签，得到纯文本
+                let text = match.replace(/<[^>]*>/g, '');
+                // 将文本作为属性添加到 extractedData 对象中
+                extractedData[`paragraph${index + 1}`] = text;
+            });
+        }
+
+        console.log("Extracted Data:", extractedData);
+
+        EventMgr.emit("onGetGameInfo", extractedData);
+    });
+}
+
+
+
+
+
+
+    reqGetqueryRates() {
+        HttpHelper.httpGet("/football-api/football/queryRates", (err, data) => {
+            if (err != 200) {
                 return;
             }
-            GameLogic.instance.gameInfo = data;
-            console.log("onGetGameInfo:", data);
-            EventMgr.emit("onGetGameInfo", data)
+            console.log("queryRatesInfo:", data);
+            GameLogic.instance.queryRatesInfo = data;
+            EventMgr.emit("queryRatesInfo", data)
         })
     }
 

@@ -28,6 +28,7 @@ export default class Game extends cc.Component {
         // this.trailGraphics = node.getComponent(cc.Graphics);
         // BallRun.getInstance().initFootBall(this.football, this.trailGraphics);
         GameLogic.instance.reqGetGameCfg();
+        GameLogic.instance.reqGetqueryRates();
     }
     checkNotice(){
         this.playNotice.active = true;
