@@ -55,7 +55,8 @@ export default class Home extends cc.Component {
 
         this.schedule(()=>{
             this.playGoBtn();
-        },1.5);
+        },1.2);
+        this.playGoBtn();
     }
     addBreathingEffect(btn: cc.Node,scaleX) {
         cc.tween(btn).repeatForever(
@@ -218,11 +219,28 @@ export default class Home extends cc.Component {
         GameLogic.instance.closeGame();
     }
 
+    getChooseNode(){
+        for (let i = 0; i < this.picItems.length; i++) {
+            if (this.picItems[i].index == 1) {
+                return this.picItems[i].node;
+            }
+        }
+    }
+
     onBtnGo() {
-        if (GameLogic.instance.playerInfo) {
-            let id = this.getChooseId();
-            GameLogic.instance.setChooseStar(id);
-            Game.instance.showView("Shoot");
+        let node = this.getChooseNode();
+        if(node){
+            cc.tween(node)
+                .to(0.2, { scale: 1.2 })
+                .to(0.2, { scale: 1 })
+                .call(()=>{
+                    if (GameLogic.instance.playerInfo) {
+                        let id = this.getChooseId();
+                        GameLogic.instance.setChooseStar(id);
+                        Game.instance.showView("Shoot");
+                    }
+                })
+                .start();
         }
     }
 

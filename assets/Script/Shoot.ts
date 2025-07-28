@@ -82,6 +82,8 @@ export default class Shoot extends cc.Component {
     initGiftNodes() {
         for (let i = 0; i < 9; i++) {
             this.giftList[i] = this.giftNode.getChildByName("gift" + (i + 1));
+            let kuang = this.giftList[i].getChildByName("kuang");
+            kuang.active = false;
         }
         if (GameLogic.instance.giftList.length > 0) {
             this.updateGifts();
@@ -165,6 +167,10 @@ export default class Shoot extends cc.Component {
         let id = this.getIdByGiftId(giftId);
         // let position = this.giftList[id].position;
         this.beginRunning();
+        for (let i = 0; i < 9; i++) {
+            let kuang = this.giftList[i].getChildByName("kuang");
+            kuang.active = false;
+        }
         let shadow = this.football.getChildByName("shadow")
         shadow.active = false;
         BallRun.getInstance().shootGiftId(id, () => {

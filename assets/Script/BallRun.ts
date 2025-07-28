@@ -1,7 +1,7 @@
 import Game from "./Game";
 import {GameLogic} from "./GameLogic";
 
-const BallMinScale = 0.55;
+const BallMinScale = 0.66;
 export class  BallRun {
     public static instance: BallRun = null;
     trailGraphics: cc.Graphics;
@@ -23,7 +23,7 @@ export class  BallRun {
         this.trailGraphics = trailGraphics;
         this.doorNode =door; 
     }
-     quadraticBezier(p0: cc.Vec2, p1: cc.Vec2, p2: cc.Vec2, t: number): cc.Vec2 {
+    quadraticBezier(p0: cc.Vec2, p1: cc.Vec2, p2: cc.Vec2, t: number): cc.Vec2 {
         const u = 1 - t;
         return cc.v2(
             u * u * p0.x + 2 * u * t * p1.x + t * t * p2.x,
@@ -131,10 +131,10 @@ export class  BallRun {
 
         cc.tween(this.football)
         .parallel(
-            cc.tween().to(0.05, { scale: 1.1 }).to(0.1, { scale: 0.7 }).to(0.2, {scale: BallMinScale}),
+            cc.tween().to(0.05, { scale: 1.1 }).to(0.1, { scale: 0.8 }).to(0.2, {scale: BallMinScale}),
             cc.tween().to(1.5, { angle:360 }, {
             easing:(t)=>{
-                const pos = this.quadraticBezier(startPoint, controlPoint, endPoint, this.easeOutCubic(t));
+                const pos = this.quadraticBezier(startPoint, controlPoint, endPoint, this.easeOutQuad(t));
                 this.football.setPosition(pos);
                 return t;
             }
@@ -196,6 +196,17 @@ export class  BallRun {
         Game.instance.showView("ShootEffect",this.football);
         let node = this.giftList[this.targetIdx];
         if (!node) return;
+        let kuang = node.getChildByName("kuang")
+        kuang.active = true;
+        cc.tween(kuang).to(0.2, {scale:1.1})
+        .to(0.2,{scale:0.9})
+        .to(0.2,{scale:1.05})
+        .to(0.2,{scale:1})
+        .delay(0.5)
+        .call(()=>{
+            kuang.active = false;
+        })
+        .start();
         Game.instance.shakeNode(node);
         Game.instance.shakeNode(this.doorNode);
     }
