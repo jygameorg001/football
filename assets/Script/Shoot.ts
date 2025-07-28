@@ -30,6 +30,9 @@ export default class Shoot extends cc.Component {
     @property(cc.Prefab) autorewardItem: cc.Prefab = null;
     isauto: boolean = false;
     @property(cc.Node) light: cc.Node = null;
+    @property(cc.Node) btnShoot: cc.Node = null;
+
+
 
     @property(cc.SpriteAtlas) ballAltlas: cc.SpriteAtlas = null;
     giftList: cc.Node[] = [];
@@ -119,6 +122,7 @@ export default class Shoot extends cc.Component {
         this.isauto = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_close").active = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_open").active = this.isauto;
+        this.btnShoot.active = this.isauto;
         this.canShoot = !this.isauto;
         if(this.isauto) {
             this.autoShoot();
