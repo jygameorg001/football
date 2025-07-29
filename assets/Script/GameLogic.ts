@@ -99,7 +99,7 @@ export class GameLogic {
         if (WebViewJavascriptBridge) {
             console.log("====WebViewJavascriptBridge   callHandler:" + methodName)
             WebViewJavascriptBridge.callHandler(methodName, params, (res) => {
-                console.log("====WebViewJavascriptBridge res:"+methodName,res);
+                console.log("====WebViewJavascriptBridge res:" + methodName, res);
                 callback(res);
             });
         }
@@ -113,8 +113,8 @@ export class GameLogic {
         }
         this.callBridge("getUserInfo", {}, (res: IBridgeResponse<IUserInfo>) => {
             HttpHelper.token = res.data.appToken;
-            this.token  = HttpHelper.token;
-            console.log("===== token:",HttpHelper.token);
+            this.token = HttpHelper.token;
+            console.log("===== token:", HttpHelper.token);
             this.onGetUserInfo();
         });
 
@@ -162,46 +162,45 @@ export class GameLogic {
         })
     }
 
-  reqGetGameCfg() {
-    HttpHelper.httpPost("/logic-api/logic/getGames", { gameType: 114 }, (err, data) => {
-        if (err) {
-            return;
-        }
-        GameLogic.instance.gameInfo = data;
-        console.log("onGetGameInfo:", data);
+    reqGetGameCfg() {
+        HttpHelper.httpPost("/logic-api/logic/getGames", { gameType: 114 }, (err, data) => {
+            if (err) {
+                return;
+            }
 
-        // 提取 regulation 属性
-        let regulation = data.regulation;
+            console.log("onGetGameInfo:", data);
+            // 提取 regulation 属性
+            let regulation = data.regulation;
 
-        // 使用正则表达式匹配 <span> 标签及其后的内容，直到下一个 <span> 标签或字符串结束
-        let spanMatches = regulation.match(/<span[^>]*>([\s\S]*?)<\/span>/g);
-        // 使用正则表达式匹配 <a> 标签及其后的内容，直到下一个 <a> 标签或字符串结束
-        let aMatches = regulation.match(/<a[^>]*href="(.*?)"[^>]*>([\s\S]*?)<\/a>/g);
-        let extractedData = { gameId: data.gameId };
+            // 使用正则表达式匹配 <span> 标签及其后的内容，直到下一个 <span> 标签或字符串结束
+            let spanMatches = regulation.match(/<span[^>]*>([\s\S]*?)<\/span>/g);
+            // 使用正则表达式匹配 <a> 标签及其后的内容，直到下一个 <a> 标签或字符串结束
+            let aMatches = regulation.match(/<a[^>]*href="(.*?)"[^>]*>([\s\S]*?)<\/a>/g);
+            let extractedData = { gameId: data.gameId };
 
-        if (spanMatches) {
-            spanMatches.forEach((match, index) => {
-                // 去除 <span> 和 </span> 标签，得到纯文本
-                let text = match.replace(/<[^>]*>/g, '');
-                // 将文本作为属性添加到 extractedData 对象中
-                extractedData[`span${index + 1}`] = text;
-            });
-        }
+            if (spanMatches) {
+                spanMatches.forEach((match, index) => {
+                    // 去除 <span> 和 </span> 标签，得到纯文本
+                    let text = match.replace(/<[^>]*>/g, '');
+                    // 将文本作为属性添加到 extractedData 对象中
+                    extractedData[`span${index + 1}`] = text;
+                });
+            }
 
-        if (aMatches) {
-            aMatches.forEach((match, index) => {
-                // 去除 <a> 和 </a> 标签，得到纯文本
-                let text = match.replace(/<[^>]*>/g, '');
-                // 将文本作为属性添加到 extractedData 对象中
-                extractedData[`a${index + 1}`] = text;
-            });
-        }
+            if (aMatches) {
+                aMatches.forEach((match, index) => {
+                    // 去除 <a> 和 </a> 标签，得到纯文本
+                    let text = match.replace(/<[^>]*>/g, '');
+                    // 将文本作为属性添加到 extractedData 对象中
+                    extractedData[`a${index + 1}`] = text;
+                });
+            }
 
-        console.log("Extracted Data:", extractedData);
-
-        EventMgr.emit("onGetGameInfo", extractedData);
-    });
-}
+            console.log("Extracted Data:", extractedData);
+            GameLogic.instance.gameInfo = extractedData;
+            EventMgr.emit("onGetGameInfo", extractedData);
+        });
+    }
 
 
     reqGetqueryRates() {
@@ -210,7 +209,7 @@ export class GameLogic {
                 return;
             }
             console.log("queryRatesInfo:", data);
-            GameLogic.instance.queryRatesInfo = data;
+            GameLogic.instance.queryRatesInfo = data.result;
             EventMgr.emit("queryRatesInfo", data)
         })
     }
@@ -271,4 +270,4 @@ export class GameLogic {
     }
 
 }
-window["GLogic"] =window["GLogic"]||GameLogic.instance;
+window["GLogic"] = window["GLogic"] || GameLogic.instance;

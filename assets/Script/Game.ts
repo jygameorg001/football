@@ -6,12 +6,11 @@ import {GameLogic} from "./GameLogic";
 
 const { ccclass, property } = cc._decorator;
 
-
-
 @ccclass
 export default class Game extends cc.Component {
     @property(cc.Node)playNotice:cc.Node = null;
     public static instance: Game = null;
+
     protected onLoad(): void {
         Game.instance = this;
         AudioMgr.init();
