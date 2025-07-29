@@ -204,7 +204,10 @@ export default class SVGAPlayer extends cc.Component {
 
     clearSvagPlayer() {
         this.clearAudios();
-        this.pool.clearBySvgaMark(this.svgaData.nativeUrl);
+        //判断是否需要清除
+        if (this.svgaData&&this.svgaData.nativeUrl&&this.pool) {
+            this.pool.clearBySvgaMark(this.svgaData.nativeUrl);
+        }
     }
 
     stepToFrame(frame, andPlay) {

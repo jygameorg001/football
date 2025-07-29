@@ -188,8 +188,6 @@ export default class Shoot extends cc.Component {
                 this.noShowReward();
                 this.canShoot = false;
             } else {
-                // this.svga.stopAnimation(false);
-                // this.svga.clearSvagPlayer();
                 this.svga.playSVGA();
                 this.showReward();
                 this.showDoorBlink();
