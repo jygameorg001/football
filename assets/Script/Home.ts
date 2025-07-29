@@ -47,21 +47,21 @@ export default class Home extends cc.Component {
     private picItems: IPicItem[] = [];
     start() {
         this.initPicsPosition();
-        this.addBreathingEffect(this.leftBtn,-1);
-        this.addBreathingEffect(this.rightBtn,1);
+        this.addBreathingEffect(this.leftBtn, -1);
+        this.addBreathingEffect(this.rightBtn, 1);
         this.initSoundIcon();
         this.initroleChange();
         AudioMgr.playMusic("audio/homeMusic", true);
 
-        this.schedule(()=>{
+        this.schedule(() => {
             this.playGoBtn();
-        },1.2);
+        }, 1.2);
         this.playGoBtn();
     }
-    addBreathingEffect(btn: cc.Node,scaleX) {
+    addBreathingEffect(btn: cc.Node, scaleX) {
         cc.tween(btn).repeatForever(
-            cc.tween().to(0.5, { scaleX: 1.2*scaleX,scaleY:1.2, opacity: 180 })
-                .to(0.5, { scale: scaleX,scaleY:1, opacity: 255 }))
+            cc.tween().to(0.5, { scaleX: 1.2 * scaleX, scaleY: 1.2, opacity: 180 })
+                .to(0.5, { scale: scaleX, scaleY: 1, opacity: 255 }))
             .start();
     }
 
@@ -136,7 +136,6 @@ export default class Home extends cc.Component {
                 .call(() => {
                     // this.pics[0].setPosition(cc.v2(this.screenMidX * 2, this.pics[0].y));
                     this.isAnimating = false
-                    this.initroleChange();
                 })
                 .start();
         }
@@ -144,6 +143,8 @@ export default class Home extends cc.Component {
     }
 
     initroleChange() {
+        this.clearRoleChangeEffect();
+        if(this.isAnimating) return;
         this.timeChanger = this.scheduleOnce(() => {
             this.showRoleChangeEffect();
         }, .7);
@@ -152,7 +153,9 @@ export default class Home extends cc.Component {
 
     //选中球星底图要闪动
     showRoleChangeEffect() {
-        this.clearRoleChangeEffect();
+        if(this.isAnimating) {
+             this.clearRoleChangeEffect();
+        }
         this.roleChangeEffect.active = true;
         // 设置初始透明度和缩放
         this.roleChangeEffect.opacity = 150;
@@ -165,8 +168,8 @@ export default class Home extends cc.Component {
             .repeatForever()
             .start();
 
-            //停止之前的定时器
-        
+        //停止之前的定时器
+
     }
 
     // 清除动画
@@ -192,26 +195,38 @@ export default class Home extends cc.Component {
 
     onBtnLeft() {
         AudioMgr.playSound("audio/btn_click");
+        this.clearRoleChangeEffect();
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index - 1)
         }
-        this.clearRoleChangeEffect();
+        
+        this.timeChanger = this.scheduleOnce(() => {
+            this.initroleChange();
+        }, 0.5);
+
+
+
         // 更新当前索引
         // this.currentIndex = (this.currentIndex + 1) % this.totalPics;
     }
 
     onBtnRight() {
         AudioMgr.playSound("audio/btn_click");
+        this.clearRoleChangeEffect();
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index + 1)
         }
-        this.clearRoleChangeEffect();
+        
+        this.timeChanger = this.scheduleOnce(() => {
+            this.initroleChange();
+        }, 0.5);
+
 
     }
 
@@ -219,7 +234,7 @@ export default class Home extends cc.Component {
         GameLogic.instance.closeGame();
     }
 
-    getChooseNode(){
+    getChooseNode() {
         for (let i = 0; i < this.picItems.length; i++) {
             if (this.picItems[i].index == 1) {
                 return this.picItems[i].node;
@@ -229,11 +244,11 @@ export default class Home extends cc.Component {
 
     onBtnGo() {
         let node = this.getChooseNode();
-        if(node){
+        if (node) {
             cc.tween(node)
                 .to(0.2, { scale: 1.2 })
                 .to(0.2, { scale: 1 })
-                .call(()=>{
+                .call(() => {
                     if (GameLogic.instance.playerInfo) {
                         let id = this.getChooseId();
                         GameLogic.instance.setChooseStar(id);
@@ -270,44 +285,44 @@ export default class Home extends cc.Component {
         GameLogic.instance.closeGame();
     }
 
-    playGoBtn(){
+    playGoBtn() {
         let kuang = this.goBtn.getChildByName("kuang");
         let bg = this.goBtn.getChildByName("bg");
         let text = this.goBtn.getChildByName("text");
         cc.tween(this.goBtn)
             .to(0.1, { scale: 0.8 })
             .to(0.1, { scale: 1 })
-            .call(()=>{
+            .call(() => {
                 this.startKuangEffect();
             })
             .start();
     }
-    startKuangEffect(){
+    startKuangEffect() {
         let kuang = this.goBtn.getChildByName("kuang");
         let k1 = cc.instantiate(kuang);
         k1.parent = kuang;
-        cc.tween(k1).to(0.3, { scale:1.35 ,opacity:10}).call(()=>{
+        cc.tween(k1).to(0.3, { scale: 1.35, opacity: 10 }).call(() => {
             k1.destroy();
         }).start();
 
         let k2 = cc.instantiate(kuang);
         k2.parent = kuang;
 
-        cc.tween(k2).delay(0.13).to(0.3, { scale:1.4 ,opacity:20}).call(()=>{
+        cc.tween(k2).delay(0.13).to(0.3, { scale: 1.4, opacity: 20 }).call(() => {
             k2.destroy();
         }).start();
 
         let k3 = cc.instantiate(kuang);
         k3.parent = kuang;
-        cc.tween(k3).delay(0.25).to(0.3, { scale:1.35 ,opacity:30}).call(()=>{
+        cc.tween(k3).delay(0.25).to(0.3, { scale: 1.35, opacity: 30 }).call(() => {
             k3.destroy();
         }).start();
 
         // let bg = this.goBtn.getChildByName("bg");
         let text = this.goBtn.getChildByName("text");
-        let text1=cc.instantiate(text);
+        let text1 = cc.instantiate(text);
         text1.parent = text;
-        cc.tween(text1).to(0.5,{scale:1.5,opacity:0}).removeSelf().start();
+        cc.tween(text1).to(0.5, { scale: 1.5, opacity: 0 }).removeSelf().start();
     }
 
     // update (dt) {}
