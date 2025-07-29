@@ -41,11 +41,11 @@
 </head>
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
-  <div id="splash">
+  <!-- <div id="splash">
     <div class="progress-bar stripes">
       <span style="width: 0%"></span>
     </div>
-  </div>
+  </div> -->
 
 <script src="src/settings.js" charset="utf-8"></script>
 
@@ -59,8 +59,8 @@
     }
 
     var debug = window._CCSettings.debug;
-    var splash = document.getElementById('splash');
-    splash.style.display = 'block';
+    // var splash = document.getElementById('splash');
+    // splash.style.display = 'none';
 
     function loadScript (moduleName, cb) {
       function scriptLoaded () {

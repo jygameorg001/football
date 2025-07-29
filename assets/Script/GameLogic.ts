@@ -48,11 +48,14 @@ export interface IBridgeResponse<T> {
     data: T;
 }
 
+
 export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
     gameInfo: any;
     queryRatesInfo: any;
     token: string;
+    roomId: string;
+    anchorId: string;
     public static get instance() {
         return this._instance;
     }
@@ -147,10 +150,11 @@ export class GameLogic {
         })
     }
 
-    reqShooting(roomId: number, anchorId: number) {
+    reqShooting() {
+        
         let params = {
-            roomId: roomId,
-            anchorId: anchorId,
+            roomId: GameLogic.instance.roomId||1000152,
+            anchorId: GameLogic.instance.anchorId||1603148,
         }
         HttpHelper.httpPost("football-api/football/shooting", params, (err, data) => {
             if (err) {
@@ -254,6 +258,15 @@ export class GameLogic {
 
     closeGame() {
         this.callBridge("goBack", {}, () => { })
+    }
+    getLiveRoomInfo(){
+        this.callBridge("getLiveRoomInfo", {}, (res) => { 
+            if(res.code==0){
+                let data = res.data;
+                GameLogic.instance.roomId = data.roomId;
+                GameLogic.instance.anchorId = data.anchorId;
+            }
+        })
     }
 
     private currentStar = null;

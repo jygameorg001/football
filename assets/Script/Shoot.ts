@@ -138,7 +138,7 @@ export default class Shoot extends cc.Component {
 
 
     autoShoot() {
-        GameLogic.instance.reqShooting(1000152, 1603148)
+        GameLogic.instance.reqShooting()
     }
 
     onBtnShoot() {
@@ -148,7 +148,7 @@ export default class Shoot extends cc.Component {
             return;
         }
         this.canShoot = false;
-        GameLogic.instance.reqShooting(1000152, 1603148)
+        GameLogic.instance.reqShooting()
         this.clearAutoReward();
     }
 

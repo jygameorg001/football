@@ -295,7 +295,7 @@
       "__id__": 8
     },
     "_name": "playNotice",
-    "_active": false,
+    "_active": true,
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",

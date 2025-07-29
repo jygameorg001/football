@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>FootBall</title>
+  <title>点球大战</title>
 
   <!--http://www.html5rocks.com/en/mobile/mobifying/-->
   <meta name="viewport"
@@ -37,19 +37,19 @@
   <!--<link rel="apple-touch-icon" href=".png" />-->
   <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
 
-  <link rel="stylesheet" type="text/css" href="style-mobile.bde08.css"/>
+  <link rel="stylesheet" type="text/css" href="style-mobile.920ea.css"/>
 </head>
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
-  <div id="splash">
+  <!-- <div id="splash">
     <div class="progress-bar stripes">
       <span style="width: 0%"></span>
     </div>
-  </div>
+  </div> -->
 
-<script src="src/settings.1af38.js" charset="utf-8"></script>
+<script src="src/settings.df091.js" charset="utf-8"></script>
 
-<script src="main.ae7be.js" charset="utf-8"></script>
+<script src="main.e5bd2.js" charset="utf-8"></script>
 
 <script type="text/javascript">
 (function () {
@@ -59,8 +59,8 @@
     }
 
     var debug = window._CCSettings.debug;
-    var splash = document.getElementById('splash');
-    splash.style.display = 'block';
+    // var splash = document.getElementById('splash');
+    // splash.style.display = 'none';
 
     function loadScript (moduleName, cb) {
       function scriptLoaded () {
@@ -75,7 +75,7 @@
       document.body.appendChild(domScript);
     }
 
-    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.41b62.js', function () {
+    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.21057.js', function () {
         // cc.macro.ENABLE_TRANSPARENT_CANVAS = true;
         if (cc.sys.os === cc.sys.OS_IOS || cc.sys.os === cc.sys.OS_OSX) {
             cc.sys.capabilities.webp = true;
