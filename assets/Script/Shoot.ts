@@ -4,6 +4,7 @@ import { EventMgr } from "./common/EventManager";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
 import RewardItemtips from "./RewardItemtips";
+import SVGAPlayer from "./svga-cocos/cocos/svga-player";
 
 const { ccclass, property } = cc._decorator;
 const isTest = true;
@@ -32,6 +33,9 @@ export default class Shoot extends cc.Component {
     @property(cc.Node) light: cc.Node = null;
     @property(cc.Node) btnShoot: cc.Node = null;
 
+    @property(SVGAPlayer)
+    svga: SVGAPlayer = null;
+
 
 
     @property(cc.SpriteAtlas) ballAltlas: cc.SpriteAtlas = null;
@@ -54,14 +58,15 @@ export default class Shoot extends cc.Component {
         BallRun.getInstance().giftList = this.giftList;
         EventMgr.on("onShooting", this.onShooting, this);
         EventMgr.on("closeRewardview", this.closeRewardview, this);
-        
+
         this.tuowei.active = false;
         this.canShoot = true;
         this.upinfo();
         this.listNode.active = false;
 
+
         this.initListItems();
-        AudioMgr.playMusic("audio/gameMusic",true);
+        AudioMgr.playMusic("audio/gameMusic", true);
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);
@@ -126,7 +131,7 @@ export default class Shoot extends cc.Component {
         this.autoBtn.getChildByName("auto_btn_open").active = this.isauto;
         this.btnShoot.active = this.isauto;
         this.canShoot = !this.isauto;
-        if(this.isauto) {
+        if (this.isauto) {
             this.autoShoot();
         }
     }
@@ -158,8 +163,8 @@ export default class Shoot extends cc.Component {
     }
     onShooting(data) {
         GameLogic.instance.callBridge("onEnergyChange", {}, (res) => {
-            const  { code, message, data } = res;
-            console.log("==onEnergyChange res",res)
+            const { code, message, data } = res;
+            console.log("==onEnergyChange res", res)
         })
 
         GameLogic.instance.reqPlayerInfo();
@@ -183,6 +188,9 @@ export default class Shoot extends cc.Component {
                 this.noShowReward();
                 this.canShoot = false;
             } else {
+                // this.svga.stopAnimation(false);
+                // this.svga.clearSvagPlayer();
+                this.svga.playSVGA();
                 this.showReward();
                 this.showDoorBlink();
                 this.light.active = true;
@@ -195,13 +203,13 @@ export default class Shoot extends cc.Component {
         this.light.active = false;
     }
 
-    
+
     //不弹框显示奖励
     noShowReward() {
         // 检查是不是自动模式
         if (!this.isauto) return;
         // 检查this.autoWindow子节点是不是超过了3个，是的话就删除第一个
-        if (this.autoWindow.childrenCount >= 3) {
+        if (this.autoWindow.childrenCount >= 4) {
             this.autoWindow.children[0].destroy();
         }
         // 创建一个奖励节点
@@ -209,11 +217,7 @@ export default class Shoot extends cc.Component {
             let rewarTips = cc.instantiate(this.autorewardItem);
             rewarTips.parent = this.autoWindow;
             (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setData(false);
-            if (GameLogic.instance.ShootingInfo.reward > 0) {
-                let rewardView = cc.instantiate(this.autorewardItem);
-                rewardView.parent = this.autoWindow;
-                (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setData(true);
-            }
+            //这里改成动画显示，从this.autoWindow的底部向上移动，移动到this.autoWindow的顶部，然后删除
         }
         // this.canShoot = !this.isauto;
         if (this.isauto) {
@@ -235,14 +239,14 @@ export default class Shoot extends cc.Component {
         let bg = rewardView.getChildByName("bg");
         bg.scale = 0;
         cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
-       AudioMgr.playSound("audio/bigwin");
+        AudioMgr.playSound("audio/bigwin");
     }
 
     private ballIdx: number = 1;
     private dxIdx = 10;
     beginRunning() {
         this.dxIdx = 10;
-        this.ballIdx=Math.floor(Math.random()*60)+1;
+        this.ballIdx = Math.floor(Math.random() * 60) + 1;
         // console.log("===beginRunning===",this.dxIdx,this.ballIdx)
         this.unschedule(this.onBallRunning);
         this.schedule(this.onBallRunning);
@@ -250,9 +254,9 @@ export default class Shoot extends cc.Component {
     onBallRunning(dt) {
         this.ballIdx = this.ballIdx + this.dxIdx;
 
-        this.ballIdx = this.ballIdx % 60+1;
-        if (this.ballIdx >60) {
-            this.ballIdx = this.ballIdx%60;
+        this.ballIdx = this.ballIdx % 60 + 1;
+        if (this.ballIdx > 60) {
+            this.ballIdx = this.ballIdx % 60;
         }
         let idx = this.ballIdx;
         let key = idx < 10 ? "0" + idx : "" + idx;
@@ -260,11 +264,11 @@ export default class Shoot extends cc.Component {
         // console.log("====frameName====",frameName)
         let spriteFrame = this.ballAltlas.getSpriteFrame(frameName);
         this.ballSprite.spriteFrame = spriteFrame;
-        if(this.dxIdx>5 && Math.random()>0.7){
+        if (this.dxIdx > 5 && Math.random() > 0.7) {
             this.dxIdx--;
         }
-        if(this.dxIdx<5){
-            this.dxIdx =5;
+        if (this.dxIdx < 5) {
+            this.dxIdx = 5;
         }
         // console.log("======",this.dxIdx,this.ballIdx)
     }
