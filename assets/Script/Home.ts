@@ -260,7 +260,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnHelp() {
-        Game.instance.showView("help");
+        Game.instance.showView("FootHelp");
     }
 
     onBtnSound() {

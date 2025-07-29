@@ -280,7 +280,7 @@ export default class Shoot extends cc.Component {
                 this.node.destroy();
                 break;
             case "btnHelp":
-                Game.instance.showView("Help");
+                Game.instance.showView("FootHelp");
                 break;
             case "btnSound":
                 AudioMgr.isPaused = !AudioMgr.isPaused;
