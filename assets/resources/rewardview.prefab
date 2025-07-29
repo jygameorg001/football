@@ -1342,7 +1342,7 @@
       "ctor": "Float64Array",
       "array": [
         2.33,
-        162.70499999999998,
+        162.705,
         0,
         0,
         0,
@@ -1406,7 +1406,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "a4QRdB3NRKJIPIUPKxC4VI",
+    "fileId": "5ahn9q8v5GT4bIDkGOv+to",
     "sync": false
   },
   {
@@ -1444,6 +1444,12 @@
     },
     "rewardNode": {
       "__id__": 27
+    },
+    "topnamebg1": {
+      "__id__": 31
+    },
+    "topnamebg2": {
+      "__id__": 34
     },
     "_id": ""
   },

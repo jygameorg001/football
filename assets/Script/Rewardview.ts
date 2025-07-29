@@ -14,6 +14,12 @@ export default class Rewardview extends cc.Component {
     @property(cc.Node)
     rewardNode: cc.Node = null;
 
+    @property(cc.Node)
+    topnamebg1: cc.Node = null;
+
+    @property(cc.Node)
+    topnamebg2: cc.Node = null;
+
 
     protected start(): void {
         this.setView();
@@ -26,10 +32,14 @@ export default class Rewardview extends cc.Component {
             let rewardItem = cc.instantiate(this.rewardItem);
             rewardItem.parent = this.rewardNode;
             (rewardItem.getComponent(RewardItem) as RewardItem).initView(false);
+            this.topnamebg1.active = true;
+            this.topnamebg2.active = false;
             if (GameLogic.instance.ShootingInfo.reward > 0) {
                 let rewardItem = cc.instantiate(this.rewardItem);
                 rewardItem.parent = this.rewardNode;
                 (rewardItem.getComponent(RewardItem) as RewardItem).initView(true);
+                this.topnamebg1.active = false;
+                this.topnamebg2.active = true;
             }
 
         }
