@@ -524,6 +524,18 @@
       "__id__": 1
     },
     "_enabled": true,
+    "giftImage": {
+      "__id__": 3
+    },
+    "giftName": {
+      "__id__": 6
+    },
+    "reward": {
+      "__id__": 12
+    },
+    "sart": {
+      "__id__": 9
+    },
     "_id": ""
   },
   {
