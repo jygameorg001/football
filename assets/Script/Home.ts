@@ -41,7 +41,6 @@ export default class Home extends cc.Component {
     // private currentIndex: number = 1; // 当前中间图片索引
     private readonly totalPics: number = 3; // 总共三张图片
     private isAnimating: boolean = false; // 动画是否在播放
-    private timeChanger = null
 
     private positions: cc.Vec2[] = []; // 存储图片的初始位置
     private picItems: IPicItem[] = [];
@@ -50,13 +49,17 @@ export default class Home extends cc.Component {
         this.addBreathingEffect(this.leftBtn, -1);
         this.addBreathingEffect(this.rightBtn, 1);
         this.initSoundIcon();
-        this.initroleChange();
+        this.showRoleChangeEffect();
         AudioMgr.playMusic("audio/homeMusic", true);
 
         this.schedule(() => {
             this.playGoBtn();
         }, 1.2);
         this.playGoBtn();
+
+        this.schedule(()=>{
+            this.roleChangeEffect.active = !this.isAnimating;
+        },0.5)
     }
     addBreathingEffect(btn: cc.Node, scaleX) {
         cc.tween(btn).repeatForever(
@@ -141,23 +144,8 @@ export default class Home extends cc.Component {
         }
 
     }
-
-    initroleChange() {
-        this.clearRoleChangeEffect();
-        if(this.isAnimating) return;
-        this.timeChanger = this.scheduleOnce(() => {
-            this.showRoleChangeEffect();
-        }, .7);
-    }
-
-
     //选中球星底图要闪动
     showRoleChangeEffect() {
-        if(this.isAnimating) {
-             this.clearRoleChangeEffect();
-        }
-        this.roleChangeEffect.active = true;
-        // 设置初始透明度和缩放
         this.roleChangeEffect.opacity = 150;
         this.roleChangeEffect.scale = 1;
         AudioMgr.playSound("audio/roleChange");
@@ -167,22 +155,7 @@ export default class Home extends cc.Component {
             .union()
             .repeatForever()
             .start();
-
-        //停止之前的定时器
-
     }
-
-    // 清除动画
-    clearRoleChangeEffect() {
-        AudioMgr.stopAllSounds();
-        this.roleChangeEffect.active = false;
-        this.unschedule(this.timeChanger);
-        this.roleChangeEffect.stopAllActions();
-        this.roleChangeEffect.opacity = 0;
-        // this.roleChangeEffect停止所有动作与定时器
-    }
-
-
 
     getChooseId() {
         for (let i = 0; i < this.picItems.length; i++) {
@@ -195,7 +168,6 @@ export default class Home extends cc.Component {
 
     onBtnLeft() {
         AudioMgr.playSound("audio/btn_click");
-        this.clearRoleChangeEffect();
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
@@ -203,31 +175,17 @@ export default class Home extends cc.Component {
             this.move2Index(picItem, picItem.index - 1)
         }
         
-        this.timeChanger = this.scheduleOnce(() => {
-            this.initroleChange();
-        }, 0.5);
-
-
-
-        // 更新当前索引
-        // this.currentIndex = (this.currentIndex + 1) % this.totalPics;
     }
 
     onBtnRight() {
         AudioMgr.playSound("audio/btn_click");
-        this.clearRoleChangeEffect();
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index + 1)
         }
-        
-        this.timeChanger = this.scheduleOnce(() => {
-            this.initroleChange();
-        }, 0.5);
-
-
+    
     }
 
     onBtnBack() {
