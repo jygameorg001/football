@@ -41,8 +41,10 @@ export default class Shoot extends cc.Component {
     btnOne: cc.Node = null;
     @property(cc.Node)
     btnTen: cc.Node = null;
+    //是否为次数射门
+    isTimeshoot: boolean = false;
 
-    timsShoot: number = 1;//射球剩下次数
+    timsShoot: number = 0;//射球剩下次数
     timeshootal: number = 1;//总次数
 
 
@@ -139,8 +141,8 @@ export default class Shoot extends cc.Component {
     }
 
     autoBtnClick() {
-
         // 检查 btn.getComponent(cc.Button).interactable 是否为 false
+        if (this.isTimeshoot) return;
         this.isauto = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_close").active = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_open").active = this.isauto;
@@ -159,6 +161,12 @@ export default class Shoot extends cc.Component {
 
 
     autoShoot() {
+        let total = GameLogic.instance.playerInfo.currency;
+        let cost = 500;
+        if (total < cost) {
+            EventMgr.emit("toastview", "余额不足");
+            return;
+        }
         GameLogic.instance.reqShooting(1)
     }
 
@@ -168,15 +176,15 @@ export default class Shoot extends cc.Component {
         if (!this.canShoot) {
             return;
         }
-        let total= GameLogic.instance.playerInfo.currency;
+        let total = GameLogic.instance.playerInfo.currency;
         //当前要花费的金额
         let cost = 500 * times;
         //判断余额
         if (total < cost) {
-             EventMgr.emit("toastview", "余额不足");
+            EventMgr.emit("toastview", "余额不足");
             return;
         }
-       
+        this.isTimeshoot = true;
         this.setSheBtnState(this.btnOne, false);
         this.setSheBtnState(this.btnTen, false);
         this.canShoot = false;
@@ -227,12 +235,12 @@ export default class Shoot extends cc.Component {
                 this.timsShoot--;
                 if (this.timsShoot <= 0) {
                     this.svga.playSVGA();
-                    if(GameLogic.instance.ShootingInfo.rewardList.length > 1){
+                    if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
                         this.showTenReward();
-                    }else{
+                    } else {
                         this.showReward();
                     }
-                    
+                    this.isTimeshoot = false;
                     this.showDoorBlink();
                     this.light.active = true;
                     this.canShoot = true;
