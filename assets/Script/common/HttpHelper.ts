@@ -7,30 +7,30 @@ export class HttpHelper {
     static initBaseUrl() {
     }
     
-    static get<T>(url: string): Promise<T> {
-        return new Promise((resole, reject) => {
-            let xhr = new XMLHttpRequest();
+    // static get<T>(url: string): Promise<T> {
+    //     return new Promise((resole, reject) => {
+    //         let xhr = new XMLHttpRequest();
 
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        let res = JSON.parse(xhr.responseText);
-                        resole(res);
-                    } else {
-                        reject(`get: ${url} err`);
-                    }
-                }
-            };
-            xhr.onerror = (err) => {
-                reject(err);
-            };
+    //         xhr.onreadystatechange = () => {
+    //             if (xhr.readyState === XMLHttpRequest.DONE) {
+    //                 if (xhr.status === 200) {
+    //                     let res = JSON.parse(xhr.responseText);
+    //                     resole(res);
+    //                 } else {
+    //                     reject(`get: ${url} err`);
+    //                 }
+    //             }
+    //         };
+    //         xhr.onerror = (err) => {
+    //             reject(err);
+    //         };
 
-            xhr.open("GET", url, true);
+    //         xhr.open("GET", url, true);
 
-            xhr.timeout = 8000;
-            xhr.send();
-        });
-    }
+    //         xhr.timeout = 8000;
+    //         xhr.send();
+    //     });
+    // }
 
     static httpGet(url: string, callback: (error: any, res: any) => void) {
         let urls = HttpHelper.BaseURL + url;
