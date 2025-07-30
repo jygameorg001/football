@@ -10,6 +10,7 @@ const { ccclass, property } = cc._decorator;
 export default class Game extends cc.Component {
     @property(cc.Node)playNotice:cc.Node = null;
     public static instance: Game = null;
+    @property(cc.Prefab) toast: cc.Prefab = null;
 
     protected onLoad(): void {
         Game.instance = this;
@@ -19,8 +20,8 @@ export default class Game extends cc.Component {
         GameLogic.instance.initUserInfo();
         cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
         cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
-        
         this.checkNotice();
+        EventMgr.on("toastview", this.showToast, this);
         // const node = new cc.Node();
         // node.addComponent(cc.Graphics);
         // node.parent = this.gifts;
@@ -35,6 +36,13 @@ export default class Game extends cc.Component {
         if(str && Number(dayStr)==day){
             this.playNotice.active = false;
         }
+    }
+
+    //加载全局飘框
+    showToast(msg: string, time: number = 2) {
+        let node = cc.instantiate(this.toast);
+        node.parent = this.node;
+        node.getComponent("ToastView").showToast(msg, time);
     }
     
     onHide(){
@@ -60,6 +68,7 @@ export default class Game extends cc.Component {
     protected onDestroy(): void {
         cc.game.off(cc.game.EVENT_HIDE, this.onHide, this);
         cc.game.off(cc.game.EVENT_SHOW, this.onShow, this);
+        EventMgr.off("toastview", this.showToast, this);
         Game.instance = null;
         EventMgr.clearByTarget(this);
     }
