@@ -141,9 +141,6 @@ export default class Shoot extends cc.Component {
     autoBtnClick() {
 
         // 检查 btn.getComponent(cc.Button).interactable 是否为 false
-        if (!this.btnOne.getComponent(cc.Button).interactable||!this.btnTen.getComponent(cc.Button).interactable) {
-            return;
-        }
         this.isauto = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_close").active = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_open").active = this.isauto;
