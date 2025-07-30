@@ -1,3 +1,4 @@
+import {GameLogic} from "../GameLogic";
 import {EventMgr} from "./EventManager";
 
 export class HttpHelper {
@@ -63,6 +64,15 @@ export class HttpHelper {
         xhr.setRequestHeader("Content-Type", "application/json;charset=Utf-8");
          if(HttpHelper.token){
             xhr.setRequestHeader("Authorization", HttpHelper.token);
+        }
+        if(GameLogic.instance.appInfo){
+            let appInfo = GameLogic.instance.appInfo;
+            xhr.setRequestHeader("appVersion" ,appInfo.appVersion);
+            xhr.setRequestHeader("deviceId" ,appInfo.deviceId);
+            xhr.setRequestHeader("deviceName" ,appInfo.deviceName);
+            xhr.setRequestHeader("deviceType" ,appInfo.deviceType+"");
+            xhr.setRequestHeader("systemVersion" , appInfo.systemVersion);
+        }else{
             xhr.setRequestHeader("appVersion" ,"0.0.0");
             xhr.setRequestHeader("deviceId" ,"test_123456");
             xhr.setRequestHeader("deviceName" ,"test_iPhone");
@@ -106,14 +116,25 @@ export class HttpHelper {
         xhr.open("POST", url, true);
         xhr.timeout = 8000; 
         xhr.setRequestHeader("Content-Type", "application/json;charset=Utf-8");
+
         if(HttpHelper.token){
             xhr.setRequestHeader("Authorization", HttpHelper.token);
+        }
+        if(GameLogic.instance.appInfo){
+            let appInfo = GameLogic.instance.appInfo;
+            xhr.setRequestHeader("appVersion" ,appInfo.appVersion);
+            xhr.setRequestHeader("deviceId" ,appInfo.deviceId);
+            xhr.setRequestHeader("deviceName" ,appInfo.deviceName);
+            xhr.setRequestHeader("deviceType" ,appInfo.deviceType+"");
+            xhr.setRequestHeader("systemVersion" , appInfo.systemVersion);
+        }else{
             xhr.setRequestHeader("appVersion" ,"0.0.0");
             xhr.setRequestHeader("deviceId" ,"test_123456");
             xhr.setRequestHeader("deviceName" ,"test_iPhone");
             xhr.setRequestHeader("deviceType" ,"1");
             xhr.setRequestHeader("systemVersion" , "605.1.15");
         }
+
         let str = JSON.stringify(params);
         if(params){
             xhr.send(str);

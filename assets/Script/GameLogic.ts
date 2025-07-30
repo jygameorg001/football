@@ -48,6 +48,17 @@ export interface IBridgeResponse<T> {
     data: T;
 }
 
+export interface IAPPInfo {
+  appVersion: string;
+  deviceId: string;
+  deviceName: string;
+  deviceType: number;
+  systemVersion: string;
+  statusBarHeight: number; // 34
+  navigationBarHeight: number;
+  safeAreaInsetBottom: number; // 44
+}
+
 
 export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
@@ -56,6 +67,7 @@ export class GameLogic {
     token: string;
     roomId: string;
     anchorId: string;
+    appInfo: IAPPInfo=null;
     public static get instance() {
         return this._instance;
     }
@@ -114,16 +126,23 @@ export class GameLogic {
             this.onGetUserInfo();
             return;
         }
+        this.callBridge("getAppInfo", {}, (res) => {
+            let appInfo:IAPPInfo = res.data;
+            GameLogic.instance.appInfo = appInfo;
+            this.getUserInfo();
+        })
+
+    }
+    getUserInfo() {
         this.callBridge("getUserInfo", {}, (res: IBridgeResponse<IUserInfo>) => {
             HttpHelper.token = res.data.appToken;
             this.token = HttpHelper.token;
             console.log("===== token:", HttpHelper.token);
             this.onGetUserInfo();
         });
-
     }
+
     onGetUserInfo() {
-        GameLogic.instance.reqGetGameCfg();
         this.reqPlayerInfo();
         this.reqQueryGiftList();
         GameLogic.instance.reqGetGameCfg();
