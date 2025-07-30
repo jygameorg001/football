@@ -1,4 +1,5 @@
 import { EventMgr } from "./common/EventManager";
+import Game from "./Game";
 import {GameLogic} from "./GameLogic";
 
 const {ccclass, property} = cc._decorator;
@@ -37,11 +38,20 @@ export default class PlayNotice extends cc.Component {
             cc.sys.localStorage.setItem("agree_notice_today", ""+date.getDate());
         }
         cc.sys.localStorage.setItem("agree_notice", "1");
-        this.node.destroy();
+        
+        cc.tween(this.node).to(0.2, {position:cc.v3(0,-1080,0)}).call(()=>{
+            this.node.destroy();
+        }).start();
     }
     onBtnNotAgree(){
         
         GameLogic.instance.callBridge("goBack", {}, () => { })
+    }
+    onBtnNotice(){ 
+        Game.instance.showView("Agree");
+    }
+    onBtnHelp(){
+        Game.instance.showView("FootHelp");
     }
 
     // update (dt) {}

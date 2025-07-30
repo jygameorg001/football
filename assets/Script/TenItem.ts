@@ -29,10 +29,10 @@ export default class TenItem extends cc.Component {
     init(data) {
         GameLogic.instance.loadRemoteSprite(data.giftImage, this.giftImage.getComponent(cc.Sprite));
         this.giftImage.node.scale = 0.3;
-        this.giftName.string = this.getGiftNameById(data.giftId) + "X" + data.count;
+        this.giftName.string = this.getGiftNameById(data.giftId) + "x" + data.count;
         if (data.reward > 0) {
             this.sart.node.active = true;
-            this.reward.string = "幸运分x" + data.reward;
+            this.reward.string = "幸运分X" + data.reward;
         } else {
             this.sart.node.active = false;
             this.reward.string = "";

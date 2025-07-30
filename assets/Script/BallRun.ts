@@ -75,7 +75,22 @@ export class  BallRun {
     getControlPoint(startPoint, endPoint){
         let idx =this.targetIdx%3;
         const pts =[cc.v2(-450,120),cc.v2(-100,700),cc.v2(450,150)];
-        return pts[idx];
+        let pt  = pts[idx];
+        let x = 0;
+        let y =0;
+        if(idx==0){
+            x = -Math.random()*200+100;
+            y = Math.random()*100-50;
+        }
+        if(idx==1){
+            x = Math.random()*150-100;
+            y = Math.random()*200-100;
+        }
+        if(idx==2){
+            x = Math.random()*200-100;
+            y = Math.random()*100-50;
+        }
+        return cc.v2(pt.x+x,pt.y);
     }
     
 
@@ -156,7 +171,7 @@ export class  BallRun {
     }
 
     runLineNoraml(startPoint, endPoint,callback){
-        console.log("runLineNoraml:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+        // console.log("runLineNoraml:", startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         let dt = Math.random()*0.5+0.6;
         cc.tween(this.football)
         .to(dt, {position:cc.v3(endPoint.x,endPoint.y) ,scale: BallMinScale},{easing:"smooth"})

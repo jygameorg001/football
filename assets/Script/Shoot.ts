@@ -141,8 +141,11 @@ export default class Shoot extends cc.Component {
     }
 
     autoBtnClick() {
+        if(this.isTimeshoot){
+            EventMgr.emit("toastview", "正在射门中,请稍后...");
+            return;
+        }
         // 检查 btn.getComponent(cc.Button).interactable 是否为 false
-        if (this.isTimeshoot) return;
         this.isauto = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_close").active = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_open").active = this.isauto;
@@ -350,6 +353,10 @@ export default class Shoot extends cc.Component {
         console.log("==onBtnClickHandle==", name);
         switch (name) {
             case "btnBuy":
+                if(this.isTimeshoot){
+                    EventMgr.emit("toastview", "正在射门中,请稍后...");
+                    return;
+                }
                 this.go2Buy();
                 break;
             case "btnBack":
@@ -359,11 +366,19 @@ export default class Shoot extends cc.Component {
                 Game.instance.showView("FootHelp");
                 break;
             case "btnSound":
+                if(this.isTimeshoot){
+                    EventMgr.emit("toastview", "正在射门中,请稍后...");
+                    return;
+                }
                 AudioMgr.isPaused = !AudioMgr.isPaused;
                 cc.sys.localStorage.setItem("isPaused", AudioMgr.isPaused ? "1" : "0");
                 this.initSoundIcon();
                 break;
             case "btnName":
+                if(this.isTimeshoot){
+                    EventMgr.emit("toastview", "正在射门中,请稍后...");
+                    return;
+                }
                 this.listNode.active = true;
                 break;
             case "listNode":

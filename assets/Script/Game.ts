@@ -41,7 +41,7 @@ export default class Game extends cc.Component {
     //加载全局飘框
     showToast(msg: string, time: number = 2) {
         let node = cc.instantiate(this.toast);
-        node.parent = this.node;
+        node.parent = Game.instance.node;
         node.getComponent("ToastView").showToast(msg, time);
     }
     
