@@ -28,20 +28,22 @@ export default class Rewardview extends cc.Component {
 
     setView() {
         console.log("奖励界面加载", GameLogic.instance.ShootingInfo);
-        if (GameLogic.instance.ShootingInfo) {
+        if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
+
+
+        } else {
             let rewardItem = cc.instantiate(this.rewardItem);
             rewardItem.parent = this.rewardNode;
             (rewardItem.getComponent(RewardItem) as RewardItem).initView(false);
             this.topnamebg1.active = true;
             this.topnamebg2.active = false;
-            if (GameLogic.instance.ShootingInfo.reward > 0) {
+            if (GameLogic.instance.ShootingInfo.rewardList[0].reward > 0) {
                 let rewardItem = cc.instantiate(this.rewardItem);
                 rewardItem.parent = this.rewardNode;
                 (rewardItem.getComponent(RewardItem) as RewardItem).initView(true);
                 this.topnamebg1.active = false;
                 this.topnamebg2.active = true;
             }
-
         }
     }
 

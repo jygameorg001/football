@@ -16,13 +16,13 @@ export default class RewardItem extends cc.Component {
     initView(isstar: boolean = false) {
         console.log("initView----------------", isstar);
         if (isstar) {
-            this.nameLabel.string = "幸运分x" + GameLogic.instance.ShootingInfo.reward;
+            this.nameLabel.string = "幸运分x" + GameLogic.instance.ShootingInfo.rewardList[0].reward;
              this.icon.scale = 1;
             // 设置nameLabel的颜色
             this.nameLabel.node.color = new cc.Color(255, 239, 64);
         } else {
-            this.nameLabel.string = this.getGiftNameById(GameLogic.instance.ShootingInfo.id) + "x1";
-            GameLogic.instance.loadRemoteSprite(GameLogic.instance.ShootingInfo.giftImage, this.icon.getComponent(cc.Sprite));
+            this.nameLabel.string = this.getGiftNameById(GameLogic.instance.ShootingInfo.rewardList[0].id) + "x1";
+            GameLogic.instance.loadRemoteSprite(GameLogic.instance.ShootingInfo.rewardList[0].giftImage, this.icon.getComponent(cc.Sprite));
             this.icon.scale = 0.4;
             this.nameLabel.node.color = new cc.Color(255, 255, 255);
         }

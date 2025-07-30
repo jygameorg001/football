@@ -22,6 +22,7 @@ export default class Shoot extends cc.Component {
     @property(cc.Label) luckScore: cc.Label = null;
     @property(cc.Node) tuowei: cc.Node = null;
     @property(cc.Prefab) rewardview: cc.Prefab = null;
+    @property(cc.Prefab) rewardTenview: cc.Prefab = null;
     @property(cc.Node) rewardViewNode: cc.Node = null;//奖励弹窗
     //自动射门按钮
     @property(cc.Node) autoBtn: cc.Node = null;
@@ -35,6 +36,14 @@ export default class Shoot extends cc.Component {
 
     @property(SVGAPlayer)
     svga: SVGAPlayer = null;
+
+    @property(cc.Node)
+    btnOne: cc.Node = null;
+    @property(cc.Node)
+    btnTen: cc.Node = null;
+
+    timsShoot: number = 1;//射球剩下次数
+    timeshootal: number = 1;//总次数
 
 
 
@@ -64,6 +73,10 @@ export default class Shoot extends cc.Component {
         this.upinfo();
         this.listNode.active = false;
 
+        //初始化按钮
+        this.setSheBtnState(this.btnOne, true);
+        this.setSheBtnState(this.btnTen, true);
+
 
         this.initListItems();
         AudioMgr.playMusic("audio/gameMusic", true);
@@ -78,9 +91,9 @@ export default class Shoot extends cc.Component {
     }
 
     upinfo() {
-        this.energy.string = GameLogic.instance.playerInfo.energy + "";
+        this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
         this.currency.string = GameLogic.instance.playerInfo.currency + "";
-        this.luckScore.string = "消耗: " + GameLogic.instance.playerInfo.luckScore + "U币";
+        // this.luckScore.string = "消耗: " + GameLogic.instance.playerInfo.luckScore + "U币";
     }
 
 
@@ -132,23 +145,41 @@ export default class Shoot extends cc.Component {
         this.btnShoot.active = this.isauto;
         this.canShoot = !this.isauto;
         if (this.isauto) {
+            this.timsShoot = this.timeshootal = 1;
+            this.setSheBtnState(this.btnOne, false);
+            this.setSheBtnState(this.btnTen, false);
             this.autoShoot();
+        } else {
+            this.setSheBtnState(this.btnOne, true);
+            this.setSheBtnState(this.btnTen, true);
         }
     }
 
 
     autoShoot() {
-        GameLogic.instance.reqShooting()
+        GameLogic.instance.reqShooting(1)
     }
 
-    onBtnShoot() {
+    onBtnShoot(times: number = 1) {
         console.log("===onBtnShoot====", this.canShoot)
         // 是否可以射击
         if (!this.canShoot) {
             return;
         }
+        let total= GameLogic.instance.playerInfo.currency;
+        //当前要花费的金额
+        let cost = 500 * times;
+        //判断余额
+        if (total < cost) {
+             EventMgr.emit("toastview", "余额不足");
+            return;
+        }
+       
+
+        this.setSheBtnState(this.btnOne, false);
+        this.setSheBtnState(this.btnTen, false);
         this.canShoot = false;
-        GameLogic.instance.reqShooting()
+        GameLogic.instance.reqShooting(times);
         this.clearAutoReward();
     }
 
@@ -166,11 +197,15 @@ export default class Shoot extends cc.Component {
             const { code, message, data } = res;
             console.log("==onEnergyChange res", res)
         })
-
         GameLogic.instance.reqPlayerInfo();
-        let giftId = data.giftId;
+        this.shootPlay();
+    }
+
+    shootPlay() {
+        let data = GameLogic.instance.ShootingInfo;
+        let num = Math.abs(this.timsShoot - this.timeshootal);
+        let giftId = data.rewardList[num].giftId;
         let id = this.getIdByGiftId(giftId);
-        // let position = this.giftList[id].position;
         this.beginRunning();
         for (let i = 0; i < 9; i++) {
             let kuang = this.giftList[i].getChildByName("kuang");
@@ -188,14 +223,36 @@ export default class Shoot extends cc.Component {
                 this.noShowReward();
                 this.canShoot = false;
             } else {
-                this.svga.playSVGA();
-                this.showReward();
-                this.showDoorBlink();
-                this.light.active = true;
-                this.canShoot = true;
+                this.timsShoot--;
+                if (this.timsShoot <= 0) {
+                    this.svga.playSVGA();
+                    if(GameLogic.instance.ShootingInfo.rewardList.length > 1){
+                        this.showTenReward();
+                    }else{
+                        this.showReward();
+                    }
+                    
+                    this.showDoorBlink();
+                    this.light.active = true;
+                    this.canShoot = true;
+                    this.setSheBtnState(this.btnOne, true);
+                    this.setSheBtnState(this.btnTen, true);
+                } else {
+                    this.shootPlay();
+                    this.canShoot = false;
+                }
+
             }
         })
     }
+
+    // 按钮射门按钮状态设置
+    setSheBtnState(btn: cc.Node, state: boolean) {
+        btn.getComponent(cc.Button).interactable = state;
+        btn.children[0].active = state;
+        btn.children[1].active = !state;
+    }
+
 
     closeRewardview() {
         this.light.active = false;
@@ -235,6 +292,16 @@ export default class Shoot extends cc.Component {
         let rewardView = cc.instantiate(this.rewardview);
         rewardView.parent = this.rewardViewNode;
         let bg = rewardView.getChildByName("bg");
+        bg.scale = 0;
+        cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
+        AudioMgr.playSound("audio/bigwin");
+    }
+
+    //显示10局奖励
+    showTenReward() {
+        let rewardtenView = cc.instantiate(this.rewardTenview);
+        rewardtenView.parent = this.rewardViewNode;
+        let bg = rewardtenView.getChildByName("bg");
         bg.scale = 0;
         cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
         AudioMgr.playSound("audio/bigwin");
@@ -295,6 +362,14 @@ export default class Shoot extends cc.Component {
                 break;
             case "btnShoot":
                 this.onBtnShoot();
+                break;
+            case "btnShootOne":
+                this.timsShoot = this.timeshootal = 1;
+                this.onBtnShoot(1);
+                break;
+            case "btnShootTen":
+                this.timsShoot = this.timeshootal = 10;
+                this.onBtnShoot(10);
                 break;
             case "item0":
                 this.onClickItem(0)

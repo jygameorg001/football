@@ -35,11 +35,17 @@ export interface IGiftInfo {
     giftImage: string;
 }
 
-export interface ShootingInfo {
+export interface ShootingItemInfo {
     giftId: number;
     giftImage: string;
     id: number;
     reward: number;
+}
+
+export interface ShootingInfo {
+    rewardList: Array<ShootingItemInfo>;
+    sendMoney: number;
+    totalMoney: number;
 }
 
 export interface IBridgeResponse<T> {
@@ -169,11 +175,12 @@ export class GameLogic {
         })
     }
 
-    reqShooting() {
+    reqShooting(times: number) {
         
         let params = {
             roomId: GameLogic.instance.roomId||1000152,
             anchorId: GameLogic.instance.anchorId||1603148,
+            num: times
         }
         HttpHelper.httpPost("football-api/football/shooting", params, (err, data) => {
             if (err) {
