@@ -19,6 +19,7 @@ export interface IUserInfo {
     userType: 1 | 2; // 用户类型：1-用户，2-主播
 }
 
+
 export interface IPlayerInfo {
     energy: number,
     currency: number,
@@ -74,6 +75,7 @@ export class GameLogic {
     roomId: string;
     anchorId: string;
     appInfo: IAPPInfo=null;
+    gameShootTime: number = 1;
     public static get instance() {
         return this._instance;
     }

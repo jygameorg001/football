@@ -67,8 +67,7 @@ export default class Shoot extends cc.Component {
         BallRun.getInstance().initFootBall(this.football, this.baiDoor.parent, trailGraphics)
         BallRun.getInstance().liziNode = this.tuowei;
         BallRun.getInstance().giftList = this.giftList;
-        EventMgr.on("onShooting", this.onShooting, this);
-        EventMgr.on("closeRewardview", this.closeRewardview, this);
+
 
         this.tuowei.active = false;
         this.canShoot = true;
@@ -85,10 +84,16 @@ export default class Shoot extends cc.Component {
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);
+        EventMgr.on("onShooting", this.onShooting, this);
+        EventMgr.on("closeRewardview", this.closeRewardview, this);
+        EventMgr.on("closeRewardviewShoot", this.closeRewardviewShoot, this);
     }
 
     protected onDestroy(): void {
         EventMgr.off("onGetPlayerInfo", this.upinfo, this);
+        EventMgr.off("onShooting", this.onShooting, this);
+        EventMgr.off("closeRewardview", this.closeRewardview, this);
+        EventMgr.off("closeRewardviewShoot", this.closeRewardviewShoot, this);
         EventMgr.clearByTarget(this);
     }
 
@@ -141,7 +146,7 @@ export default class Shoot extends cc.Component {
     }
 
     autoBtnClick() {
-        if(this.isTimeshoot){
+        if (this.isTimeshoot) {
             EventMgr.emit("toastview", "正在射门中,请稍后...");
             return;
         }
@@ -270,6 +275,18 @@ export default class Shoot extends cc.Component {
         this.light.active = false;
     }
 
+    closeRewardviewShoot() {
+        this.light.active = false;
+        if (this.timeshootal == 1) {
+            this.timsShoot = this.timeshootal = 1;
+            this.onBtnShoot(1);
+        } else if (this.timeshootal == 10) {
+            this.timsShoot = this.timeshootal = 10;
+            this.onBtnShoot(10);
+        }
+
+    }
+
 
     //不弹框显示奖励
     noShowReward() {
@@ -353,7 +370,7 @@ export default class Shoot extends cc.Component {
         console.log("==onBtnClickHandle==", name);
         switch (name) {
             case "btnBuy":
-                if(this.isTimeshoot){
+                if (this.isTimeshoot) {
                     EventMgr.emit("toastview", "正在射门中,请稍后...");
                     return;
                 }
@@ -366,7 +383,7 @@ export default class Shoot extends cc.Component {
                 Game.instance.showView("FootHelp");
                 break;
             case "btnSound":
-                if(this.isTimeshoot){
+                if (this.isTimeshoot) {
                     EventMgr.emit("toastview", "正在射门中,请稍后...");
                     return;
                 }
@@ -375,7 +392,7 @@ export default class Shoot extends cc.Component {
                 this.initSoundIcon();
                 break;
             case "btnName":
-                if(this.isTimeshoot){
+                if (this.isTimeshoot) {
                     EventMgr.emit("toastview", "正在射门中,请稍后...");
                     return;
                 }

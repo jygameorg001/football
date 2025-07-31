@@ -47,6 +47,11 @@ export default class rewardListview extends cc.Component {
         this.node.destroy();
     }
 
+    closeWin2() {
+        EventMgr.emit("closeRewardviewShoot")
+        this.node.destroy();
+    }
+
 
     mergeRewardList(rewardList: any[]): any[] {
         // 创建一个临时对象来存储合并结果

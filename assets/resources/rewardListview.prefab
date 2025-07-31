@@ -1376,8 +1376,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "连续射门",
-    "_N$string": "连续射门",
+    "_string": "断续射门",
+    "_N$string": "断续射门",
     "_fontSize": 24,
     "_lineHeight": 26,
     "_enableWrapText": true,
@@ -1516,7 +1516,7 @@
     },
     "component": "",
     "_componentId": "689775InypEf6fX2lnmdLvN",
-    "handler": "closeWin",
+    "handler": "closeWin2",
     "customEventData": ""
   },
   {
