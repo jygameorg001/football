@@ -43,8 +43,7 @@ export default class PlayNotice extends cc.Component {
             this.node.destroy();
         }).start();
     }
-    onBtnNotAgree(){
-        
+    onBtnNotAgree(){   
         GameLogic.instance.callBridge("goBack", {}, () => { })
     }
     onBtnNotice(){ 

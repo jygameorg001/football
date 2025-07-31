@@ -53,6 +53,7 @@ export default class Shoot extends cc.Component {
     giftList: cc.Node[] = [];
     canShoot: boolean = false;
     ballSprite: cc.Sprite = null;
+    isSuperShoot: boolean = false;//十次模式
     protected onLoad(): void {
         EventMgr.on("onGetGiftList", this.updateGifts, this);
         this.initBtnClickHandle();
@@ -87,6 +88,7 @@ export default class Shoot extends cc.Component {
         EventMgr.on("onShooting", this.onShooting, this);
         EventMgr.on("closeRewardview", this.closeRewardview, this);
         EventMgr.on("closeRewardviewShoot", this.closeRewardviewShoot, this);
+        EventMgr.on("shootOverTimes", this.shootOverTimes, this);
     }
 
     protected onDestroy(): void {
@@ -94,6 +96,7 @@ export default class Shoot extends cc.Component {
         EventMgr.off("onShooting", this.onShooting, this);
         EventMgr.off("closeRewardview", this.closeRewardview, this);
         EventMgr.off("closeRewardviewShoot", this.closeRewardviewShoot, this);
+        EventMgr.off("shootOverTimes", this.shootOverTimes, this);
         EventMgr.clearByTarget(this);
     }
 
@@ -192,6 +195,7 @@ export default class Shoot extends cc.Component {
             EventMgr.emit("toastview", "余额不足");
             return;
         }
+        this.isSuperShoot = times==10;
         this.isTimeshoot = true;
         this.setSheBtnState(this.btnOne, false);
         this.setSheBtnState(this.btnTen, false);
@@ -210,10 +214,10 @@ export default class Shoot extends cc.Component {
         return 0;
     }
     onShooting(data) {
-        GameLogic.instance.callBridge("onEnergyChange", {}, (res) => {
-            const { code, message, data } = res;
-            console.log("==onEnergyChange res", res)
-        })
+        // GameLogic.instance.callBridge("onEnergyChange", {}, (res) => {
+        //     const { code, message, data } = res;
+        //     console.log("==onEnergyChange res", res)
+        // })
         GameLogic.instance.reqPlayerInfo();
         this.shootPlay();
     }
@@ -230,38 +234,36 @@ export default class Shoot extends cc.Component {
         }
         let shadow = this.football.getChildByName("shadow")
         shadow.active = false;
-        BallRun.getInstance().shootGiftId(id, () => {
+        BallRun.getInstance().shootGiftId(id,this.isSuperShoot,() => {
             // show win reward
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
             let shadow = this.football.getChildByName("shadow")
             shadow.active = true;
-            if (this.isauto) {
+            if (this.isauto) {//自动模式
                 this.noShowReward();
                 this.canShoot = false;
             } else {
-                this.timsShoot--;
-                if (this.timsShoot <= 0) {
-                    this.svga.playSVGA();
-                    if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
-                        this.showTenReward();
-                    } else {
-                        this.showReward();
-                    }
-                    this.isTimeshoot = false;
-                    this.showDoorBlink();
-                    this.light.active = true;
-                    this.canShoot = true;
-                    this.setSheBtnState(this.btnOne, true);
-                    this.setSheBtnState(this.btnTen, true);
-                } else {
-                    this.shootPlay();
-                    this.canShoot = false;
-                }
-
+                this.shootOver();
             }
         })
     }
+
+    shootOver(){
+        this.timsShoot =0;
+        this.svga.playSVGA();
+        if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
+            this.showTenReward();
+        } else {
+            this.showReward();
+        }
+        this.isTimeshoot = false;
+        this.showDoorBlink();
+        this.light.active = true;
+        this.canShoot = true;
+        this.setSheBtnState(this.btnOne, true);
+        this.setSheBtnState(this.btnTen, true);
+    }   
 
     // 按钮射门按钮状态设置
     setSheBtnState(btn: cc.Node, state: boolean) {
@@ -472,6 +474,10 @@ export default class Shoot extends cc.Component {
     go2Buy() {
         GameLogic.instance.callBridge("navigateNativeRoute", { to: "customerChargeCenter" }, (res) => {
         })
+    }
+    //弹球次数 从1到10
+    shootOverTimes(times: number){
+
     }
 
     // update (dt) {}

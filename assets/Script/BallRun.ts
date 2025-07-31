@@ -1,3 +1,4 @@
+import {EventMgr} from "./common/EventManager";
 import Game from "./Game";
 import {GameLogic} from "./GameLogic";
 
@@ -11,6 +12,8 @@ export class  BallRun {
     giftList:cc.Node[];
     targetIdx: number;
     doorNode: any;
+    isSuperShoot: boolean;
+    nShootTimes: number = 0;;
     public static getInstance(): BallRun {
         if (!BallRun.instance) {
             BallRun.instance = new BallRun();
@@ -127,6 +130,10 @@ export class  BallRun {
         })
         .delay(1)
         .call(()=>{
+            if(this.isSuperShoot){
+                callback?.();
+                return;
+            }
             this.football.setPosition(startPoint);
             this.football.scale = 1;
             callback?.();
@@ -160,11 +167,15 @@ export class  BallRun {
         })
         .delay(1)
         .call(()=>{
+            if(this.isSuperShoot){
+                this.shootOver(callback);
+                return;
+            }
             this.football.setPosition(startPoint);
             this.football.scale = 1;
             this.football.angle = 0;
             callback?.();
-            this.trailGraphics.clear();
+            // this.trailGraphics.clear();
         })
         .start();
         this.addLiziNode();
@@ -181,6 +192,11 @@ export class  BallRun {
         })
         .delay(1)
         .call(()=>{
+            if(this.isSuperShoot){
+                
+                callback?.();
+                return;
+            }
             this.football.setPosition(startPoint);
             this.football.scale = 1;
             callback?.();
@@ -201,8 +217,10 @@ export class  BallRun {
             this.runCircleNoraml(this.startPos, endPoint,callback);
         }
     }
-    shootGiftId(id,callback?){
+    shootGiftId(id,isSuper=false,callback?){
         this.targetIdx =id;
+        this.isSuperShoot = isSuper;
+        this.nShootTimes = 0;
         this.runFootBall(this.giftList[id].position,callback);
     }
 
@@ -224,6 +242,11 @@ export class  BallRun {
         .start();
         Game.instance.shakeNode(node);
         Game.instance.shakeNode(this.doorNode);
+    }
+    // 飞行结束
+    shootOver(callback){ 
+        this.nShootTimes++;
+        EventMgr.emit("shootOverTimes",this.nShootTimes);
     }
 
 }
