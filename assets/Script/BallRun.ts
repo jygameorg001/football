@@ -131,7 +131,7 @@ export class  BallRun {
         .delay(1)
         .call(()=>{
             if(this.isSuperShoot){
-                callback?.();
+                this.shootOver(callback);
                 return;
             }
             this.football.setPosition(startPoint);
@@ -252,14 +252,17 @@ export class  BallRun {
                 return i;
             }
         }
-        return 0;
+        return Math.floor(Math.random()*5);
     }
     // 飞行结束
     shootOver(callback){ 
+        
         this.nShootTimes++;
         EventMgr.emit("shootOverTimes",this.nShootTimes);
         if(this.nShootTimes==10){
-            callback();
+            this.football.setPosition(this.startPos);
+            this.football.scale = 1;
+            callback?.();
             return;
         }
         // 弹球
@@ -276,24 +279,26 @@ export class  BallRun {
         kuang.active = true;
         cc.tween(kuang).to(0.1, {scale:1.1})
         .to(0.1,{scale:0.9})
-        .to(0.1,{scale:1.05})
         .to(0.1,{scale:1})
         .call(()=>{
             kuang.active = false;
         })
         .start();
-        // Game.instance.shakeNode(node);
-        // Game.instance.shakeNode(this.doorNode);
+        Game.instance.shakeNode2(this.doorNode,10);
     }
     ballShoot2Idx(idx:number,callback){
-        let endPoint = this.giftList[idx].position
+        let offsetX = Math.random()*180-90;
+        let offsetY = 100+Math.random()*100;
+        let endPoint = this.giftList[idx].position;
+        let centerPoint  = cc.v3((this.football.x+endPoint.x)/2+offsetX,(this.football.y+endPoint.y)/2+offsetY);
         cc.tween(this.football)
-        .to(0.3, {position:cc.v3(endPoint.x,endPoint.y) ,scale: BallMinScale},{easing:"smooth"})
+        .to(0.15,{position:centerPoint,scale:BallMinScale*1.2})
+        .to(0.15, {position:cc.v3(endPoint.x,endPoint.y,0) ,scale: BallMinScale})
         .call(()=>{
             // callback?.();
             this.showShootEffect2();
         })
-        .delay(0.5)
+        .delay(0.4)
         .call(()=>{
             if(this.isSuperShoot){
                 this.shootOver(callback);

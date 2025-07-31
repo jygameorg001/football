@@ -115,4 +115,18 @@ export default class Game extends cc.Component {
             .to(0.05, { position: cc.v3(node.x, node.y), scale: 1.0 })      // 回到原位
             .start();             // 启动动画
     }
+    shakeNode2(node,len=15){
+        function Rand(){
+            return Math.random()*len-len/2;
+        }
+        // 停止当前节点的其他动画，避免冲突
+        cc.Tween.stopAllByTarget(node);
+        cc.tween(node)
+            .to(0.05, { position: cc.v3(node.x + Rand(), node.y+ Rand())})  
+            .to(0.05, { position: cc.v3(node.x + Rand(), node.y+ Rand())}) 
+            .to(0.05, { position: cc.v3(node.x + Rand(), node.y+ Rand())})  
+            .to(0.05, { position: cc.v3(node.x + + Rand(), node.y+ Rand())})  
+            .to(0.05, { position: cc.v3(node.x, node.y), scale: 1.0 })      // 回到原位
+            .start();             // 启动动画
+    }
 }

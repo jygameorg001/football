@@ -223,9 +223,9 @@ export default class Shoot extends cc.Component {
     }
     shootPlay() {
         let data = GameLogic.instance.ShootingInfo;
-        let num = Math.abs(this.timsShoot - this.timeshootal);
-        let giftId = data.rewardList[num].giftId;
+        let giftId = data.rewardList[0].giftId;
         let id = this.getIdByGiftId(giftId);
+        this.isSuperShoot = true;
         this.beginRunning();
         for (let i = 0; i < 9; i++) {
             let kuang = this.giftList[i].getChildByName("kuang");
@@ -476,7 +476,7 @@ export default class Shoot extends cc.Component {
     }
     //弹球次数 从1到10
     shootOverTimes(times: number){
-
+        this.ballIdx = Math.floor(Math.random()*60) + 1;
     }
 
     // update (dt) {}
