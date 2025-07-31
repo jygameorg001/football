@@ -221,7 +221,6 @@ export default class Shoot extends cc.Component {
         GameLogic.instance.reqPlayerInfo();
         this.shootPlay();
     }
-
     shootPlay() {
         let data = GameLogic.instance.ShootingInfo;
         let num = Math.abs(this.timsShoot - this.timeshootal);

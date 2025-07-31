@@ -193,8 +193,7 @@ export class  BallRun {
         .delay(1)
         .call(()=>{
             if(this.isSuperShoot){
-                
-                callback?.();
+                this.shootOver(callback);
                 return;
             }
             this.football.setPosition(startPoint);
@@ -243,10 +242,66 @@ export class  BallRun {
         Game.instance.shakeNode(node);
         Game.instance.shakeNode(this.doorNode);
     }
+
+    getGiftIdx(nTimes){
+        let data = GameLogic.instance.ShootingInfo;
+        let giftId = data.rewardList[nTimes].giftId;
+        for (let i = 0; i < GameLogic.instance.giftList.length; i++) {
+            let gift = GameLogic.instance.giftList[i];
+            if (gift.giftId == giftId) {
+                return i;
+            }
+        }
+        return 0;
+    }
     // 飞行结束
     shootOver(callback){ 
         this.nShootTimes++;
         EventMgr.emit("shootOverTimes",this.nShootTimes);
+        if(this.nShootTimes==10){
+            callback();
+            return;
+        }
+        // 弹球
+        let idx = this.getGiftIdx(this.nShootTimes);
+        this.targetIdx = idx
+        this.ballShoot2Idx(idx,callback);
     }
+
+    showShootEffect2(){
+        Game.instance.showView("ShootEffect",this.football);
+        let node = this.giftList[this.targetIdx];
+        if (!node) return;
+        let kuang = node.getChildByName("kuang")
+        kuang.active = true;
+        cc.tween(kuang).to(0.1, {scale:1.1})
+        .to(0.1,{scale:0.9})
+        .to(0.1,{scale:1.05})
+        .to(0.1,{scale:1})
+        .call(()=>{
+            kuang.active = false;
+        })
+        .start();
+        // Game.instance.shakeNode(node);
+        // Game.instance.shakeNode(this.doorNode);
+    }
+    ballShoot2Idx(idx:number,callback){
+        let endPoint = this.giftList[idx].position
+        cc.tween(this.football)
+        .to(0.3, {position:cc.v3(endPoint.x,endPoint.y) ,scale: BallMinScale},{easing:"smooth"})
+        .call(()=>{
+            // callback?.();
+            this.showShootEffect2();
+        })
+        .delay(0.5)
+        .call(()=>{
+            if(this.isSuperShoot){
+                this.shootOver(callback);
+                return;
+            }
+        })
+        .start();
+    }
+
 
 }
