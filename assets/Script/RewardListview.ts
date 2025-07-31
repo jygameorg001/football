@@ -15,22 +15,6 @@ export default class rewardListview extends cc.Component {
     start() {
         let rewardList = GameLogic.instance.ShootingInfo.rewardList;
 
-        // "rewardList": [
-        //     {
-        //         "id": 7,
-        //         "giftId": 1600074196,
-        //         "reward": 0,
-        //         "multiple": 0,
-        //         "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/favourite1752753686075.png"
-        //     },
-        //     {
-        //         "id": 7,
-        //         "giftId": 1600074196,
-        //         "reward": 0,
-        //         "multiple": 0,
-        //         "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/favourite1752753686075.png"
-        //     }
-        // ]
 
         let mergedLists = this.mergeRewardList(rewardList);
 
