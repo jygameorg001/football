@@ -46,20 +46,20 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 278.36,
-      "height": 62.92
+      "width": 188.24,
+      "height": 45.28
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.27,
-      "y": 0.43
+      "x": 0.41,
+      "y": 0.55
     },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
         -56.748,
-        104.652,
+        -18.112000000000002,
         0,
         0,
         0,
@@ -122,8 +122,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        21.773,
-        -4.618,
+        17.877,
+        -2.281,
         0,
         0,
         0,
@@ -197,7 +197,7 @@
     "_spriteFrame": {
       "__uuid__": "4988d7e1-644a-4a60-a95e-a1800bf94182"
     },
-    "_type": 0,
+    "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
@@ -221,8 +221,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 278.36,
-      "height": 62.92
+      "width": 188.24,
+      "height": 45.28
     },
     "_resize": 1,
     "_N$layoutType": 0,
@@ -232,8 +232,8 @@
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$paddingLeft": 10,
-    "_N$paddingRight": 10,
+    "_N$paddingLeft": 8,
+    "_N$paddingRight": 8,
     "_N$paddingTop": 5,
     "_N$paddingBottom": 5,
     "_N$spacingX": 20,
