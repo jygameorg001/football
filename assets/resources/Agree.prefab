@@ -610,7 +610,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "btnClose",
+    "_name": "btnAgreeClose",
     "_objFlags": 0,
     "_parent": {
       "__id__": 3
@@ -788,7 +788,7 @@
     },
     "component": "",
     "_componentId": "8011dht/wZAMp/Rxuwl1EYm",
-    "handler": "onClose",
+    "handler": "onBtnAgree",
     "customEventData": ""
   },
   {

@@ -1,3 +1,5 @@
+import {EventMgr} from "./common/EventManager";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -11,6 +13,11 @@ export default class Agree extends cc.Component {
         cc.tween(this.content).to(0.3,{position:cc.v3(0,-1080,0)}).call(()=>{
             this.node.destroy();
         }).start();
+    }
+    onBtnAgree(){
+        EventMgr.emit("agree_notice");
+        cc.sys.localStorage.setItem("agree_notice", "1");
+        this.onClose();
     }
 
     // update (dt) {}

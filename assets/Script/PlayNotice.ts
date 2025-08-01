@@ -16,11 +16,14 @@ export default class PlayNotice extends cc.Component {
             this.agreeTog.isChecked = true;
         }
         // this.explainTxt.string="";
-        // EventMgr.on("onGetGameInfo", this.onGetGameInfo, this);
+        EventMgr.on("agree_notice", this.onAgreeNotice, this);
+    }
+    onAgreeNotice(){
+        this.agreeTog.isChecked = true;
     }
 
     protected onDestroy(): void {
-        // EventMgr.off("onGetGameInfo", this.onGetGameInfo, this);
+        EventMgr.off("agree_notice", this.onAgreeNotice, this);
     }
 
     onGetGameInfo(info){
