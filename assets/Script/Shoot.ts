@@ -109,12 +109,14 @@ export default class Shoot extends cc.Component {
     }
 
     upinfo() {
-        this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
+        // this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
         this.currency.string = GameLogic.instance.playerInfo.currency + "";
         // this.luckScore.string = "消耗: " + GameLogic.instance.playerInfo.luckScore + "U币";
     }
-
-
+    upLuck(){
+        this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
+        cc.tween(this.energy.node).to(0.2, { scale: 1.2 }).to(0.2, { scale: 1 }).start();
+    }
     initGiftNodes() {
         for (let i = 0; i < 9; i++) {
             this.giftList[i] = this.giftNode.getChildByName("gift" + (i + 1));
@@ -223,6 +225,15 @@ export default class Shoot extends cc.Component {
         }
         return 0;
     }
+    isHasReward(rewardList) { 
+        for(let i=0;i<rewardList.length;i++){
+            let rewardInfo = rewardList[i];
+            if(rewardInfo.reward> 0){
+                return true
+            }
+        }
+        return false;
+    }
     onShooting(data) {
         // GameLogic.instance.callBridge("onEnergyChange", {}, (res) => {
         //     const { code, message, data } = res;
@@ -243,6 +254,9 @@ export default class Shoot extends cc.Component {
         let shadow = this.football.getChildByName("shadow")
         shadow.active = false;
         BallRun.getInstance().shootGiftId(id, this.isSuperShoot, () => {
+            if(this.isHasReward(GameLogic.instance.ShootingInfo.rewardList)){
+                this.upLuck();
+            }
             // show win reward
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
