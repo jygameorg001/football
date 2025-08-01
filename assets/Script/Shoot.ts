@@ -71,6 +71,11 @@ export default class Shoot extends cc.Component {
         BallRun.getInstance().liziNode = this.tuowei;
         BallRun.getInstance().giftList = this.giftList;
 
+        //scrollView直接隐藏滑动条
+        
+
+
+
 
         this.tuowei.active = false;
         this.canShoot = true;
