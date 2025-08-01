@@ -3,7 +3,7 @@ import { HttpHelper } from "./common/HttpHelper";
 import Game from "./Game";
 import { NameConfig } from "./Home";
 
-const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6ImFiZjA0ZTBmLTZhNTEtNDdhZS04Yzc3LTE1NTkxMTAxYmYzMiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.kwYUvLNPyWz17sSZ3nNL5b0Q51PujlOLaEw4WfSOh-BRtmOnwFjc-OCJZxD_Nztf1INbi-dBYXbw0aWTxXWCgg";
+const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjJkYmQ1YTc5LTk1ODctNDkyNS1iYjJhLTZmY2Q5Y2I1NThhMSIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.xTsuY92VHRGyOs7xEW6HCgI3N890DiaIZ55hZ-7V1IuQoObwNLhce2BvNxZXkXV9_DkUMYZjA9O5T_m47xvTlA";
 
 export interface IUserInfo {
     appToken: string; // appToken
