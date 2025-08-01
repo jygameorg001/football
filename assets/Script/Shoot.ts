@@ -72,7 +72,7 @@ export default class Shoot extends cc.Component {
         BallRun.getInstance().giftList = this.giftList;
 
         //scrollView直接隐藏滑动条
-        
+
 
 
 
@@ -309,7 +309,7 @@ export default class Shoot extends cc.Component {
             let rewarTips = cc.instantiate(this.autorewardItem);
             rewarTips.parent = this.autoWindow;
             (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataOne();
-            this.scrollView.scrollToBottom();
+            // this.scrollView.scrollToBottom();
 
         }
         if (this.isauto) {
@@ -328,7 +328,7 @@ export default class Shoot extends cc.Component {
             (this.rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataTen(num);
         }
         //滚动到最下面
-        this.scrollView.scrollToBottom();
+        // this.scrollView.scrollToBottom();
     }
 
 
