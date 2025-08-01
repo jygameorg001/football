@@ -31,6 +31,7 @@ export default class PlayNotice extends cc.Component {
     onBtnAgree(){
         if(!this.agreeTog.isChecked){
             // toast
+            EventMgr.emit("toastview", "还未同意协议！");
             return;
         }
         if(this.todayTog.isChecked){
