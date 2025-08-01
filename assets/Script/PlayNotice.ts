@@ -15,6 +15,7 @@ export default class PlayNotice extends cc.Component {
         if(str){
             this.agreeTog.isChecked = true;
         }
+        this.todayTog.isChecked = true;
         // this.explainTxt.string="";
         EventMgr.on("agree_notice", this.onAgreeNotice, this);
     }

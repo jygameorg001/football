@@ -34,11 +34,11 @@ export default class TenItem extends cc.Component {
             this.sart.node.active = true;
             this.reward.string = "幸运分X" + data.reward;
         } else {
-            this.sart.node.active = false;
-            this.reward.string = "";
+            if(this.sart&&this.sart.node){
+                this.sart.node.active = false;
+                this.reward.string = "";
+            }
         }
-
-
     }
 
 

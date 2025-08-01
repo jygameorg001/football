@@ -8,21 +8,33 @@ export default class rewardListview extends cc.Component {
 
     @property(cc.Prefab)
     rewardItem: cc.Prefab = null;
+    @property(cc.Prefab)
+    oneItem: cc.Prefab = null;
 
     @property(cc.Node)
     contentView: cc.Node = null;
 
     start() {
+        // "tenitem"
         let rewardList = GameLogic.instance.ShootingInfo.rewardList;
-
-
+        let hasReward = this.isHasReward(rewardList);
         let mergedLists = this.mergeRewardList(rewardList);
-
+        let tempItem = hasReward?this.rewardItem:this.oneItem;
         for (let i = 0; i < mergedLists.length; i++) {
-            let rewardItem = cc.instantiate(this.rewardItem);
+            let rewardItem = cc.instantiate(tempItem);
             rewardItem.parent = this.contentView;
             rewardItem.getComponent("TenItem").init(mergedLists[i]);
         }
+    }
+
+    isHasReward(rewardList) { 
+        for(let i=0;i<rewardList.length;i++){
+            let rewardInfo = rewardList[i];
+            if(rewardInfo.reward> 0){
+                return true
+            }
+        }
+        return false;
     }
 
     //关闭窗口
@@ -62,10 +74,6 @@ export default class rewardListview extends cc.Component {
                 // 累加 reward 值
                 existingItem.reward += item.reward;
 
-                // 保留第一个 id 和 giftImage
-                // 注意：如果需要保留最后一个，可以取消下面的注释并注释掉上面的
-                // existingItem.id = item.id;
-                // existingItem.giftImage = item.giftImage;
             }
         }
 

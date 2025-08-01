@@ -21,15 +21,15 @@ export default class Shoot extends cc.Component {
     @property(cc.Label) energy: cc.Label = null;
     @property(cc.Label) luckScore: cc.Label = null;
     @property(cc.Node) tuowei: cc.Node = null;
-    @property(cc.Prefab) rewardview: cc.Prefab = null;
-    @property(cc.Prefab) rewardTenview: cc.Prefab = null;
+    // @property(cc.Prefab) rewardview: cc.Prefab = null;
+    // @property(cc.Prefab) rewardTenview: cc.Prefab = null;
     @property(cc.Node) rewardViewNode: cc.Node = null;//奖励弹窗
     //自动射门按钮
     @property(cc.Node) autoBtn: cc.Node = null;
     //自动射门窗口
     @property(cc.Node) autoWindow: cc.Node = null;
     //自动射门预制体item
-    @property(cc.Prefab) autorewardItem: cc.Prefab = null;
+    // @property(cc.Prefab) autorewardItem: cc.Prefab = null;//rewardItemtips
     isauto: boolean = false;
     @property(cc.Node) light: cc.Node = null;
     @property(cc.Node) btnShoot: cc.Node = null;
@@ -43,6 +43,9 @@ export default class Shoot extends cc.Component {
     btnOne: cc.Node = null;
     @property(cc.Node)
     btnTen: cc.Node = null;
+
+    @property(cc.Node) xingxingTips: cc.Node = null;
+
     //是否为次数射门
     isTimeshoot: boolean = false;
 
@@ -74,11 +77,8 @@ export default class Shoot extends cc.Component {
 
         //scrollView直接隐藏滑动条
 
-
-
-
-
         this.tuowei.active = false;
+        this.xingxingTips.active = false;
         this.canShoot = true;
         this.upinfo();
         this.listNode.active = false;
@@ -304,73 +304,90 @@ export default class Shoot extends cc.Component {
         if (!this.isauto) return;
         // 创建一个奖励节点
         if (GameLogic.instance.ShootingInfo) {
-            let rewarTips = cc.instantiate(this.autorewardItem);
-            rewarTips.parent = this.autoWindow;
-            (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataOne();
-
-            this.scheduleOnce(() => {
-                //获得this.autoWindow所有子节点的高度
-                let height = 0;
-                for (let i = 0; i < this.autoWindow.children.length; i++) {
-                    height += this.autoWindow.children[i].height;
-                }
-                if (height > 294) {
-                    this.scrollView.scrollToBottom();
-                } else {
-                    this.scrollView.scrollToTop();
-
-                }
-
-            }, 0.1)
+            const rewardInfo = GameLogic.instance.ShootingInfo.rewardList[0];
+            Game.instance.showView("rewardItemtips",this.autoWindow,(node)=>{
+                let item:RewardItemtips = node.getComponent(RewardItemtips);
+                item.setDataOne(rewardInfo)
+                this.scheduleOnce(()=>{
+                    this.scrollView.scrollToBottom(0.1);
+                },0.1)
+            })
         }
         if (this.isauto) {
             this.autoShoot();
         }
     }
-    rewarTips = null;
+    tenRewardItemTips:  RewardItemtips = null;
     noShowRewardTen(times: number) {
         if (times > 10) return
-        let num = times - 1;
-        if (num == 0 && this.rewarTips == null) {
-            this.rewarTips = cc.instantiate(this.autorewardItem);
-            this.rewarTips.parent = this.autoWindow;
+        let str = this.getRewardStr(times);
+        if(this.tenRewardItemTips){
+            this.tenRewardItemTips.setString(str);
+            if(times > 8){
+                this.scheduleOnce(()=>{
+                    this.scrollView.scrollToBottom(0.1);
+                },0.1)
+            }
+        }else{
+            Game.instance.showView("rewardItemtips",this.autoWindow,(node)=>{
+                let item:RewardItemtips = node.getComponent(RewardItemtips);
+                item.setString(str);
+                this.tenRewardItemTips = item;
+            })
         }
-        if (this.rewarTips) {
-            (this.rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataTen(num);
-        }
-        //滚动到最下面
-        this.scrollView.scrollToBottom();
+
     }
 
-
-
+    getRewardStr(num){
+        let rewardList = GameLogic.instance.ShootingInfo.rewardList;
+        let header ="太棒了!恭喜获得 \n"
+        let str="";
+        for(let i=0;i<num;i++){
+            let rewardInfo = rewardList[i];
+            let names1 = this.getGiftNameById(rewardInfo.giftId) + "x1 ";
+            if (rewardInfo.reward > 0) {     
+                let names2 = " 幸运分x" + rewardInfo.reward;
+                str += "<color=#ffffff>" + names1 + "</color><color=#FFEF40>" + names2 + "</color>";
+            } else {
+                str += "<color=#ffffff>" + names1 + "</color>";
+            }
+            if(i!=num-1){
+                str+="\n"
+            }
+        }
+        header += str;
+        return header;
+    }
+    getGiftNameById(id) {
+        let gift = GameLogic.instance.giftList.find(gift => gift.giftId === id);
+        return gift ? gift.giftName : null;
+    }
     //清空自动模式奖励
     clearAutoReward() {
         this.autoWindow.destroyAllChildren();
-        if (this.rewarTips) {
-            this.rewarTips.destroy();
-            this.rewarTips = null;
-        }
+        this.tenRewardItemTips = null;
     }
 
 
     //弹框显示奖励
     showReward() {
-        let rewardView = cc.instantiate(this.rewardview);
-        rewardView.parent = this.rewardViewNode;
-        let bg = rewardView.getChildByName("bg");
-        bg.scale = 0;
-        cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
+        Game.instance.showView("rewardview",this.rewardViewNode,(node)=>{
+            let bg = node.getChildByName("bg");
+            bg.scale = 0;
+            cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
+            node.y = 150;
+        });
         AudioMgr.playSound("audio/bigwin");
+        
     }
 
     //显示10局奖励
     showTenReward() {
-        let rewardtenView = cc.instantiate(this.rewardTenview);
-        rewardtenView.parent = this.rewardViewNode;
-        let bg = rewardtenView.getChildByName("bg");
-        bg.scale = 0;
-        cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
+        Game.instance.showView("rewardListview",this.rewardViewNode,(node)=>{
+            let bg = node.getChildByName("bg");
+            bg.scale = 0;
+            cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
+        })
         AudioMgr.playSound("audio/bigwin");
     }
 
@@ -458,6 +475,16 @@ export default class Shoot extends cc.Component {
                 break;
             case "item2":
                 this.onClickItem(2)
+                break;
+            case "btnLuckStar":
+                if(GameLogic.instance.playerInfo.luckScore>0){
+                    this.xingxingTips.active = true;
+                    this.xingxingTips.opacity =255;
+                    cc.tween(this.xingxingTips).delay(2).to(0.5,{opacity:0}).call(()=>{
+                        this.xingxingTips.active = false;
+                        this.xingxingTips.opacity =255;
+                    }).start()
+                }
                 break;
         }
     }
