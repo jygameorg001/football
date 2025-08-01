@@ -309,6 +309,7 @@ export default class Shoot extends cc.Component {
     }
     rewarTips = null;
     noShowRewardTen(times: number) {
+        if (times > 10) return
         let num = times - 1;
         if (num == 0 && this.rewarTips == null) {
             this.rewarTips = cc.instantiate(this.autorewardItem);
