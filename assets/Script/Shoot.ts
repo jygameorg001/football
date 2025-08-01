@@ -195,7 +195,7 @@ export default class Shoot extends cc.Component {
             EventMgr.emit("toastview", "余额不足");
             return;
         }
-        this.isSuperShoot = times==10;
+        this.isSuperShoot = times == 10;
         this.isTimeshoot = true;
         this.setSheBtnState(this.btnOne, false);
         this.setSheBtnState(this.btnTen, false);
@@ -233,7 +233,7 @@ export default class Shoot extends cc.Component {
         }
         let shadow = this.football.getChildByName("shadow")
         shadow.active = false;
-        BallRun.getInstance().shootGiftId(id,this.isSuperShoot,() => {
+        BallRun.getInstance().shootGiftId(id, this.isSuperShoot, () => {
             // show win reward
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
@@ -248,8 +248,8 @@ export default class Shoot extends cc.Component {
         })
     }
 
-    shootOver(){
-        this.timsShoot =0;
+    shootOver() {
+        this.timsShoot = 0;
         this.svga.playSVGA();
         if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
             this.showTenReward();
@@ -262,7 +262,7 @@ export default class Shoot extends cc.Component {
         this.canShoot = true;
         this.setSheBtnState(this.btnOne, true);
         this.setSheBtnState(this.btnTen, true);
-    }   
+    }
 
     // 按钮射门按钮状态设置
     setSheBtnState(btn: cc.Node, state: boolean) {
@@ -293,27 +293,41 @@ export default class Shoot extends cc.Component {
     noShowReward() {
         // 检查是不是自动模式
         if (!this.isauto) return;
-        // 检查this.autoWindow子节点是不是超过了3个，是的话就删除第一个
-        if (this.autoWindow.childrenCount >= 4) {
-            this.autoWindow.children[0].destroy();
-        }
+        // 检查this.autoWindow子节点是不是超过了4个，是的话就删除第一个
+        // if (this.autoWindow.childrenCount >= 4) {
+        //     this.autoWindow.children[0].destroy();
+        // }
         // 创建一个奖励节点
         if (GameLogic.instance.ShootingInfo) {
             let rewarTips = cc.instantiate(this.autorewardItem);
             rewarTips.parent = this.autoWindow;
-            (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setData(false);
-            //这里改成动画显示，从this.autoWindow的底部向上移动，移动到this.autoWindow的顶部，然后删除
+            (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataOne();
         }
-        // this.canShoot = !this.isauto;
         if (this.isauto) {
             this.autoShoot();
         }
-
     }
+    rewarTips = null;
+    noShowRewardTen(times: number) {
+        let num = times - 1;
+        if (num == 0 && this.rewarTips == null) {
+            this.rewarTips = cc.instantiate(this.autorewardItem);
+            this.rewarTips.parent = this.autoWindow;
+        }
+        if (this.rewarTips) {
+            (this.rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataTen(num);
+        }
+    }
+
+
 
     //清空自动模式奖励
     clearAutoReward() {
         this.autoWindow.removeAllChildren();
+        if (this.rewarTips) {
+            this.rewarTips.destroy();
+            this.rewarTips = null;
+        }
     }
 
 
@@ -475,8 +489,9 @@ export default class Shoot extends cc.Component {
         })
     }
     //弹球次数 从1到10
-    shootOverTimes(times: number){
-        this.ballIdx = Math.floor(Math.random()*60) + 1;
+    shootOverTimes(times: number) {
+        this.ballIdx = Math.floor(Math.random() * 60) + 1;
+        this.noShowRewardTen(times);
     }
 
     // update (dt) {}
