@@ -70,6 +70,7 @@ export default class Shoot extends cc.Component {
         BallRun.getInstance().initFootBall(this.football, this.baiDoor.parent, trailGraphics)
         BallRun.getInstance().liziNode = this.tuowei;
         BallRun.getInstance().giftList = this.giftList;
+        this.clearAutoReward();
 
         //scrollView直接隐藏滑动条
 
@@ -171,6 +172,7 @@ export default class Shoot extends cc.Component {
             this.setSheBtnState(this.btnOne, false);
             this.setSheBtnState(this.btnTen, false);
             this.isSuperShoot = false;
+            this.clearAutoReward();
             this.autoShoot();
         } else {
             this.setSheBtnState(this.btnOne, true);
@@ -300,17 +302,26 @@ export default class Shoot extends cc.Component {
     noShowReward() {
         // 检查是不是自动模式
         if (!this.isauto) return;
-        // 检查this.autoWindow子节点是不是超过了4个，是的话就删除第一个
-        // if (this.autoWindow.childrenCount >= 4) {
-        //     this.autoWindow.children[0].destroy();
-        // }
         // 创建一个奖励节点
         if (GameLogic.instance.ShootingInfo) {
             let rewarTips = cc.instantiate(this.autorewardItem);
             rewarTips.parent = this.autoWindow;
             (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataOne();
-            // this.scrollView.scrollToBottom();
 
+            this.scheduleOnce(() => {
+                //获得this.autoWindow所有子节点的高度
+                let height = 0;
+                for (let i = 0; i < this.autoWindow.children.length; i++) {
+                    height += this.autoWindow.children[i].height;
+                }
+                if (height > 294) {
+                    this.scrollView.scrollToBottom();
+                } else {
+                    this.scrollView.scrollToTop();
+
+                }
+
+            }, 0.1)
         }
         if (this.isauto) {
             this.autoShoot();
@@ -328,14 +339,14 @@ export default class Shoot extends cc.Component {
             (this.rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataTen(num);
         }
         //滚动到最下面
-        // this.scrollView.scrollToBottom();
+        this.scrollView.scrollToBottom();
     }
 
 
 
     //清空自动模式奖励
     clearAutoReward() {
-        this.autoWindow.removeAllChildren();
+        this.autoWindow.destroyAllChildren();
         if (this.rewarTips) {
             this.rewarTips.destroy();
             this.rewarTips = null;
