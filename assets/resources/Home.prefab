@@ -14,7 +14,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Home",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": null,
     "_children": [
       {
@@ -58,8 +58,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        0,
+        375,
+        812,
         0,
         0,
         0,
@@ -2508,8 +2508,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 344,
-      "height": 458
+      "width": 342,
+      "height": 456
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",

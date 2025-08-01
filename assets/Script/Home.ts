@@ -58,9 +58,7 @@ export default class Home extends cc.Component {
         }, 1.2);
         this.playGoBtn();
 
-        this.schedule(()=>{
-            this.roleChangeEffect.active = !this.isAnimating;
-        },0.5)
+       this.roleChangeEffect.active = false;
     }
     addBreathingEffect(btn: cc.Node, scaleX) {
         cc.tween(btn).repeatForever(
@@ -149,6 +147,7 @@ export default class Home extends cc.Component {
     showRoleChangeEffect() {
         this.roleChangeEffect.opacity = 150;
         this.roleChangeEffect.scale = 1;
+        this.roleChangeEffect.active = true;
         AudioMgr.playSound("audio/roleChange");
         cc.tween(this.roleChangeEffect)
             .to(0.2, { opacity: 255, scale: 1.05 })
@@ -204,6 +203,7 @@ export default class Home extends cc.Component {
     onBtnGo() {
         
         let node = this.getChooseNode();
+        this.showRoleChangeEffect();
         if (node) {
             cc.tween(node)
                 .to(0.2, { scale: 1.2 })
