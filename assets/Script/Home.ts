@@ -49,7 +49,8 @@ export default class Home extends cc.Component {
         this.addBreathingEffect(this.leftBtn, -1);
         this.addBreathingEffect(this.rightBtn, 1);
         this.initSoundIcon();
-        this.showRoleChangeEffect();
+        this.roleChangeEffect.scale = 0.5;
+        // this.showRoleChangeEffect();
         AudioMgr.playMusic("audio/homeMusic", true);
 
         this.schedule(() => {
@@ -201,6 +202,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnGo() {
+        
         let node = this.getChooseNode();
         if (node) {
             cc.tween(node)
@@ -210,10 +212,17 @@ export default class Home extends cc.Component {
                     if (GameLogic.instance.playerInfo) {
                         let id = this.getChooseId();
                         GameLogic.instance.setChooseStar(id);
-                        Game.instance.showView("Shoot");
+                        Game.instance.showView("Shoot",null,(node)=>{
+                            
+                        });
                     }
                 })
                 .start();
+
+            cc.tween(this.roleChangeEffect)
+            .to(0.2, { scale: 1.2 })
+            .to(0.2, {  scale: 1 })
+            .start();
         }
     }
 
