@@ -225,7 +225,6 @@ export default class Shoot extends cc.Component {
         let data = GameLogic.instance.ShootingInfo;
         let giftId = data.rewardList[0].giftId;
         let id = this.getIdByGiftId(giftId);
-        this.isSuperShoot = true;
         this.beginRunning();
         for (let i = 0; i < 9; i++) {
             let kuang = this.giftList[i].getChildByName("kuang");
