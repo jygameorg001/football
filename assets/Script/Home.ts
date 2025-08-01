@@ -157,6 +157,12 @@ export default class Home extends cc.Component {
             .start();
     }
 
+    //清除选中球星底图闪动
+    clearRoleChangeEffect() {
+        this.roleChangeEffect.stopAllActions();
+        this.roleChangeEffect.active = false;
+    }
+
     getChooseId() {
         for (let i = 0; i < this.picItems.length; i++) {
             if (this.picItems[i].index == 1) {
@@ -213,7 +219,7 @@ export default class Home extends cc.Component {
                         let id = this.getChooseId();
                         GameLogic.instance.setChooseStar(id);
                         Game.instance.showView("Shoot",null,(node)=>{
-                            
+                            this.clearRoleChangeEffect();
                         });
                     }
                 })
