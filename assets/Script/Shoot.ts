@@ -305,6 +305,7 @@ export default class Shoot extends cc.Component {
             rewarTips.parent = this.autoWindow;
             (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataOne();
             this.scrollView.scrollToBottom();
+
         }
         if (this.isauto) {
             this.autoShoot();
