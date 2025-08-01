@@ -55,6 +55,7 @@ export default class Game extends cc.Component {
                 EventMgr.emit("onGetPlayerInfo",res.data);
             }
         })
+        GameLogic.instance.reqPlayerInfo();
     }
     initView() {
     }
