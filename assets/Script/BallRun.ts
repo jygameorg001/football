@@ -259,6 +259,7 @@ export class  BallRun {
         
         this.nShootTimes++;
         EventMgr.emit("shootOverTimes",this.nShootTimes);
+        
         if(this.nShootTimes==10){
             this.football.setPosition(this.startPos);
             this.football.scale = 1;
