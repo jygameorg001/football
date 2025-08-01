@@ -34,6 +34,8 @@ export default class Shoot extends cc.Component {
     @property(cc.Node) light: cc.Node = null;
     @property(cc.Node) btnShoot: cc.Node = null;
 
+    @property(cc.ScrollView) scrollView: cc.ScrollView = null;
+
     @property(SVGAPlayer)
     svga: SVGAPlayer = null;
 
@@ -163,6 +165,7 @@ export default class Shoot extends cc.Component {
             this.timsShoot = this.timeshootal = 1;
             this.setSheBtnState(this.btnOne, false);
             this.setSheBtnState(this.btnTen, false);
+            this.isSuperShoot = false;
             this.autoShoot();
         } else {
             this.setSheBtnState(this.btnOne, true);
@@ -301,6 +304,7 @@ export default class Shoot extends cc.Component {
             let rewarTips = cc.instantiate(this.autorewardItem);
             rewarTips.parent = this.autoWindow;
             (rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataOne();
+            this.scrollView.scrollToBottom();
         }
         if (this.isauto) {
             this.autoShoot();
@@ -317,6 +321,8 @@ export default class Shoot extends cc.Component {
         if (this.rewarTips) {
             (this.rewarTips.getComponent(RewardItemtips) as RewardItemtips).setDataTen(num);
         }
+        //滚动到最下面
+        this.scrollView.scrollToBottom();
     }
 
 
