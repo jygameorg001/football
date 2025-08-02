@@ -1,4 +1,5 @@
 import { AudioMgr } from "./common/AudioMgr";
+import {AudioMgrX} from "./common/AudioMgrX";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
 
@@ -51,7 +52,7 @@ export default class Home extends cc.Component {
         this.initSoundIcon();
         this.roleChangeEffect.scale = 0.5;
         // this.showRoleChangeEffect();
-        AudioMgr.playMusic("audio/homeMusic", true);
+        AudioMgrX.playMusic("audio/homeMusic");
 
         this.schedule(() => {
             this.playGoBtn();
@@ -148,7 +149,7 @@ export default class Home extends cc.Component {
         this.roleChangeEffect.opacity = 150;
         this.roleChangeEffect.scale = 1;
         this.roleChangeEffect.active = true;
-        AudioMgr.playSound("audio/roleChange");
+        AudioMgrX.playSound("audio/roleChange");
         cc.tween(this.roleChangeEffect)
             .to(0.2, { opacity: 255, scale: 1.05 })
             .to(0.2, { opacity: 150, scale: 1 })
@@ -173,7 +174,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnLeft() {
-        AudioMgr.playSound("audio/btn_click");
+        AudioMgrX.playSound("audio/btn_click");
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
@@ -184,7 +185,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnRight() {
-        AudioMgr.playSound("audio/btn_click");
+        AudioMgrX.playSound("audio/btn_click");
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {

@@ -34,6 +34,7 @@ export default class PlayNotice extends cc.Component {
     }
     onBtnAgree(){
         if(!this.agreeTog.isChecked){
+            cc.sys.localStorage.setItem("agree_notice", "0");
             // toast
             EventMgr.emit("toastview", "还未同意协议！");
             return;

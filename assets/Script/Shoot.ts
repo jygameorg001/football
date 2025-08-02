@@ -1,5 +1,6 @@
 import { BallRun } from "./BallRun";
 import { AudioMgr } from "./common/AudioMgr";
+import {AudioMgrX} from "./common/AudioMgrX";
 import { EventMgr } from "./common/EventManager";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
@@ -89,7 +90,7 @@ export default class Shoot extends cc.Component {
 
 
         this.initListItems();
-        AudioMgr.playMusic("audio/gameMusic", true);
+        AudioMgrX.playMusic("audio/gameMusic");
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);
@@ -400,7 +401,7 @@ export default class Shoot extends cc.Component {
             cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
             node.y = 150;
         });
-        AudioMgr.playSound("audio/bigwin");
+        AudioMgrX.playSound("audio/bigwin");
 
     }
 
@@ -411,7 +412,7 @@ export default class Shoot extends cc.Component {
             bg.scale = 0;
             cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
         })
-        AudioMgr.playSound("audio/bigwin");
+        AudioMgrX.playSound("audio/bigwin");
     }
 
     private ballIdx: number = 1;
