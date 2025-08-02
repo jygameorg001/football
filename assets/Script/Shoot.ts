@@ -337,7 +337,15 @@ export default class Shoot extends cc.Component {
         if (times > 10) return
         let str = this.getRewardStr(times);
         if (this.tenRewardItemTips) {
+            const layout = this.autoWindow.getComponent(cc.Layout)
+            layout.enabled = false;
+
             this.tenRewardItemTips.setString(str);
+
+            this.scheduleOnce(()=>{
+                layout.enabled = true;
+                layout.updateLayout();
+            },0)
             if (times > 8) {
                 this.scheduleOnce(() => {
                     this.scrollView.scrollToBottom(0.1);

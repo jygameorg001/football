@@ -28,7 +28,7 @@ export default class TenItem extends cc.Component {
 
     init(data) {
         GameLogic.instance.loadRemoteSprite(data.giftImage, this.giftImage.getComponent(cc.Sprite));
-        this.giftImage.node.scale = 0.3;
+        // this.giftImage.node.scale = 0.3;
         this.giftName.string = this.getGiftNameById(data.giftId) + "x" + data.count;
         if (data.reward > 0) {
             this.sart.node.active = true;

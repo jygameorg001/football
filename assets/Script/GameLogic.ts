@@ -3,7 +3,7 @@ import { HttpHelper } from "./common/HttpHelper";
 import Game from "./Game";
 import { NameConfig } from "./Home";
 
-const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjJkYmQ1YTc5LTk1ODctNDkyNS1iYjJhLTZmY2Q5Y2I1NThhMSIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.xTsuY92VHRGyOs7xEW6HCgI3N890DiaIZ55hZ-7V1IuQoObwNLhce2BvNxZXkXV9_DkUMYZjA9O5T_m47xvTlA";
+const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjY2Y2RiZTBiLTBiZmItNDg2NC1iODlmLWI5YWJkMjAwOTQwYiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.HbP7A8478kzBm0L7b28qPKmU9h41ERW9gddlcvjdwcg2wRmF0wWxCs1Y6jdtQymkrykZBGUdQYstV7IKXyHv5A";
 
 export interface IUserInfo {
     appToken: string; // appToken
@@ -246,7 +246,7 @@ export class GameLogic {
         })
     }
 
-    loadRemoteSprite(url, spriteNode: cc.Sprite) {
+    loadRemoteSprite(url, spriteNode: cc.Sprite,width=0) {
         cc.assetManager.loadRemote(url, (err: Error, asset: cc.Texture2D) => {
             if (err) {
                 return;
@@ -257,6 +257,10 @@ export class GameLogic {
                     frame = new cc.SpriteFrame(asset);
                     frame["_uuid"] = url + "_f";
                     frame.addRef();
+                }
+                if(width>0){
+                    let scale = width/asset.width;
+                    spriteNode.node.setContentSize(width,scale*asset.height);
                 }
                 spriteNode.spriteFrame = frame;
                 cc.assetManager.assets.add(frame["_uuid"], frame);
