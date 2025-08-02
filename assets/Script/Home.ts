@@ -52,7 +52,7 @@ export default class Home extends cc.Component {
         this.initSoundIcon();
         this.roleChangeEffect.scale = 0.5;
         // this.showRoleChangeEffect();
-        AudioMgrX.playMusic("audio/homeMusic");
+        // AudioMgrX.playMusic("audio/homeMusic");
 
         this.schedule(() => {
             this.playGoBtn();

@@ -9,6 +9,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
+    @property(cc.Node)audioBtn:cc.Node = null;
     @property(cc.Node)playNotice:cc.Node = null;
     public static instance: Game = null;
     @property(cc.Prefab) toast: cc.Prefab = null;
@@ -50,6 +51,7 @@ export default class Game extends cc.Component {
 
     }
     onShow(){
+        this.audioBtn.active = true;
         GameLogic.instance.callBridge("refreshAmount", {}, (res)=>{
             console.log("refreshAmount res",res)
             if(res.code==0){
@@ -130,5 +132,14 @@ export default class Game extends cc.Component {
             .to(0.05, { position: cc.v3(node.x + + Rand(), node.y+ Rand())})  
             .to(0.05, { position: cc.v3(node.x, node.y), scale: 1.0 })      // 回到原位
             .start();             // 启动动画
+    }
+    onAudioPlay(sender:  cc.Button) {
+        const audio = document.getElementById('customAudio') as HTMLAudioElement;
+        if(audio){
+            // audio.muted = true;
+            audio.play(); 
+        }
+        AudioMgrX.playMusic("audio/homeMusic");
+        this.audioBtn.active = false;
     }
 }
