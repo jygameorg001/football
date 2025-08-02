@@ -113,7 +113,7 @@ export default class Shoot extends cc.Component {
         this.currency.string = GameLogic.instance.playerInfo.currency + "";
         // this.luckScore.string = "消耗: " + GameLogic.instance.playerInfo.luckScore + "U币";
     }
-    upLuck(){
+    upLuck() {
         this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
         cc.tween(this.energy.node).to(0.2, { scale: 1.2 }).to(0.2, { scale: 1 }).start();
     }
@@ -225,10 +225,10 @@ export default class Shoot extends cc.Component {
         }
         return 0;
     }
-    isHasReward(rewardList) { 
-        for(let i=0;i<rewardList.length;i++){
+    isHasReward(rewardList) {
+        for (let i = 0; i < rewardList.length; i++) {
             let rewardInfo = rewardList[i];
-            if(rewardInfo.reward> 0){
+            if (rewardInfo.reward > 0) {
                 return true
             }
         }
@@ -254,7 +254,7 @@ export default class Shoot extends cc.Component {
         let shadow = this.football.getChildByName("shadow")
         shadow.active = false;
         BallRun.getInstance().shootGiftId(id, this.isSuperShoot, () => {
-            if(this.isHasReward(GameLogic.instance.ShootingInfo.rewardList)){
+            if (this.isHasReward(GameLogic.instance.ShootingInfo.rewardList)) {
                 this.upLuck();
             }
             // show win reward
@@ -319,54 +319,63 @@ export default class Shoot extends cc.Component {
         // 创建一个奖励节点
         if (GameLogic.instance.ShootingInfo) {
             const rewardInfo = GameLogic.instance.ShootingInfo.rewardList[0];
-            Game.instance.showView("rewardItemtips",this.autoWindow,(node)=>{
-                let item:RewardItemtips = node.getComponent(RewardItemtips);
+            Game.instance.showView("rewardItemtips", this.autoWindow, (node) => {
+                let item: RewardItemtips = node.getComponent(RewardItemtips);
                 item.setDataOne(rewardInfo)
-                this.scheduleOnce(()=>{
+                this.scheduleOnce(() => {
                     this.scrollView.scrollToBottom(0.1);
-                },0.1)
+                }, 0.1)
             })
         }
         if (this.isauto) {
             this.autoShoot();
         }
     }
-    tenRewardItemTips:  RewardItemtips = null;
+    tenRewardItemTips: RewardItemtips = null;
     noShowRewardTen(times: number) {
         if (times > 10) return
         let str = this.getRewardStr(times);
-        if(this.tenRewardItemTips){
+        if (this.tenRewardItemTips) {
             this.tenRewardItemTips.setString(str);
-            if(times > 8){
-                this.scheduleOnce(()=>{
+            if (times > 8) {
+                this.scheduleOnce(() => {
                     this.scrollView.scrollToBottom(0.1);
-                },0.1)
+                }, 0.1)
             }
-        }else{
-            Game.instance.showView("rewardItemtips",this.autoWindow,(node)=>{
-                let item:RewardItemtips = node.getComponent(RewardItemtips);
+        } else {
+            Game.instance.showView("rewardItemtips", this.autoWindow, (node) => {
+                let item: RewardItemtips = node.getComponent(RewardItemtips);
                 item.setString(str);
                 this.tenRewardItemTips = item;
             })
         }
 
+        // let layout = this.autoWindow.getComponent(cc.Layout);
+        // layout.updateLayout();
+
+        // if (this.scrollView) {
+        //     // 注意：updateScrollView方法在旧版本中可能没有参数，新版本有参数表示是否立即刷新
+        //     // 如果是新版本，可以传入true立即刷新
+        //     this.scrollView.updateScrollView();
+        // }
+
     }
 
-    getRewardStr(num){
+    getRewardStr(num) {
         let rewardList = GameLogic.instance.ShootingInfo.rewardList;
-        let header ="太棒了!恭喜获得 \n"
-        let str="";
-        for(let i=0;i<num;i++){
+        let header = "太棒了!恭喜获得 \n"
+        let str = "";
+        for (let i = 0; i < num; i++) {
             let rewardInfo = rewardList[i];
             let names1 = this.getGiftNameById(rewardInfo.giftId) + "x1 ";
-            if (rewardInfo.reward > 0) {     
+            if (rewardInfo.reward > 0) {
                 let names2 = " 幸运分x" + rewardInfo.reward;
                 str += "<color=#ffffff>" + names1 + "</color><color=#FFEF40>" + names2 + "</color>";
             } else {
                 str += "<color=#ffffff>" + names1 + "</color>";
             }
-            if(i!=num-1){
-                str+="\n"
+            if (i != num - 1) {
+                str += "\n"
             }
         }
         header += str;
@@ -385,19 +394,19 @@ export default class Shoot extends cc.Component {
 
     //弹框显示奖励
     showReward() {
-        Game.instance.showView("rewardview",this.rewardViewNode,(node)=>{
+        Game.instance.showView("rewardview", this.rewardViewNode, (node) => {
             let bg = node.getChildByName("bg");
             bg.scale = 0;
             cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
             node.y = 150;
         });
         AudioMgr.playSound("audio/bigwin");
-        
+
     }
 
     //显示10局奖励
     showTenReward() {
-        Game.instance.showView("rewardListview",this.rewardViewNode,(node)=>{
+        Game.instance.showView("rewardListview", this.rewardViewNode, (node) => {
             let bg = node.getChildByName("bg");
             bg.scale = 0;
             cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
@@ -491,12 +500,12 @@ export default class Shoot extends cc.Component {
                 this.onClickItem(2)
                 break;
             case "btnLuckStar":
-                if(GameLogic.instance.playerInfo.luckScore>0){
+                if (GameLogic.instance.playerInfo.luckScore > 0) {
                     this.xingxingTips.active = true;
-                    this.xingxingTips.opacity =255;
-                    cc.tween(this.xingxingTips).delay(2).to(0.5,{opacity:0}).call(()=>{
+                    this.xingxingTips.opacity = 255;
+                    cc.tween(this.xingxingTips).delay(2).to(0.5, { opacity: 0 }).call(() => {
                         this.xingxingTips.active = false;
-                        this.xingxingTips.opacity =255;
+                        this.xingxingTips.opacity = 255;
                     }).start()
                 }
                 break;
