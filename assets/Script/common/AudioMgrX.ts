@@ -1,6 +1,6 @@
 import Game from "../Game";
 
-//AudioMgr.ts
+//AudioMgrX.ts
 export class AudioMgrX {
     private static _inst: AudioMgrX;
     public static get inst(): AudioMgrX {
@@ -9,6 +9,12 @@ export class AudioMgrX {
         }
         return this._inst;
     }
+
+    static init() {
+        let str = cc.sys.localStorage.getItem("isPaused");
+        AudioMgrX.isPaused = str == "1" ? true : false;
+    }
+    static isPaused = false;
 
     private audioNode: cc.Node;
     private bgAudioSource: cc.AudioSource;
@@ -40,13 +46,16 @@ export class AudioMgrX {
      * @param sound clip or url for the audio
      * @param volume
      */
-    static playSound(sound: string, loop:boolean = false) {
-        console.log("AudioMgr", 'playSound', sound);
+    static playSound(sound: string, loop: boolean = false) {
+        console.log("AudioMgrX", 'playSound', sound);
+        if (AudioMgrX.isPaused) {
+            return;
+        }
         cc.resources.load(sound, (err, clip: cc.AudioClip) => {
             if (err) {
                 console.log(err);
             } else {
-                AudioMgrX.inst.soundsSource.clip =clip;
+                AudioMgrX.inst.soundsSource.clip = clip;
                 AudioMgrX.inst.soundsSource.loop = loop;
                 AudioMgrX.inst.soundsSource.play()
             }
@@ -62,18 +71,21 @@ export class AudioMgrX {
      * @param volume
      */
     static playMusic(sound: string) {
-        console.log("AudioMgr", 'play', sound);
+        console.log("AudioMgrX", 'play', sound);
         cc.resources.load(sound, (err, clip: cc.AudioClip) => {
             if (err) {
                 console.log(err);
             } else {
-                AudioMgrX.inst.bgAudioSource.stop();
-                AudioMgrX.inst.bgAudioSource.clip = clip;
-                AudioMgrX.inst.bgAudioSource.loop = true;
-                AudioMgrX.inst.bgAudioSource.play();
+                // if (AudioMgrX.isPaused) {
+                    AudioMgrX.inst.bgAudioSource.stop();
+                    AudioMgrX.inst.bgAudioSource.clip = clip;
+                    AudioMgrX.inst.bgAudioSource.loop = true;
+                    AudioMgrX.inst.bgAudioSource.play();
+                // }
+
             }
         });
-        
+
     }
 
     /**
@@ -90,7 +102,7 @@ export class AudioMgrX {
     static resumeMusic() {
         AudioMgrX.inst.bgAudioSource.resume();
     }
-   
+
     clear() {
         this.stop();
     }

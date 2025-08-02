@@ -1,5 +1,6 @@
 import { BallRun } from "./BallRun";
 import {AudioMgr} from "./common/AudioMgr";
+import { AudioMgrX } from "./common/AudioMgrX";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
 import {GameLogic} from "./GameLogic";
@@ -14,7 +15,7 @@ export default class Game extends cc.Component {
 
     protected onLoad(): void {
         Game.instance = this;
-        AudioMgr.init();
+        AudioMgrX.init();
         this.initView();
         this.initEvents();
         GameLogic.instance.initUserInfo();

@@ -238,21 +238,21 @@ export default class Home extends cc.Component {
     }
 
     onBtnSound() {
-        AudioMgr.isPaused = !AudioMgr.isPaused;
-        cc.sys.localStorage.setItem("isPaused", AudioMgr.isPaused ? "1" : "0");
+        AudioMgrX.isPaused = !AudioMgrX.isPaused;
+        cc.sys.localStorage.setItem("isPaused", AudioMgrX.isPaused ? "1" : "0");
         this.initSoundIcon();
     }
     initSoundIcon() {
-        if (AudioMgr.isPaused) {
-            AudioMgr.pauseMusic();
+        if (AudioMgrX.isPaused) {
+            AudioMgrX.pauseMusic();
         } else {
-            AudioMgr.resumeMusic();
+            AudioMgrX.resumeMusic();
         }
         // 切换图标
         let on = this.soundBtn.getChildByName("on");
         let off = this.soundBtn.getChildByName("off");
-        on.active = !AudioMgr.isPaused;
-        off.active = AudioMgr.isPaused;
+        on.active = !AudioMgrX.isPaused;
+        off.active = AudioMgrX.isPaused;
     }
 
     onBtnHome() {
