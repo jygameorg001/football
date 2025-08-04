@@ -25,8 +25,11 @@ export class AudioMgr {
     }
 
     static setMusicVolume(volume: number) {
-        this.bgmVolume = volume;
-        cc.audioEngine.setMusicVolume(this.bgmVolume);
+        cc.audioEngine.setMusicVolume(volume);
+    }
+
+    static getMusicVolume() {
+        return cc.audioEngine.getMusicVolume()
     }
 
     static setEffectsVolume(volume: number) {

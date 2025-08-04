@@ -47,7 +47,6 @@ export class AudioMgrX {
      * @param volume
      */
     static playSound(sound: string, loop: boolean = false) {
-        console.log("AudioMgrX", 'playSound', sound);
         if (AudioMgrX.isPaused) {
             return;
         }
@@ -71,7 +70,6 @@ export class AudioMgrX {
      * @param volume
      */
     static playMusic(sound: string) {
-        console.log("AudioMgrX", 'play', sound);
         cc.resources.load(sound, (err, clip: cc.AudioClip) => {
             if (err) {
                 console.log(err);

@@ -1,5 +1,4 @@
 import { AudioMgr } from "./common/AudioMgr";
-import {AudioMgrX} from "./common/AudioMgrX";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
 
@@ -52,7 +51,7 @@ export default class Home extends cc.Component {
         this.initSoundIcon();
         this.roleChangeEffect.scale = 0.5;
         // this.showRoleChangeEffect();
-        // AudioMgrX.playMusic("audio/homeMusic");
+        // AudioMgr.playMusic("audio/homeMusic");
 
         this.schedule(() => {
             this.playGoBtn();
@@ -149,7 +148,7 @@ export default class Home extends cc.Component {
         this.roleChangeEffect.opacity = 150;
         this.roleChangeEffect.scale = 1;
         this.roleChangeEffect.active = true;
-        AudioMgrX.playSound("audio/roleChange");
+        AudioMgr.playSound("audio/roleChange");
         cc.tween(this.roleChangeEffect)
             .to(0.2, { opacity: 255, scale: 1.05 })
             .to(0.2, { opacity: 150, scale: 1 })
@@ -174,7 +173,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnLeft() {
-        AudioMgrX.playSound("audio/btn_click");
+        AudioMgr.playSound("audio/btn_click");
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
@@ -185,7 +184,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnRight() {
-        AudioMgrX.playSound("audio/btn_click");
+        AudioMgr.playSound("audio/btn_click");
         if (this.isAnimating) return;
         this.isAnimating = true;
         for (let index = 0; index < this.picItems.length; index++) {
@@ -238,21 +237,21 @@ export default class Home extends cc.Component {
     }
 
     onBtnSound() {
-        AudioMgrX.isPaused = !AudioMgrX.isPaused;
-        cc.sys.localStorage.setItem("isPaused", AudioMgrX.isPaused ? "1" : "0");
+        AudioMgr.isPaused = !AudioMgr.isPaused;
+        cc.sys.localStorage.setItem("isPaused", AudioMgr.isPaused ? "1" : "0");
         this.initSoundIcon();
     }
     initSoundIcon() {
-        if (AudioMgrX.isPaused) {
-            AudioMgrX.pauseMusic();
+        if (AudioMgr.isPaused) {
+            AudioMgr.pauseMusic();
         } else {
-            AudioMgrX.resumeMusic();
+            AudioMgr.resumeMusic();
         }
         // 切换图标
         let on = this.soundBtn.getChildByName("on");
         let off = this.soundBtn.getChildByName("off");
-        on.active = !AudioMgrX.isPaused;
-        off.active = AudioMgrX.isPaused;
+        on.active = !AudioMgr.isPaused;
+        off.active = AudioMgr.isPaused;
     }
 
     onBtnHome() {

@@ -1,6 +1,5 @@
 import { BallRun } from "./BallRun";
 import {AudioMgr} from "./common/AudioMgr";
-import { AudioMgrX } from "./common/AudioMgrX";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
 import {GameLogic} from "./GameLogic";
@@ -13,10 +12,11 @@ export default class Game extends cc.Component {
     @property(cc.Node)playNotice:cc.Node = null;
     public static instance: Game = null;
     @property(cc.Prefab) toast: cc.Prefab = null;
+    bgVolume: number;
 
     protected onLoad(): void {
         Game.instance = this;
-        AudioMgrX.init();
+        AudioMgr.init();
         this.initView();
         this.initEvents();
         GameLogic.instance.initUserInfo();
@@ -48,10 +48,14 @@ export default class Game extends cc.Component {
     }
     
     onHide(){
-
+        this.bgVolume = AudioMgr.getMusicVolume();
     }
     onShow(){
+        console.log("====on Game show===")
         this.audioBtn.active = true;
+        AudioMgr.setMusicVolume(this.bgVolume);
+        AudioMgr.resumeMusic();
+
         GameLogic.instance.callBridge("refreshAmount", {}, (res)=>{
             console.log("refreshAmount res",res)
             if(res.code==0){
@@ -139,7 +143,8 @@ export default class Game extends cc.Component {
             // audio.muted = true;
             audio.play(); 
         }
-        AudioMgrX.playMusic("audio/homeMusic");
+        AudioMgr.playMusic("audio/homeMusic");
         this.audioBtn.active = false;
+        
     }
 }

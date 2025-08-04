@@ -1,6 +1,5 @@
 import { BallRun } from "./BallRun";
 import { AudioMgr } from "./common/AudioMgr";
-import {AudioMgrX} from "./common/AudioMgrX";
 import { EventMgr } from "./common/EventManager";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
@@ -90,7 +89,7 @@ export default class Shoot extends cc.Component {
 
 
         this.initListItems();
-        AudioMgrX.playMusic("audio/gameMusic");
+        AudioMgr.playMusic("audio/gameMusic");
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);
@@ -409,7 +408,7 @@ export default class Shoot extends cc.Component {
             cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
             node.y = 150;
         });
-        AudioMgrX.playSound("audio/bigwin");
+        AudioMgr.playSound("audio/bigwin");
 
     }
 
@@ -420,7 +419,7 @@ export default class Shoot extends cc.Component {
             bg.scale = 0;
             cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
         })
-        AudioMgrX.playSound("audio/bigwin");
+        AudioMgr.playSound("audio/bigwin");
     }
 
     private ballIdx: number = 1;
@@ -474,8 +473,8 @@ export default class Shoot extends cc.Component {
                     EventMgr.emit("toastview", "正在射门中,请稍后...");
                     return;
                 }
-                AudioMgrX.isPaused = !AudioMgrX.isPaused;
-                cc.sys.localStorage.setItem("isPaused", AudioMgrX.isPaused ? "1" : "0");
+                AudioMgr.isPaused = !AudioMgr.isPaused;
+                cc.sys.localStorage.setItem("isPaused", AudioMgr.isPaused ? "1" : "0");
                 this.initSoundIcon();
                 break;
             case "btnName":
@@ -555,16 +554,16 @@ export default class Shoot extends cc.Component {
     }
 
     initSoundIcon() {
-        if (AudioMgrX.isPaused) {
-            AudioMgrX.pauseMusic();
+        if (AudioMgr.isPaused) {
+            AudioMgr.pauseMusic();
         } else {
-            AudioMgrX.resumeMusic();
+            AudioMgr.resumeMusic();
         }
         // 切换图标
         let on = this.soundBtn.getChildByName("on");
         let off = this.soundBtn.getChildByName("off");
-        on.active = !AudioMgrX.isPaused;
-        off.active = AudioMgrX.isPaused;
+        on.active = !AudioMgr.isPaused;
+        off.active = AudioMgr.isPaused;
     }
     go2Buy() {
         GameLogic.instance.callBridge("navigateNativeRoute", { to: "customerChargeCenter" }, (res) => {
