@@ -273,15 +273,18 @@ export default class Shoot extends cc.Component {
 
     shootOver() {
         this.timsShoot = 0;
-        this.svga.playSVGA();
+
         if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
             this.showTenReward();
         } else {
             this.showReward();
         }
+        if (GameLogic.instance.ShootingInfo.rewardList[0].reward > 0) {
+            this.svga.playSVGA();
+            this.showDoorBlink();
+            this.light.active = true;
+        }
         this.isTimeshoot = false;
-        this.showDoorBlink();
-        this.light.active = true;
         this.canShoot = true;
         this.setSheBtnState(this.btnOne, true);
         this.setSheBtnState(this.btnTen, true);
@@ -341,10 +344,10 @@ export default class Shoot extends cc.Component {
 
             this.tenRewardItemTips.setString(str);
 
-            this.scheduleOnce(()=>{
+            this.scheduleOnce(() => {
                 layout.enabled = true;
                 layout.updateLayout();
-            },0)
+            }, 0)
             if (times > 8) {
                 this.scheduleOnce(() => {
                     this.scrollView.scrollToBottom(0.1);

@@ -5048,7 +5048,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 129.38,
+      "width": 177.38,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -5100,8 +5100,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "消耗500U币",
-    "_N$string": "消耗500U币",
+    "_string": "每次消耗500U币",
+    "_N$string": "每次消耗500U币",
     "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,

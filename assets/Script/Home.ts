@@ -1,6 +1,7 @@
 import { AudioMgr } from "./common/AudioMgr";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
+import SVGAPlayer from "./svga-cocos/cocos/svga-player";
 
 export interface IPicItem {
     node: cc.Node;
@@ -35,8 +36,10 @@ export default class Home extends cc.Component {
     @property(cc.Node) rightBtn: cc.Node = null;
     @property([cc.Node]) pics: cc.Node[] = [];
     @property(cc.Node) roleChangeEffect: cc.Node = null;//选中球星特效
-
     @property(cc.Node) goBtn: cc.Node = null;
+
+    @property(SVGAPlayer)
+    svgaGuan: SVGAPlayer = null;
 
     // private currentIndex: number = 1; // 当前中间图片索引
     private readonly totalPics: number = 3; // 总共三张图片
@@ -52,6 +55,8 @@ export default class Home extends cc.Component {
         this.roleChangeEffect.scale = 0.5;
         // this.showRoleChangeEffect();
         // AudioMgr.playMusic("audio/homeMusic");
+
+         this.svgaGuan.playSVGA();
 
         this.schedule(() => {
             this.playGoBtn();
