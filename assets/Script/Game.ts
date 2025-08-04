@@ -170,15 +170,17 @@ export default class Game extends cc.Component {
             .to(0.05, { position: cc.v3(node.x, node.y), scale: 1.0 })      // 回到原位
             .start();             // 启动动画
     }
-    onAudioPlay(sender: cc.Button) {
-        const audio = document.getElementById('customAudio') as HTMLAudioElement;
-        audio.focus();
-        audio.pause();
-        setTimeout(function() {
-            audio.loop = false;
-            audio && audio.play();
-            AudioMgr.playMusic("audio/homeMusic");
-        }, 200);
-        this.audioBtn.active = false;
+  onAudioPlay(sender: cc.Button) {
+    // 关闭点击声音
+    const clickAudio = document.getElementById('customAudio') as HTMLAudioElement;
+    if (clickAudio) {
+        clickAudio.pause();
+        clickAudio.currentTime = 0; // 重置音频播放位置
+        clickAudio.loop = false;
     }
+
+    // 使用AudioMgr播放背景音乐
+    AudioMgr.playMusic("audio/homeMusic");
+    this.audioBtn.active = false;
+}
 }
