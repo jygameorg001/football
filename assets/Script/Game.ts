@@ -71,6 +71,8 @@ export default class Game extends cc.Component {
 
     onHide() {
         this.bgVolume = AudioMgr.getMusicVolume();
+        cc.audioEngine.stopAll();
+        cc.audioEngine.uncacheAll();
     }
     onShow() {
         console.log("====on Game show===" + AudioMgr.getMusicVolume().toFixed(3) + "," + this.bgVolume.toFixed(3))
