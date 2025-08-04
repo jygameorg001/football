@@ -10,9 +10,11 @@ export default class rewardListview extends cc.Component {
     rewardItem: cc.Prefab = null;
     @property(cc.Prefab)
     oneItem: cc.Prefab = null;
-
     @property(cc.Node)
     contentView: cc.Node = null;
+
+    @property(cc.Node)
+    topNode: cc.Node = null;
 
     start() {
         // "tenitem"
@@ -20,6 +22,13 @@ export default class rewardListview extends cc.Component {
         let hasReward = this.isHasReward(rewardList);
         let mergedLists = this.mergeRewardList(rewardList);
         let tempItem = hasReward?this.rewardItem:this.oneItem;
+        if(hasReward){
+            this.topNode.children[0].active = false;
+            this.topNode.children[1].active = true;
+        }else{
+            this.topNode.children[0].active = true;
+            this.topNode.children[1].active = false;
+        }
         for (let i = 0; i < mergedLists.length; i++) {
             let rewardItem = cc.instantiate(tempItem);
             rewardItem.parent = this.contentView;

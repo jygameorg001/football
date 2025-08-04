@@ -276,14 +276,18 @@ export default class Shoot extends cc.Component {
 
         if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
             this.showTenReward();
-        } else {
-            this.showReward();
-        }
-        if (GameLogic.instance.ShootingInfo.rewardList[0].reward > 0) {
             this.svga.playSVGA();
             this.showDoorBlink();
             this.light.active = true;
+        } else {
+            this.showReward();
+            if (GameLogic.instance.ShootingInfo.rewardList[0].reward > 0) {
+                this.svga.playSVGA();
+                this.showDoorBlink();
+                this.light.active = true;
+            }
         }
+
         this.isTimeshoot = false;
         this.canShoot = true;
         this.setSheBtnState(this.btnOne, true);
