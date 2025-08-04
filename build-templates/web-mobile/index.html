@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>点球大战</title>
+  <title>Cocos Creator | dianQiuDaZhan</title>
 
   <!--http://www.html5rocks.com/en/mobile/mobifying/-->
   <meta name="viewport"
@@ -38,17 +38,18 @@
   <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
 
   <link rel="stylesheet" type="text/css" href="style-mobile.css"/>
+  <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
-  <!-- <div id="splash">
+  <div id="splash">
     <div class="progress-bar stripes">
       <span style="width: 0%"></span>
     </div>
-  </div> -->
+  </div>
 
 <script src="src/settings.js" charset="utf-8"></script>
-
+<script src="vconsole.min.js"></script>
 <script src="main.js" charset="utf-8"></script>
 <audio id="customAudio" src="homeMusic.mp3" type="audio/mpeg"></audio>
 <script type="text/javascript">
@@ -59,8 +60,8 @@
     }
 
     var debug = window._CCSettings.debug;
-    // var splash = document.getElementById('splash');
-    // splash.style.display = 'none';
+    var splash = document.getElementById('splash');
+    splash.style.display = 'block';
 
     function loadScript (moduleName, cb) {
       function scriptLoaded () {
@@ -76,17 +77,12 @@
     }
 
     loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js', function () {
-        cc.macro.ENABLE_TRANSPARENT_CANVAS = true;
-        if (cc.sys.os === cc.sys.OS_IOS || cc.sys.os === cc.sys.OS_OSX) {
-            cc.sys.capabilities.webp = true;
-        }
       if (CC_PHYSICS_BUILTIN || CC_PHYSICS_CANNON) {
         loadScript(debug ? 'physics.js' : 'physics-min.js', window.boot);
       }
       else {
         window.boot();
       }
-      
     });
 })();
 </script>

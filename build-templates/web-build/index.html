@@ -38,20 +38,19 @@
   <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
 
   <link rel="stylesheet" type="text/css" href="style-mobile.css"/>
-  <link rel="icon" href="favicon.ico"/>
 </head>
 <body>
   <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
-  <div id="splash">
+  <!-- <div id="splash">
     <div class="progress-bar stripes">
       <span style="width: 0%"></span>
     </div>
-  </div>
+  </div> -->
 
 <script src="src/settings.js" charset="utf-8"></script>
 
 <script src="main.js" charset="utf-8"></script>
-
+<audio id="customAudio" src="homeMusic.mp3" type="audio/mpeg"></audio>
 <script type="text/javascript">
 (function () {
     // open web debugger console
@@ -60,8 +59,8 @@
     }
 
     var debug = window._CCSettings.debug;
-    var splash = document.getElementById('splash');
-    splash.style.display = 'block';
+    // var splash = document.getElementById('splash');
+    // splash.style.display = 'none';
 
     function loadScript (moduleName, cb) {
       function scriptLoaded () {
