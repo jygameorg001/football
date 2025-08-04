@@ -32,8 +32,8 @@ export default class Game extends cc.Component {
                 this.onShow();
             }
         });
-        const iosVersion = GameLogic.instance.getIOSVersion();
-        console.log("iOS ",iosVersion);
+        // const iosVersion = GameLogic.instance.getIOSVersion();
+        // console.log("iOS ",iosVersion);
     }
     checkNotice() {
         this.playNotice.active = true;

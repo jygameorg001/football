@@ -316,12 +316,10 @@ export class GameLogic {
 
     isIOSVersionBig() {
         const userAgent = navigator.userAgent;
-        let version= userAgent.match(/OS (\d )_(\d )_?(\d )?/);
-        console.log(userAgent);
+        let version = userAgent.match(/OS (\d+)_(\d+)(?:_(\d+))?/);
         if (version && version.length > 1) {
             var versionStr = version[1] + '.' + version[2] + '.' + (version[3] || '0');
-            console.log(version);
-            if(Number(version[1])==18 && Number(version[2])>=5){
+            if(Number(versionStr[1])==18 && Number(versionStr[2])>=5){
                 return true;
             }
         }
