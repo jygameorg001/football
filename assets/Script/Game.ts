@@ -24,6 +24,7 @@ export default class Game extends cc.Component {
         // cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         this.checkNotice();
         EventMgr.on("toastview", this.showToast, this);
+        EventMgr.on("goHome", this.goHomeback, this);
         // const node = new cc.Node();
         // node.addComponent(cc.Graphics);
         // node.parent = this.gifts;
@@ -72,14 +73,14 @@ export default class Game extends cc.Component {
         this.bgVolume = AudioMgr.getMusicVolume();
     }
     onShow() {
-     console.log("====on Game show==="+AudioMgr.getMusicVolume().toFixed(3)+","+this.bgVolume.toFixed(3))
+        console.log("====on Game show===" + AudioMgr.getMusicVolume().toFixed(3) + "," + this.bgVolume.toFixed(3))
         this.audioBtn.active = true;
         AudioMgr.stopMusic();
         cc.audioEngine.stopAll();
         cc.audioEngine.uncacheAll();
         const audio = document.getElementById('customAudio') as HTMLAudioElement;
-        if(audio){
-            console.log("=====audio=="+audio.muted)
+        if (audio) {
+            console.log("=====audio==" + audio.muted)
         }
 
         GameLogic.instance.callBridge("refreshAmount", {}, (res) => {
@@ -103,8 +104,12 @@ export default class Game extends cc.Component {
         cc.game.off(cc.game.EVENT_HIDE, this.onHide, this);
         cc.game.off(cc.game.EVENT_SHOW, this.onShow, this);
         EventMgr.off("toastview", this.showToast, this);
+        EventMgr.off("goHome", this.goHomeback, this);
         Game.instance = null;
         EventMgr.clearByTarget(this);
+    }
+    goHomeback() {
+        AudioMgr.playMusic("audio/homeMusic");
     }
 
     start() {

@@ -463,6 +463,7 @@ export default class Shoot extends cc.Component {
                 this.go2Buy();
                 break;
             case "btnBack":
+                EventMgr.emit("goHome");
                 this.node.destroy();
                 break;
             case "btnHelp":
