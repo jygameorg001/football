@@ -75,10 +75,11 @@
       domScript.addEventListener('load', scriptLoaded, false);
       document.body.appendChild(domScript);
     }
-if (cc.sys.os === cc.sys.OS_IOS || cc.sys.os === cc.sys.OS_OSX) {
+
+    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js', function () {
+      if (cc.sys.os === cc.sys.OS_IOS || cc.sys.os === cc.sys.OS_OSX) {
             cc.sys.capabilities.webp = true;
         }
-    loadScript(debug ? 'cocos2d-js.js' : 'cocos2d-js-min.js', function () {
       if (CC_PHYSICS_BUILTIN || CC_PHYSICS_CANNON) {
         loadScript(debug ? 'physics.js' : 'physics-min.js', window.boot);
       }
