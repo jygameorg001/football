@@ -65,7 +65,7 @@ export class AudioMgr {
      * @param isLoop 是否循环播放
      */
     static playMusic(sound: cc.AudioClip | string, isLoop = true) {
-       
+        console.log("AudioMgr,"+'play:'+sound);
         if (typeof sound == "string") {
             cc.resources.load(sound, cc.AudioClip, function (err, clip: cc.AudioClip) {
                 if (err) {
