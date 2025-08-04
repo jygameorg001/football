@@ -314,5 +314,28 @@ export class GameLogic {
         return this.currentStar;
     }
 
+    isIOSVersionBig() {
+        const userAgent = navigator.userAgent;
+        let version= userAgent.match(/OS (\d )_(\d )_?(\d )?/);
+        console.log(userAgent);
+        if (version && version.length > 1) {
+            var versionStr = version[1] + '.' + version[2] + '.' + (version[3] || '0');
+            console.log(version);
+            if(Number(version[1])==18 && Number(version[2])>=5){
+                return true;
+            }
+        }
+        return false
+    }
+
+    isIosMobile() {
+        if(cc.sys.os == cc.sys.OS_IOS||cc.sys.os == cc.sys.OS_OSX){
+            if(cc.sys.isBrowser && cc.sys.isMobile){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 window["GLogic"] = window["GLogic"] || GameLogic.instance;

@@ -32,8 +32,8 @@ export default class Game extends cc.Component {
                 this.onShow();
             }
         });
-
-
+        const iosVersion = GameLogic.instance.getIOSVersion();
+        console.log("iOS ",iosVersion);
     }
     checkNotice() {
         this.playNotice.active = true;
@@ -53,14 +53,23 @@ export default class Game extends cc.Component {
     }
 
     onHide() {
+        if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
+            return;
+        }
         this.bgVolume = AudioMgr.getMusicVolume();
         cc.audioEngine.stopAll();
         cc.audioEngine.uncacheAll();
     }
     onShow() {
+        if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
+            return;
+        }
         this.audioBtn.active = true;
         cc.audioEngine.stopAll();
         cc.audioEngine.uncacheAll();
+        this.refreshPlayerInfo();
+    }
+    refreshPlayerInfo() {
         GameLogic.instance.callBridge("refreshAmount", {}, (res) => {
             console.log("refreshAmount res", res)
             if (res.code == 0) {
@@ -69,6 +78,7 @@ export default class Game extends cc.Component {
         })
         GameLogic.instance.reqPlayerInfo();
     }
+
     initView() {
     }
     initEvents() {
@@ -89,7 +99,11 @@ export default class Game extends cc.Component {
     }
 
     start() {
-
+        if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
+            this.onAudioPlay(null);
+            return;
+        }
+        
     }
 
     showView(path: string, parent?, callback?) {
@@ -147,6 +161,7 @@ export default class Game extends cc.Component {
   onAudioPlay(sender: cc.Button) {
         // 关闭点击声音
         const clickAudio = document.getElementById('customAudio') as HTMLAudioElement;
+        clickAudio && clickAudio.focus();
         clickAudio && clickAudio.pause();
         clickAudio && clickAudio.play();
         this.scheduleOnce(()=>{
