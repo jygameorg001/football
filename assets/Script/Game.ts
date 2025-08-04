@@ -170,12 +170,13 @@ export default class Game extends cc.Component {
     }
     onAudioPlay(sender: cc.Button) {
         const audio = document.getElementById('customAudio') as HTMLAudioElement;
-        if (audio) {
-            // audio.muted = true;
-            audio.play();
-        }
-        AudioMgr.playMusic("audio/homeMusic");
+        audio.focus();
+        audio.pause();
+        setTimeout(function() {
+            audio.loop = false;
+            audio && audio.play();
+            AudioMgr.playMusic("audio/homeMusic");
+        }, 200);
         this.audioBtn.active = false;
-
     }
 }
