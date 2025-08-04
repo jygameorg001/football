@@ -20,33 +20,16 @@ export default class Game extends cc.Component {
         this.initView();
         this.initEvents();
         GameLogic.instance.initUserInfo();
-        cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
+        // cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
         // cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         this.checkNotice();
         EventMgr.on("toastview", this.showToast, this);
         EventMgr.on("goHome", this.goHomeback, this);
-        // const node = new cc.Node();
-        // node.addComponent(cc.Graphics);
-        // node.parent = this.gifts;
-        // this.trailGraphics = node.getComponent(cc.Graphics);
-        // BallRun.getInstance().initFootBall(this.football, this.trailGraphics)
-
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') {
-                console.log('页面进入后台');
+                this.onHide();
             } else {
-                console.log('页面回到前台2');
-                //    window.location.reload()
                 this.onShow();
-                // this.audioBtn.active = true;
-                // // AudioMgr.setMusicVolume(this.bgVolume);
-                // // AudioMgr.resumeMusic();
-                // this.onShow();
-                // console.log('页面回到前台2');
-
-                //重启游戏
-                // GameLogic.instance.callBridge("restartGame", {}, (res) => {
-
             }
         });
 
@@ -75,16 +58,9 @@ export default class Game extends cc.Component {
         cc.audioEngine.uncacheAll();
     }
     onShow() {
-        console.log("====on Game show===" + AudioMgr.getMusicVolume().toFixed(3) + "," + this.bgVolume.toFixed(3))
         this.audioBtn.active = true;
-        AudioMgr.stopMusic();
         cc.audioEngine.stopAll();
         cc.audioEngine.uncacheAll();
-        const audio = document.getElementById('customAudio') as HTMLAudioElement;
-        if (audio) {
-            console.log("=====audio==" + audio.muted)
-        }
-
         GameLogic.instance.callBridge("refreshAmount", {}, (res) => {
             console.log("refreshAmount res", res)
             if (res.code == 0) {
@@ -103,8 +79,6 @@ export default class Game extends cc.Component {
     }
 
     protected onDestroy(): void {
-        cc.game.off(cc.game.EVENT_HIDE, this.onHide, this);
-        cc.game.off(cc.game.EVENT_SHOW, this.onShow, this);
         EventMgr.off("toastview", this.showToast, this);
         EventMgr.off("goHome", this.goHomeback, this);
         Game.instance = null;
@@ -171,16 +145,13 @@ export default class Game extends cc.Component {
             .start();             // 启动动画
     }
   onAudioPlay(sender: cc.Button) {
-    // 关闭点击声音
-    const clickAudio = document.getElementById('customAudio') as HTMLAudioElement;
-    if (clickAudio) {
-        clickAudio.pause();
-        clickAudio.currentTime = 0; // 重置音频播放位置
-        clickAudio.loop = false;
+        // 关闭点击声音
+        const clickAudio = document.getElementById('customAudio') as HTMLAudioElement;
+        clickAudio && clickAudio.pause();
+        clickAudio && clickAudio.play();
+        this.scheduleOnce(()=>{
+            AudioMgr.playMusic("audio/homeMusic");
+        },0.2)
+        this.audioBtn.active = false;
     }
-
-    // 使用AudioMgr播放背景音乐
-    AudioMgr.playMusic("audio/homeMusic");
-    this.audioBtn.active = false;
-}
 }
