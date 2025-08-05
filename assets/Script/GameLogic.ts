@@ -69,13 +69,15 @@ export interface IAPPInfo {
 
 export class GameLogic {
     private static _instance: GameLogic = new GameLogic();
-    gameInfo: any;
-    queryRatesInfo: any;
+    gameInfo: any = null;
+    queryRatesInfo: any=null;
     token: string;
     roomId: string;
     anchorId: string;
     appInfo: IAPPInfo=null;
     gameShootTime: number = 1;
+    loadCount:  number = 0;
+    isOffLine: boolean;
     public static get instance() {
         return this._instance;
     }
@@ -164,6 +166,7 @@ export class GameLogic {
             console.log("返回getPlayerInfoV2", data);
             GameLogic.instance.playerInfo = data;
             EventMgr.emit("onGetPlayerInfo")
+            this.loadCount--;
         });
     }
     reqQueryGiftList() {
@@ -174,6 +177,7 @@ export class GameLogic {
             console.log("返回queryGiftList", data.result);
             GameLogic.instance.giftList = data.result;
             EventMgr.emit("onGetGiftList")
+            this.loadCount--;
         })
     }
 
@@ -231,10 +235,11 @@ export class GameLogic {
             console.log("Extracted Data:", extractedData);
             GameLogic.instance.gameInfo = extractedData;
             EventMgr.emit("onGetGameInfo", extractedData);
+            this.loadCount--;
         });
     }
 
-
+   
     reqGetqueryRates() {
         HttpHelper.httpGet("/football-api/football/queryRates", (err, data) => {
             if (err != 200) {
@@ -243,7 +248,37 @@ export class GameLogic {
             console.log("queryRatesInfo:", data);
             GameLogic.instance.queryRatesInfo = data.result;
             EventMgr.emit("queryRatesInfo", data)
+            this.loadCount--;
         })
+    }
+
+    checkCanEnterGame() { 
+        if(this.playerInfo && this.giftList.length>0 && this.gameInfo && this.queryRatesInfo){
+            return true;
+        }
+        this.loadCount =0;
+        if(!this.playerInfo){
+            this.reqPlayerInfo();
+            this.loadCount++;
+        }
+        if(this.giftList&&this.giftList.length==0){
+            this.reqQueryGiftList();
+            this.loadCount++;
+        }
+        if(!this.gameInfo){
+            this.reqGetGameCfg();
+            this.loadCount++;
+        }
+        if(!this.queryRatesInfo){
+            this.reqGetqueryRates();
+            this.loadCount++;
+        }
+        Game.instance.beginCheck();
+        return false;
+    }
+
+    isCheckOver(){
+        return this.loadCount==0;
     }
 
     loadRemoteSprite(url, spriteNode: cc.Sprite,width=0) {

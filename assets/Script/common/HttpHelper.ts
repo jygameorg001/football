@@ -33,6 +33,10 @@ export class HttpHelper {
     // }
 
     static httpGet(url: string, callback: (error: any, res: any) => void) {
+        if(GameLogic.instance.isOffLine){
+            EventMgr.emit("offline")
+            return;
+        }
         let urls = HttpHelper.BaseURL + url;
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
@@ -83,6 +87,10 @@ export class HttpHelper {
     }
 
     static httpPost(path, params, callback) {
+        if(GameLogic.instance.isOffLine){
+            EventMgr.emit("offline")
+            return;
+        }
         let url = HttpHelper.BaseURL + path;
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {

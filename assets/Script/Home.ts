@@ -1,6 +1,8 @@
 import { AudioMgr } from "./common/AudioMgr";
+import {EventMgr} from "./common/EventManager";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
+import Shoot from "./Shoot";
 import SVGAPlayer from "./svga-cocos/cocos/svga-player";
 
 export interface IPicItem {
@@ -37,33 +39,39 @@ export default class Home extends cc.Component {
     @property([cc.Node]) pics: cc.Node[] = [];
     @property(cc.Node) roleChangeEffect: cc.Node = null;//选中球星特效
     @property(cc.Node) goBtn: cc.Node = null;
+    @property(cc.Node) loadBtn: cc.Node = null;
 
-    @property(SVGAPlayer)
-    svgaGuan: SVGAPlayer = null;
-
+    @property(SVGAPlayer) svgaGuan: SVGAPlayer = null;
     // private currentIndex: number = 1; // 当前中间图片索引
     private readonly totalPics: number = 3; // 总共三张图片
     private isAnimating: boolean = false; // 动画是否在播放
 
     private positions: cc.Vec2[] = []; // 存储图片的初始位置
     private picItems: IPicItem[] = [];
+    isAniOver: boolean;
     start() {
+        Game.instance.homeView = this;
         this.initPicsPosition();
         this.addBreathingEffect(this.leftBtn, -1);
         this.addBreathingEffect(this.rightBtn, 1);
-        this.initSoundIcon();
-        this.roleChangeEffect.scale = 0.5;
-        // this.showRoleChangeEffect();
-        // AudioMgr.playMusic("audio/homeMusic");
-
         this.svgaGuan.playSVGA();
-
         this.schedule(() => {
             this.playGoBtn();
         }, 1.2);
         this.playGoBtn();
+        this.initView();
+        EventMgr.on("OnCheckOver", this.onCheckOver, this);
 
+    }
+    protected onDestroy(): void {
+        EventMgr.off("OnCheckOver", this.onCheckOver, this);
+    }
+    initView(){
+        this.initSoundIcon();
         this.roleChangeEffect.active = false;
+        this.loadBtn.active = false;
+        this.goBtn.active = true;
+        this.isAnimating = false;
     }
     addBreathingEffect(btn: cc.Node, scaleX) {
         cc.tween(btn).repeatForever(
@@ -148,32 +156,6 @@ export default class Home extends cc.Component {
         }
 
     }
-    //选中球星底图要闪动
-    showRoleChangeEffect() {
-        this.roleChangeEffect.opacity = 150;
-        this.roleChangeEffect.active = true;
-        AudioMgr.playSound("audio/roleChange");
-
-        cc.tween(this.roleChangeEffect)
-            .to(0.2, { opacity: 255, scale: 1.05 })
-            .to(0.2, { opacity: 150, scale: 1 })
-            .union()
-            .repeat(2)
-            .call(() => {
-                // 动画播放完成后，重置并隐藏节点
-                this.roleChangeEffect.active = false;
-                this.roleChangeEffect.opacity = 150;
-                this.roleChangeEffect.scale = 1;
-            })
-            .start();
-    }
-
-    //清除选中球星底图闪动
-    clearRoleChangeEffect() {
-        this.roleChangeEffect.stopAllActions();
-        this.roleChangeEffect.active = false;
-    }
-
     getChooseId() {
         for (let i = 0; i < this.picItems.length; i++) {
             if (this.picItems[i].index == 1) {
@@ -218,29 +200,51 @@ export default class Home extends cc.Component {
     }
 
     onBtnGo() {
-
-        let node = this.getChooseNode();
-        this.showRoleChangeEffect();
-        if (node) {
-            cc.tween(node)
-                .to(0.2, { scale: 1.2 })
-                .to(0.2, { scale: 1 })
-                .call(() => {
-                    if (GameLogic.instance.playerInfo) {
-                        let id = this.getChooseId();
-                        GameLogic.instance.setChooseStar(id);
-                        Game.instance.showView("Shoot", null, (node) => {
-                            this.clearRoleChangeEffect();
-                        });
-                    }
-                })
-                .start();
-
-            cc.tween(this.roleChangeEffect)
-                .to(0.2, { scale: 1.2 })
-                .to(0.2, { scale: 1 })
-                .start();
+        if (!GameLogic.instance.checkCanEnterGame()) {
+            return;
         }
+        this.isAnimating = true;
+        this.isAniOver = false;
+        let id = this.getChooseId();
+        GameLogic.instance.setChooseStar(id);
+        if(Game.instance.shootView){
+            Game.instance.shootView.node.active = false;
+            this.change2Shoot();
+        }else{
+            Game.instance.showView("Shoot", null, (node) => {
+                node.active = false;
+                Game.instance.shootView = node.getComponent(Shoot);
+                this.change2Shoot();
+            });
+        }
+
+        this.goBtn.active = false;
+        this.loadBtn.active = true;
+        let node = this.getChooseNode();
+        cc.tween(node)
+            .to(0.2, { scale: 1.2 })
+            .to(0.2, { scale: 1 })
+            .call(() => {
+                this.isAniOver = true;
+                this.change2Shoot();
+            })
+            .start();
+
+        cc.tween(this.roleChangeEffect)
+            .to(0.2, { scale: 1.2 })
+            .to(0.2, { scale: 1 })
+            .start();
+    
+    }
+    change2Shoot(){
+        if(!this.isAniOver){
+            return;
+        }
+        if(!Game.instance.shootView){
+            return;
+        }
+        Game.instance.shootView.node.active = true;
+        Game.instance.homeView.node.active = false;
     }
 
     onBtnHelp() {
@@ -280,6 +284,9 @@ export default class Home extends cc.Component {
                 this.startKuangEffect();
             })
             .start();
+    }
+    onCheckOver(){
+        this.onBtnGo();
     }
     startKuangEffect() {
         let kuang = this.goBtn.getChildByName("kuang");

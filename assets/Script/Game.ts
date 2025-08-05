@@ -3,6 +3,8 @@ import { AudioMgr } from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
 import { GameLogic } from "./GameLogic";
+import Home from "./Home";
+import Shoot from "./Shoot";
 
 const { ccclass, property } = cc._decorator;
 
@@ -11,8 +13,9 @@ export default class Game extends cc.Component {
     @property(cc.Node) audioBtn: cc.Node = null;
     @property(cc.Node) playNotice: cc.Node = null;
     public static instance: Game = null;
-    @property(cc.Prefab) toast: cc.Prefab = null;
     bgVolume: number;
+    homeView: Home=null;//当前界面
+    shootView:Shoot=null;
 
     protected onLoad(): void {
         Game.instance = this;
@@ -25,6 +28,15 @@ export default class Game extends cc.Component {
         this.checkNotice();
         EventMgr.on("toastview", this.showToast, this);
         EventMgr.on("goHome", this.goHomeback, this);
+        EventMgr.on("HttpError", this.onHttpError, this);
+        EventMgr.on("HttpTimeOut", this.onHttpError, this);
+        EventMgr.on("offline", this.offline,this);
+        window.addEventListener("offline",()=>{
+            EventMgr.emit("offline");
+        } )
+        window.addEventListener("online",()=>{
+            GameLogic.instance.isOffLine = false;
+        } )
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'hidden') {
                 this.onHide();
@@ -34,6 +46,13 @@ export default class Game extends cc.Component {
         });
         // const iosVersion = GameLogic.instance.getIOSVersion();
         // console.log("iOS ",iosVersion);
+    }
+    offline(){
+        GameLogic.instance.isOffLine = true;
+        this.showToast("网络断开")
+    }
+    onHttpError(){
+        this.showToast("网络异常")
     }
     checkNotice() {
         this.playNotice.active = true;
@@ -47,26 +66,27 @@ export default class Game extends cc.Component {
 
     //加载全局飘框
     showToast(msg: string, time: number = 2) {
-        let node = cc.instantiate(this.toast);
-        node.parent = Game.instance.node;
-        node.getComponent("ToastView").showToast(msg, time);
+        this.showView("toastView",Game.instance.node,(node)=>{
+            node.getComponent("ToastView").showToast(msg, time);
+        })
+
     }
 
     onHide() {
         if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
+            this.bgVolume = AudioMgr.getMusicVolume();
+            cc.audioEngine.stopAll();
+            cc.audioEngine.uncacheAll();
             return;
         }
-        this.bgVolume = AudioMgr.getMusicVolume();
-        cc.audioEngine.stopAll();
-        cc.audioEngine.uncacheAll();
     }
     onShow() {
         if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
+            this.audioBtn.active = true;
+            cc.audioEngine.stopAll();
+            cc.audioEngine.uncacheAll();
             return;
         }
-        this.audioBtn.active = true;
-        cc.audioEngine.stopAll();
-        cc.audioEngine.uncacheAll();
         this.refreshPlayerInfo();
     }
     refreshPlayerInfo() {
@@ -168,4 +188,16 @@ export default class Game extends cc.Component {
         },0.2)
         this.audioBtn.active = false;
     }
+
+    beginCheck(){
+        this.unschedule(this.onCheckNext)
+        this.schedule(this.onCheckNext,2)
+    }
+    onCheckNext(){
+        if(GameLogic.instance.loadCount==0){
+            EventMgr.emit("OnCheckOver")
+            this.unschedule(this.onCheckNext)
+        }
+    }
+
 }

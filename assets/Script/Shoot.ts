@@ -85,6 +85,7 @@ export default class Shoot extends cc.Component {
         this.xingxingTips.active = false;
         this.canShoot = true;
         this.upinfo();
+        this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
         this.listNode.active = false;
 
         //初始化按钮
@@ -490,7 +491,9 @@ export default class Shoot extends cc.Component {
                 break;
             case "btnBack":
                 EventMgr.emit("goHome");
-                this.node.destroy();
+                this.node.active = false;
+                Game.instance.homeView.node.active =true;
+                Game.instance.homeView.initView();
                 break;
             case "btnHelp":
                 Game.instance.showView("FootHelp");
