@@ -260,6 +260,7 @@ export class GameLogic {
                 }
                 if(width>0){
                     let scale = width/asset.width;
+                    spriteNode.sizeMode =  cc.Sprite.SizeMode.CUSTOM;
                     spriteNode.node.setContentSize(width,scale*asset.height);
                 }
                 spriteNode.spriteFrame = frame;

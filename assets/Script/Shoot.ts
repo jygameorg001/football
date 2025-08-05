@@ -140,7 +140,7 @@ export default class Shoot extends cc.Component {
         for (let i = 0; i < this.giftList.length; i++) {
             let gift = GameLogic.instance.giftList[i];
             let node = this.giftList[i];
-            GameLogic.instance.loadRemoteSprite(gift.giftImage, node.getComponent(cc.Sprite));
+            GameLogic.instance.loadRemoteSprite(gift.giftImage, node.getComponent(cc.Sprite),90);
         }
     }
     protected initBtnClickHandle() {
