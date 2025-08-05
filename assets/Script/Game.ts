@@ -10,7 +10,6 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
-    @property(cc.Node) audioBtn: cc.Node = null;
     @property(cc.Node) playNotice: cc.Node = null;
     public static instance: Game = null;
     bgVolume: number;
@@ -47,8 +46,7 @@ export default class Game extends cc.Component {
                 this.onShow();
             }
         });
-        // const iosVersion = GameLogic.instance.getIOSVersion();
-        // console.log("iOS ",iosVersion);
+
     }
     offline(){
         GameLogic.instance.isOffLine = true;
@@ -85,7 +83,6 @@ export default class Game extends cc.Component {
     }
     onShow() {
         if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
-            this.audioBtn.active = true;
             cc.audioEngine.stopAll();
             cc.audioEngine.uncacheAll();
             return;
@@ -122,10 +119,10 @@ export default class Game extends cc.Component {
     }
 
     start() {
-        if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){      
+        if(GameLogic.instance.isIosMobile()){         
             return;
         }
-        this.onAudioPlay(null); 
+        GameLogic.instance.setClickBG();
     }
 
     showView(path: string, parent?, callback?) {
@@ -190,17 +187,6 @@ export default class Game extends cc.Component {
             .to(0.05, { position: cc.v3(node.x + + Rand(), node.y + Rand()) })
             .to(0.05, { position: cc.v3(node.x, node.y), scale: 1.0 })      // 回到原位
             .start();             // 启动动画
-    }
-  onAudioPlay(sender: cc.Button) {
-        // 关闭点击声音
-        const clickAudio = document.getElementById('customAudio') as HTMLAudioElement;
-        clickAudio && clickAudio.focus();
-        clickAudio && clickAudio.pause();
-        clickAudio && clickAudio.play();
-        this.scheduleOnce(()=>{
-            AudioMgr.playMusic("audio/homeMusic");
-        },0.2)
-        this.audioBtn.active = false;
     }
 
     beginCheck(){

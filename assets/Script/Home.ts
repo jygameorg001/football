@@ -165,6 +165,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnLeft() {
+        GameLogic.instance.setClickBG();
         AudioMgr.playSound("audio/btn_click");
         if (this.isAnimating) return;
         this.isAnimating = true;
@@ -176,6 +177,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnRight() {
+        GameLogic.instance.setClickBG();
         AudioMgr.playSound("audio/btn_click");
         if (this.isAnimating) return;
         this.isAnimating = true;
@@ -187,6 +189,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnBack() {
+        GameLogic.instance.setClickBG();
         GameLogic.instance.closeGame();
     }
 
@@ -199,6 +202,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnGo() {
+        GameLogic.instance.setClickBG();
         if (!GameLogic.instance.checkCanEnterGame()) {
             return;
         }
@@ -250,6 +254,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnHelp() {
+        GameLogic.instance.setClickBG();
         Game.instance.showView("FootHelp");
     }
 
@@ -316,6 +321,10 @@ export default class Home extends cc.Component {
         let text1 = cc.instantiate(text);
         text1.parent = text;
         cc.tween(text1).to(0.5, { scale: 1.5, opacity: 0 }).removeSelf().start();
+    }
+
+    onBtnClickBG(){
+        GameLogic.instance.setClickBG();
     }
 
     // update (dt) {}

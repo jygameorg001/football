@@ -1,3 +1,4 @@
+import {AudioMgr} from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
 import Game from "./Game";
@@ -78,6 +79,7 @@ export class GameLogic {
     gameShootTime: number = 1;
     loadCount:  number = 0;
     isOffLine: boolean;
+    isFirstClick: boolean = false;
     public static get instance() {
         return this._instance;
     }
@@ -381,6 +383,25 @@ export class GameLogic {
         setTimeout(()=>{
             GameLogic.isClickEnable = false;
         },dt*1000)
+    }
+
+    setClickBG(){
+        if(GameLogic.instance.isFirstClick){
+            return;
+        }
+        GameLogic.instance.isFirstClick = true;
+        this.onAudioPlay();
+    }
+    onAudioPlay() {
+        console.log("===onAudioPlay");
+        // 关闭点击声音
+        const clickAudio = document.getElementById('customAudio') as HTMLAudioElement;
+        clickAudio && clickAudio.focus();
+        clickAudio && clickAudio.pause();
+        // clickAudio && clickAudio.play();
+        setTimeout(()=>{
+             AudioMgr.playMusic("audio/homeMusic");
+        },200)
     }
 }
 window["GLogic"] = window["GLogic"] || GameLogic.instance;

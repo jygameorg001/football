@@ -144,6 +144,7 @@ export default class Shoot extends cc.Component {
             btn.node.on(
                 "click",
                 () => {
+                    GameLogic.instance.setClickBG();
                     this.onBtnClickHandle(btn.node.name, btn);
                 },
                 this

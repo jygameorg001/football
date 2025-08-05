@@ -25,6 +25,7 @@ export default class PlayNotice extends cc.Component {
 
     protected onDestroy(): void {
         EventMgr.off("agree_notice", this.onAgreeNotice, this);
+        GameLogic.instance.setClickBG();
     }
 
     onGetGameInfo(info){
