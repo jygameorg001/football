@@ -56,14 +56,14 @@ export default class Home extends cc.Component {
         // this.showRoleChangeEffect();
         // AudioMgr.playMusic("audio/homeMusic");
 
-         this.svgaGuan.playSVGA();
+        this.svgaGuan.playSVGA();
 
         this.schedule(() => {
             this.playGoBtn();
         }, 1.2);
         this.playGoBtn();
 
-       this.roleChangeEffect.active = false;
+        this.roleChangeEffect.active = false;
     }
     addBreathingEffect(btn: cc.Node, scaleX) {
         cc.tween(btn).repeatForever(
@@ -151,14 +151,20 @@ export default class Home extends cc.Component {
     //选中球星底图要闪动
     showRoleChangeEffect() {
         this.roleChangeEffect.opacity = 150;
-        this.roleChangeEffect.scale = 1;
         this.roleChangeEffect.active = true;
         AudioMgr.playSound("audio/roleChange");
+
         cc.tween(this.roleChangeEffect)
             .to(0.2, { opacity: 255, scale: 1.05 })
             .to(0.2, { opacity: 150, scale: 1 })
             .union()
-            .repeatForever()
+            .repeat(2)
+            .call(() => {
+                // 动画播放完成后，重置并隐藏节点
+                this.roleChangeEffect.active = false;
+                this.roleChangeEffect.opacity = 150;
+                this.roleChangeEffect.scale = 1;
+            })
             .start();
     }
 
@@ -185,7 +191,7 @@ export default class Home extends cc.Component {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index - 1)
         }
-        
+
     }
 
     onBtnRight() {
@@ -196,7 +202,7 @@ export default class Home extends cc.Component {
             const picItem = this.picItems[index];
             this.move2Index(picItem, picItem.index + 1)
         }
-    
+
     }
 
     onBtnBack() {
@@ -212,7 +218,7 @@ export default class Home extends cc.Component {
     }
 
     onBtnGo() {
-        
+
         let node = this.getChooseNode();
         this.showRoleChangeEffect();
         if (node) {
@@ -223,7 +229,7 @@ export default class Home extends cc.Component {
                     if (GameLogic.instance.playerInfo) {
                         let id = this.getChooseId();
                         GameLogic.instance.setChooseStar(id);
-                        Game.instance.showView("Shoot",null,(node)=>{
+                        Game.instance.showView("Shoot", null, (node) => {
                             this.clearRoleChangeEffect();
                         });
                     }
@@ -231,9 +237,9 @@ export default class Home extends cc.Component {
                 .start();
 
             cc.tween(this.roleChangeEffect)
-            .to(0.2, { scale: 1.2 })
-            .to(0.2, {  scale: 1 })
-            .start();
+                .to(0.2, { scale: 1.2 })
+                .to(0.2, { scale: 1 })
+                .start();
         }
     }
 

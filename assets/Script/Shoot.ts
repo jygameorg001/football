@@ -39,8 +39,8 @@ export default class Shoot extends cc.Component {
     @property(SVGAPlayer)
     svga: SVGAPlayer = null;
 
-     @property(SVGAPlayer)
-    svgaJinzhong: SVGAPlayer = null;
+    @property(cc.Node)
+    Jinzhong: cc.Node = null;
 
     @property(cc.Node)
     btnOne: cc.Node = null;
@@ -77,6 +77,7 @@ export default class Shoot extends cc.Component {
         BallRun.getInstance().liziNode = this.tuowei;
         BallRun.getInstance().giftList = this.giftList;
         this.clearAutoReward();
+        this.Jinzhong.active = false;
 
         //scrollView直接隐藏滑动条
 
@@ -278,13 +279,17 @@ export default class Shoot extends cc.Component {
     }
 
     //播放击中中奖效果
-    kuangAni(index:number) {
+    kuangAni(index: number) {
         console.log("击中", index);
-        // this.svgaJinzhong.stopAnimation(false);
-        // this.svgaJinzhong.clearSvagPlayer();
-        this.svgaJinzhong.playSVGA();
+        // 先判断是不是有序列帧，播放前清空
+        this.Jinzhong.active = false;
+        this.Jinzhong.getComponent(cc.Animation).stop();
+        //改成播放序列帧动画
+        this.Jinzhong.active = true;
+        this.Jinzhong.getComponent(cc.Animation).play();
+        //    设置位置
+        this.Jinzhong.setPosition(this.giftList[index].getPosition().x, this.giftList[index].getPosition().y + 167);
         AudioMgr.playSound("audio/jinzhongClick");
-
     }
 
 
