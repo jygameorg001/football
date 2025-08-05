@@ -61,7 +61,6 @@ export default class Home extends cc.Component {
         this.playGoBtn();
         this.initView();
         EventMgr.on("OnCheckOver", this.onCheckOver, this);
-
     }
     protected onDestroy(): void {
         EventMgr.off("OnCheckOver", this.onCheckOver, this);

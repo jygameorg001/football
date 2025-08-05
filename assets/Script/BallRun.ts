@@ -5,7 +5,6 @@ import {GameLogic} from "./GameLogic";
 const BallMinScale = 0.66;
 export class  BallRun {
     public static instance: BallRun = null;
-    trailGraphics: cc.Graphics;
     football: cc.Node;
     startPos:any;
     liziNode:cc.Node;
@@ -13,18 +12,31 @@ export class  BallRun {
     targetIdx: number;
     doorNode: any;
     isSuperShoot: boolean;
-    nShootTimes: number = 0;;
+    nShootTimes: number = 0;kuangPos: any[];
+    giftPos: any[];
+    doorPos: any;
+;
     public static getInstance(): BallRun {
         if (!BallRun.instance) {
             BallRun.instance = new BallRun();
         }
         return this.instance;
     }
-    initFootBall(football,door,trailGraphics){
+    initGiftPos(){
+        this.kuangPos =[];
+        this.giftPos =[];
+        for (let i = 0; i < 9; i++) {
+            let gift = this.giftList[i];
+            let kuang = gift.getChildByName("kuang");
+            this.kuangPos[i] =cc.v3(kuang.position);
+            this.giftPos[i] = cc.v3(gift.position);
+        }
+    }
+    initFootBall(football,door){
         this.football = football;
         this.startPos =this.football.position;
-        this.trailGraphics = trailGraphics;
         this.doorNode =door; 
+        this.doorPos = this.doorNode.position;
     }
     quadraticBezier(p0: cc.Vec2, p1: cc.Vec2, p2: cc.Vec2, t: number): cc.Vec2 {
         const u = 1 - t;
@@ -137,7 +149,6 @@ export class  BallRun {
             this.football.setPosition(startPoint);
             this.football.scale = 1;
             callback?.();
-            this.trailGraphics.clear();
         })
         .start();
         this.addLiziNode();
@@ -199,7 +210,6 @@ export class  BallRun {
             this.football.setPosition(startPoint);
             this.football.scale = 1;
             callback?.();
-            this.trailGraphics.clear();
         })
         .start();
         this.addLiziNode();
@@ -237,11 +247,16 @@ export class  BallRun {
         .delay(0.5)
         .call(()=>{
             kuang.active = false;
+            kuang.setPosition(this.kuangPos[this.targetIdx]);
         })
         .start();
         EventMgr.emit("kuangAni",this.targetIdx)
-        Game.instance.shakeNode(node);
-        Game.instance.shakeNode(this.doorNode);
+        Game.instance.shakeNode(node,15,()=>{
+            node.setPosition(this.giftPos[this.targetIdx])
+        });
+        Game.instance.shakeNode(this.doorNode,15,()=>{
+            this.doorNode.setPosition(this.doorPos);
+        });
     }
 
     getGiftIdx(nTimes){

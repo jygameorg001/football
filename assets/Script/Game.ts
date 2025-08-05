@@ -17,6 +17,8 @@ export default class Game extends cc.Component {
     homeView: Home=null;//当前界面
     shootView:Shoot=null;
 
+    viewList:cc.Node[] = [];
+
     protected onLoad(): void {
         Game.instance = this;
         AudioMgr.init();
@@ -66,7 +68,7 @@ export default class Game extends cc.Component {
 
     //加载全局飘框
     showToast(msg: string, time: number = 2) {
-        this.showView("toastView",Game.instance.node,(node)=>{
+        this.showView("toastView",null,(node)=>{
             node.getComponent("ToastView").showToast(msg, time);
         })
 
@@ -132,9 +134,15 @@ export default class Game extends cc.Component {
                 console.log(err);
                 return;
             }
+            //设置只有一个
+            let oldNode = Game.instance.node.getChildByName(path);
+            if(oldNode){
+                oldNode.destroy();
+            }
             let node = cc.instantiate(prefab);
             let root = parent || Game.instance.node;
             node.parent = root;
+            node.name = path;
             if (callback) {
                 callback(node);
             }
@@ -145,7 +153,7 @@ export default class Game extends cc.Component {
     //     BallRun.getInstance().runCircleEasing(this.football.position, this.giftsList[2].position);
     // }
 
-    shakeNode(node, len = 15) {
+    shakeNode(node, len = 15,call) {
         function Rand() {
             return Math.random() * len - len / 2;
         }
@@ -161,6 +169,11 @@ export default class Game extends cc.Component {
             .to(0.05, { position: cc.v3(node.x + Rand(), node.y + Rand()) })
             .to(0.05, { position: cc.v3(node.x + + Rand(), node.y + Rand()) })
             .to(0.05, { position: cc.v3(node.x, node.y), scale: 1.0 })      // 回到原位
+            .call(()=>{
+                if(call){
+                    call();
+                }
+            })
             .start();             // 启动动画
     }
     shakeNode2(node, len = 15) {

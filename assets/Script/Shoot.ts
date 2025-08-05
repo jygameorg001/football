@@ -67,15 +67,12 @@ export default class Shoot extends cc.Component {
         this.initBtnClickHandle();
         this.initGiftNodes();
         this.onEvent();
-        const node = new cc.Node();
-        node.addComponent(cc.Graphics);
-        node.parent = this.giftNode;
-        let trailGraphics = node.getComponent(cc.Graphics);
         this.ballSprite = this.football.getChildByName("icon").getComponent(cc.Sprite);
         this.ballSprite.node.zIndex = 1;
-        BallRun.getInstance().initFootBall(this.football, this.baiDoor.parent, trailGraphics)
+        BallRun.getInstance().initFootBall(this.football, this.baiDoor.parent)
         BallRun.getInstance().liziNode = this.tuowei;
         BallRun.getInstance().giftList = this.giftList;
+        BallRun.getInstance().initGiftPos();
         this.clearAutoReward();
         this.Jinzhong.active = false;
 
@@ -103,6 +100,7 @@ export default class Shoot extends cc.Component {
         EventMgr.on("closeRewardviewShoot", this.closeRewardviewShoot, this);
         EventMgr.on("shootOverTimes", this.shootOverTimes, this);
         EventMgr.on("kuangAni", this.kuangAni, this);
+        EventMgr.on("onShootingError", this.onShootingError,this)
     }
 
     protected onDestroy(): void {
@@ -170,6 +168,10 @@ export default class Shoot extends cc.Component {
             EventMgr.emit("toastview", "正在射门中,请稍后...");
             return;
         }
+        if(!this.canShoot){
+            EventMgr.emit("toastview", "正在射门中,请稍后...");
+            return;
+        }
         // 检查 btn.getComponent(cc.Button).interactable 是否为 false
         this.isauto = !this.isauto;
         this.autoBtn.getChildByName("auto_btn_close").active = !this.isauto;
@@ -211,7 +213,7 @@ export default class Shoot extends cc.Component {
         let cost = 500 * times;
         //判断余额
         if (total < cost) {
-            EventMgr.emit("toastview", "余额不足");
+            Game.instance.showToast("余额不足")
             return;
         }
         this.isSuperShoot = times == 10;
@@ -242,12 +244,17 @@ export default class Shoot extends cc.Component {
         return false;
     }
     onShooting(data) {
-        // GameLogic.instance.callBridge("onEnergyChange", {}, (res) => {
-        //     const { code, message, data } = res;
-        //     console.log("==onEnergyChange res", res)
-        // })
         GameLogic.instance.reqPlayerInfo();
         this.shootPlay();
+    }
+    onShootingError(){
+        this.resetShootBtns();
+    }
+    resetShootBtns(){
+        this.canShoot = true;
+        this.setSheBtnState(this.btnOne, true);
+        this.setSheBtnState(this.btnTen, true);
+        this.isTimeshoot = false;
     }
     shootPlay() {
         let data = GameLogic.instance.ShootingInfo;
@@ -273,7 +280,6 @@ export default class Shoot extends cc.Component {
                 this.noShowReward();
                 this.canShoot = false;
             } else {
-
                 this.shootOver();
             }
         })
@@ -309,11 +315,6 @@ export default class Shoot extends cc.Component {
                 this.light.active = true;
             }
         }
-
-        this.isTimeshoot = false;
-        this.canShoot = true;
-        this.setSheBtnState(this.btnOne, true);
-        this.setSheBtnState(this.btnTen, true);
     }
 
     // 按钮射门按钮状态设置
@@ -431,21 +432,30 @@ export default class Shoot extends cc.Component {
 
     //弹框显示奖励
     showReward() {
+        this.canShoot = false;
+        this.rewardViewNode.destroyAllChildren();
         Game.instance.showView("rewardview", this.rewardViewNode, (node) => {
             let bg = node.getChildByName("bg");
             bg.scale = 0;
-            cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
-            // node.y = 150;
+            cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).call(
+                () => {
+                    this.resetShootBtns();
+                }
+            ).start();
         });
 
     }
 
     //显示10局奖励
     showTenReward() {
+        this.canShoot = false;
+        this.rewardViewNode.destroyAllChildren();
         Game.instance.showView("rewardListview", this.rewardViewNode, (node) => {
             let bg = node.getChildByName("bg");
             bg.scale = 0;
-            cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
+            cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).call(()=>{
+                this.resetShootBtns();
+            }).start();
         })
     }
 
@@ -481,6 +491,7 @@ export default class Shoot extends cc.Component {
     }
     onBtnClickHandle(name, btn) {
         console.log("==onBtnClickHandle==", name);
+        GameLogic.instance.setClickEnable(0.5);
         switch (name) {
             case "btnBuy":
                 if (this.isTimeshoot) {

@@ -190,6 +190,7 @@ export class GameLogic {
         }
         HttpHelper.httpPost("football-api/football/shooting", params, (err, data) => {
             if (err) {
+                EventMgr.emit("onShootingError")
                 return;
             }
             GameLogic.instance.ShootingInfo = data;
@@ -371,5 +372,15 @@ export class GameLogic {
         return false;
     }
 
+    static isClickEnable = false;
+    setClickEnable(dt=0.3){
+        if(GameLogic.isClickEnable){
+            return;
+        }
+        GameLogic.isClickEnable = true;
+        setTimeout(()=>{
+            GameLogic.isClickEnable = false;
+        },dt*1000)
+    }
 }
 window["GLogic"] = window["GLogic"] || GameLogic.instance;
