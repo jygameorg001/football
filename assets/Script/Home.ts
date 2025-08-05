@@ -243,6 +243,8 @@ export default class Home extends cc.Component {
         if (!Game.instance.shootView) {
             return;
         }
+        AudioMgr.stopMusic();
+        AudioMgr.playMusic("audio/gameMusic");
         Game.instance.shootView.node.active = true;
         Game.instance.homeView.node.active = false;
     }

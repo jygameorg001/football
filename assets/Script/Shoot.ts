@@ -88,10 +88,7 @@ export default class Shoot extends cc.Component {
         //初始化按钮
         this.setSheBtnState(this.btnOne, true);
         this.setSheBtnState(this.btnTen, true);
-
-
         this.initListItems();
-        AudioMgr.playMusic("audio/gameMusic");
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);
