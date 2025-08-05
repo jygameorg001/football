@@ -1,5 +1,5 @@
 import { AudioMgr } from "./common/AudioMgr";
-import {EventMgr} from "./common/EventManager";
+import { EventMgr } from "./common/EventManager";
 import Game from "./Game";
 import { GameLogic } from "./GameLogic";
 import Shoot from "./Shoot";
@@ -65,7 +65,7 @@ export default class Home extends cc.Component {
     protected onDestroy(): void {
         EventMgr.off("OnCheckOver", this.onCheckOver, this);
     }
-    initView(){
+    initView() {
         this.initSoundIcon();
         this.roleChangeEffect.active = false;
         this.loadBtn.active = false;
@@ -206,10 +206,10 @@ export default class Home extends cc.Component {
         this.isAniOver = false;
         let id = this.getChooseId();
         GameLogic.instance.setChooseStar(id);
-        if(Game.instance.shootView){
+        if (Game.instance.shootView) {
             Game.instance.shootView.node.active = false;
             this.change2Shoot();
-        }else{
+        } else {
             Game.instance.showView("Shoot", null, (node) => {
                 node.active = false;
                 Game.instance.shootView = node.getComponent(Shoot);
@@ -228,18 +228,19 @@ export default class Home extends cc.Component {
                 this.change2Shoot();
             })
             .start();
-
+        this.roleChangeEffect.active = true;
+        AudioMgr.playSound("audio/roleChange");
         cc.tween(this.roleChangeEffect)
             .to(0.2, { scale: 1.2 })
             .to(0.2, { scale: 1 })
             .start();
-    
+
     }
-    change2Shoot(){
-        if(!this.isAniOver){
+    change2Shoot() {
+        if (!this.isAniOver) {
             return;
         }
-        if(!Game.instance.shootView){
+        if (!Game.instance.shootView) {
             return;
         }
         Game.instance.shootView.node.active = true;
@@ -284,7 +285,7 @@ export default class Home extends cc.Component {
             })
             .start();
     }
-    onCheckOver(){
+    onCheckOver() {
         this.onBtnGo();
     }
     startKuangEffect() {
