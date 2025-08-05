@@ -30,7 +30,7 @@ export default class Shoot extends cc.Component {
     @property(cc.Node) autoWindow: cc.Node = null;
     //自动射门预制体item
     // @property(cc.Prefab) autorewardItem: cc.Prefab = null;//rewardItemtips
-    isauto: boolean = false;
+    isAuto: boolean = false;
     @property(cc.Node) light: cc.Node = null;
     @property(cc.Node) btnShoot: cc.Node = null;
 
@@ -53,15 +53,12 @@ export default class Shoot extends cc.Component {
     isTimeshoot: boolean = false;
 
     timsShoot: number = 0;//射球剩下次数
-    timeshootal: number = 1;//总次数
-
-
-
     @property(cc.SpriteAtlas) ballAltlas: cc.SpriteAtlas = null;
     giftList: cc.Node[] = [];
     canShoot: boolean = false;
     ballSprite: cc.Sprite = null;
     isSuperShoot: boolean = false;//十次模式
+    shootByAuto: boolean;
     protected onLoad(): void {
         EventMgr.on("onGetGiftList", this.updateGifts, this);
         this.initBtnClickHandle();
@@ -80,14 +77,12 @@ export default class Shoot extends cc.Component {
 
         this.tuowei.active = false;
         this.xingxingTips.active = false;
-        this.canShoot = true;
+        this.isAuto = false;
         this.upinfo();
         this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
         this.listNode.active = false;
-
-        //初始化按钮
-        this.setSheBtnState(this.btnOne, true);
-        this.setSheBtnState(this.btnTen, true);
+        this.resetShootBtns(false);
+        this.shootByAuto = false;
         this.initListItems();
     }
     onEvent() {
@@ -161,46 +156,46 @@ export default class Shoot extends cc.Component {
     }
 
     autoBtnClick() {
-        if (this.isTimeshoot) {
-            EventMgr.emit("toastview", "正在射门中,请稍后...");
-            return;
-        }
-        if(!this.canShoot){
-            EventMgr.emit("toastview", "正在射门中,请稍后...");
-            return;
-        }
         // 检查 btn.getComponent(cc.Button).interactable 是否为 false
-        this.isauto = !this.isauto;
-        this.autoBtn.getChildByName("auto_btn_close").active = !this.isauto;
-        this.autoBtn.getChildByName("auto_btn_open").active = this.isauto;
-        this.btnShoot.active = this.isauto;
-        this.canShoot = !this.isauto;
-        if (this.isauto) {
-            this.timsShoot = this.timeshootal = 1;
-            this.setSheBtnState(this.btnOne, false);
-            this.setSheBtnState(this.btnTen, false);
-            this.isSuperShoot = false;
-            this.clearAutoReward();
-            this.autoShoot();
-        } else {
-            this.setSheBtnState(this.btnOne, true);
-            this.setSheBtnState(this.btnTen, true);
-        }
+        this.isAuto = !this.isAuto;
+        this.setAutoViews();
     }
 
-
-    autoShoot() {
+    setAutoViews(){
+        this.autoBtn.getChildByName("auto_btn_close").active = !this.isAuto;
+        this.autoBtn.getChildByName("auto_btn_open").active = this.isAuto;
+        this.btnShoot.active = this.isAuto;
+        if (this.isAuto) {
+            this.timsShoot =1;
+            this.isSuperShoot = false;
+            this.clearAutoReward();
+            //准备射击
+            this.beginAutoShoot();
+        }
+    }
+    beginAutoShoot(){
+        //正在射击中 不用处理
+        if(!this.canShoot){
+            return;
+        }
+        this.autoShoot();
+    }
+    autoShoot() {  
+        this.resetShootBtns(true);
+        this.shootByAuto = true;  
         let total = GameLogic.instance.playerInfo.currency;
         let cost = 500;
         if (total < cost) {
             EventMgr.emit("toastview", "余额不足");
+            this.resetShootBtns(false);
+            this.shootByAuto = false;
             return;
         }
+        this.isSuperShoot = false;
         GameLogic.instance.reqShooting(1)
     }
 
     onBtnShoot(times: number = 1) {
-        console.log("===onBtnShoot====", this.canShoot)
         // 是否可以射击
         if (!this.canShoot) {
             return;
@@ -215,9 +210,7 @@ export default class Shoot extends cc.Component {
         }
         this.isSuperShoot = times == 10;
         this.isTimeshoot = true;
-        this.setSheBtnState(this.btnOne, false);
-        this.setSheBtnState(this.btnTen, false);
-        this.canShoot = false;
+        this.resetShootBtns(true);
         GameLogic.instance.reqShooting(times);
         this.clearAutoReward();
     }
@@ -246,12 +239,13 @@ export default class Shoot extends cc.Component {
     }
     onShootingError(){
         this.resetShootBtns();
+        this.shootByAuto = false;
     }
-    resetShootBtns(){
-        this.canShoot = true;
-        this.setSheBtnState(this.btnOne, true);
-        this.setSheBtnState(this.btnTen, true);
-        this.isTimeshoot = false;
+    resetShootBtns(isShoot=false){
+        this.canShoot = !isShoot;
+        this.setSheBtnState(this.btnOne, !isShoot);
+        this.setSheBtnState(this.btnTen, !isShoot);
+        this.isTimeshoot = isShoot;
     }
     shootPlay() {
         let data = GameLogic.instance.ShootingInfo;
@@ -268,18 +262,24 @@ export default class Shoot extends cc.Component {
             if (this.isHasReward(GameLogic.instance.ShootingInfo.rewardList)) {
                 this.upLuck();
             }
-            // show win reward
             this.unschedule(this.onBallRunning);
             // 等待奖励完成 射门流程完成 可以继续射击
             let shadow = this.football.getChildByName("shadow")
             shadow.active = true;
-            if (this.isauto) {//自动模式
+            // 1 自动射门中
+            if(this.shootByAuto){
                 this.noShowReward();
-                this.canShoot = false;
-            } else {
-                this.shootOver();
+                return;
             }
+            // 非自动射门
+            this.shootByAuto = false;
+            this.shootOver();
         })
+    }
+    checkAutoShoot(){
+        if(this.isAuto){
+            this.beginAutoShoot();
+        }
     }
 
     //播放击中中奖效果
@@ -324,25 +324,18 @@ export default class Shoot extends cc.Component {
 
     closeRewardview() {
         this.light.active = false;
+        this.scheduleOnce(()=>{
+            this.checkAutoShoot();
+        },0)
     }
 
-    closeRewardviewShoot() {
-        this.light.active = false;
-        if (this.timeshootal == 1) {
-            this.timsShoot = this.timeshootal = 1;
-            this.onBtnShoot(1);
-        } else if (this.timeshootal == 10) {
-            this.timsShoot = this.timeshootal = 10;
-            this.onBtnShoot(10);
-        }
-
+    closeRewardviewShoot(time) {
+        this.timsShoot = time;
+        this.onBtnShoot(time);
     }
-
 
     //不弹框显示奖励
     noShowReward() {
-        // 检查是不是自动模式
-        if (!this.isauto) return;
         // 创建一个奖励节点
         if (GameLogic.instance.ShootingInfo) {
             const rewardInfo = GameLogic.instance.ShootingInfo.rewardList[0];
@@ -354,9 +347,16 @@ export default class Shoot extends cc.Component {
                 }, 0.1)
             })
         }
-        if (this.isauto) {
-            this.autoShoot();
-        }
+        
+        this.scheduleOnce(()=>{
+            // 检测是否能开启自动射门
+            if(this.isAuto){
+                this.autoShoot();
+            }else{
+                this.shootByAuto = false;
+                this.resetShootBtns();
+            }   
+        },0.15);
     }
     tenRewardItemTips: RewardItemtips = null;
     noShowRewardTen(times: number) {
@@ -429,7 +429,6 @@ export default class Shoot extends cc.Component {
 
     //弹框显示奖励
     showReward() {
-        this.canShoot = false;
         this.rewardViewNode.destroyAllChildren();
         Game.instance.showView("rewardview", this.rewardViewNode, (node) => {
             let bg = node.getChildByName("bg");
@@ -445,7 +444,6 @@ export default class Shoot extends cc.Component {
 
     //显示10局奖励
     showTenReward() {
-        this.canShoot = false;
         this.rewardViewNode.destroyAllChildren();
         Game.instance.showView("rewardListview", this.rewardViewNode, (node) => {
             let bg = node.getChildByName("bg");
@@ -487,7 +485,7 @@ export default class Shoot extends cc.Component {
         // console.log("======",this.dxIdx,this.ballIdx)
     }
     onBtnClickHandle(name, btn) {
-        console.log("==onBtnClickHandle==", name);
+        // console.log("==onBtnClickHandle==", name);
         GameLogic.instance.setClickEnable(0.5);
         switch (name) {
             case "btnBuy":
@@ -529,11 +527,11 @@ export default class Shoot extends cc.Component {
                 this.onBtnShoot();
                 break;
             case "btnShootOne":
-                this.timsShoot = this.timeshootal = 1;
+                this.timsShoot = 1;
                 this.onBtnShoot(1);
                 break;
             case "btnShootTen":
-                this.timsShoot = this.timeshootal = 10;
+                this.timsShoot = 10;
                 this.onBtnShoot(10);
                 break;
             case "item0":
@@ -544,6 +542,9 @@ export default class Shoot extends cc.Component {
                 break;
             case "item2":
                 this.onClickItem(2)
+                break;
+            case "btnAuto":
+                this.autoBtnClick();
                 break;
             case "btnLuckStar":
                 if (GameLogic.instance.playerInfo.luckScore > 0) {

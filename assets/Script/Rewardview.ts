@@ -54,7 +54,7 @@ export default class Rewardview extends cc.Component {
     }
 
     closeWin2() {
-        EventMgr.emit("closeRewardviewShoot")
+        EventMgr.emit("closeRewardviewShoot",1)
         this.node.destroy();
     }
 }

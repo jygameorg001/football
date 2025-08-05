@@ -25,6 +25,7 @@ export default class Game extends cc.Component {
         this.initView();
         this.initEvents();
         GameLogic.instance.initUserInfo();
+        GameLogic.instance.getLiveRoomInfo();
         // cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
         // cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
         this.checkNotice();
