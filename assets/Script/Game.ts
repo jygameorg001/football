@@ -99,11 +99,10 @@ export default class Game extends cc.Component {
     }
 
     start() {
-        if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
-            this.onAudioPlay(null);
+        if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){      
             return;
         }
-        
+        this.onAudioPlay(null); 
     }
 
     showView(path: string, parent?, callback?) {
