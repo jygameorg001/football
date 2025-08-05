@@ -23,7 +23,6 @@ export default class RewardItem extends cc.Component {
         } else {
             this.nameLabel.string = this.getGiftNameById(GameLogic.instance.ShootingInfo.rewardList[0].id) + "x1";
             GameLogic.instance.loadRemoteSprite(GameLogic.instance.ShootingInfo.rewardList[0].giftImage, this.icon.getComponent(cc.Sprite),70);
-            this.icon.scale = 0.4;
             this.nameLabel.node.color = new cc.Color(255, 255, 255);
         }
 
