@@ -1,3 +1,4 @@
+import { AudioMgr } from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import { GameLogic } from "./GameLogic";
 
@@ -25,6 +26,7 @@ export default class rewardListview extends cc.Component {
         if(hasReward){
             this.topNode.children[0].active = false;
             this.topNode.children[1].active = true;
+            AudioMgr.playSound("audio/bigwin");
         }else{
             this.topNode.children[0].active = true;
             this.topNode.children[1].active = false;

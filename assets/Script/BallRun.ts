@@ -239,6 +239,7 @@ export class  BallRun {
             kuang.active = false;
         })
         .start();
+        EventMgr.emit("kuangAni",this.targetIdx)
         Game.instance.shakeNode(node);
         Game.instance.shakeNode(this.doorNode);
     }
@@ -285,6 +286,7 @@ export class  BallRun {
             kuang.active = false;
         })
         .start();
+        EventMgr.emit("kuangAni",this.targetIdx)
         Game.instance.shakeNode2(this.doorNode,10);
     }
     ballShoot2Idx(idx:number,callback){

@@ -1,3 +1,4 @@
+import { AudioMgr } from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import { GameLogic } from "./GameLogic";
 import RewardItem from "./RewardItem";
@@ -29,8 +30,6 @@ export default class Rewardview extends cc.Component {
     setView() {
         console.log("奖励界面加载", GameLogic.instance.ShootingInfo);
         if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
-
-
         } else {
             let rewardItem = cc.instantiate(this.rewardItem);
             rewardItem.parent = this.rewardNode;
@@ -43,6 +42,7 @@ export default class Rewardview extends cc.Component {
                 (rewardItem.getComponent(RewardItem) as RewardItem).initView(true);
                 this.topnamebg1.active = false;
                 this.topnamebg2.active = true;
+                AudioMgr.playSound("audio/bigwin");
             }
         }
     }

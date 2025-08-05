@@ -39,6 +39,9 @@ export default class Shoot extends cc.Component {
     @property(SVGAPlayer)
     svga: SVGAPlayer = null;
 
+     @property(SVGAPlayer)
+    svgaJinzhong: SVGAPlayer = null;
+
     @property(cc.Node)
     btnOne: cc.Node = null;
     @property(cc.Node)
@@ -97,6 +100,7 @@ export default class Shoot extends cc.Component {
         EventMgr.on("closeRewardview", this.closeRewardview, this);
         EventMgr.on("closeRewardviewShoot", this.closeRewardviewShoot, this);
         EventMgr.on("shootOverTimes", this.shootOverTimes, this);
+        EventMgr.on("kuangAni", this.kuangAni, this);
     }
 
     protected onDestroy(): void {
@@ -105,6 +109,7 @@ export default class Shoot extends cc.Component {
         EventMgr.off("closeRewardview", this.closeRewardview, this);
         EventMgr.off("closeRewardviewShoot", this.closeRewardviewShoot, this);
         EventMgr.off("shootOverTimes", this.shootOverTimes, this);
+        EventMgr.off("kuangAni", this.kuangAni, this);
         EventMgr.clearByTarget(this);
     }
 
@@ -266,14 +271,25 @@ export default class Shoot extends cc.Component {
                 this.noShowReward();
                 this.canShoot = false;
             } else {
+
                 this.shootOver();
             }
         })
     }
 
+    //播放击中中奖效果
+    kuangAni(index:number) {
+        console.log("击中", index);
+        // this.svgaJinzhong.stopAnimation(false);
+        // this.svgaJinzhong.clearSvagPlayer();
+        this.svgaJinzhong.playSVGA();
+        AudioMgr.playSound("audio/jinzhongClick");
+
+    }
+
+
     shootOver() {
         this.timsShoot = 0;
-
         if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
             this.showTenReward();
             this.svga.playSVGA();
@@ -413,9 +429,8 @@ export default class Shoot extends cc.Component {
             let bg = node.getChildByName("bg");
             bg.scale = 0;
             cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
-            node.y = 150;
+            // node.y = 150;
         });
-        AudioMgr.playSound("audio/bigwin");
 
     }
 
@@ -426,7 +441,6 @@ export default class Shoot extends cc.Component {
             bg.scale = 0;
             cc.tween(bg).to(0.3, { scale: 1.1 }).to(0.2, { scale: 0.9 }).to(0.2, { scale: 1 }).start();
         })
-        AudioMgr.playSound("audio/bigwin");
     }
 
     private ballIdx: number = 1;
