@@ -74,19 +74,18 @@ export default class Game extends cc.Component {
     }
 
     onHide() {
-        if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
-            this.bgVolume = AudioMgr.getMusicVolume();
-            cc.audioEngine.stopAll();
-            cc.audioEngine.uncacheAll();
-            return;
-        }
+        // if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
+        //     cc.audioEngine.stopAll();
+        //     cc.audioEngine.uncacheAll();
+        //     return;
+        // }
     }
     onShow() {
-        if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
-            cc.audioEngine.stopAll();
-            cc.audioEngine.uncacheAll();
-            return;
-        }
+        // if(GameLogic.instance.isIosMobile()&&GameLogic.instance.isIOSVersionBig()){
+        //     cc.audioEngine.stopAll();
+        //     cc.audioEngine.uncacheAll();
+        //     return;
+        // }
         this.refreshPlayerInfo();
     }
     refreshPlayerInfo() {
