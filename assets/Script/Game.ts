@@ -27,12 +27,12 @@ export default class Game extends cc.Component {
         GameLogic.instance.getLiveRoomInfo();
         // cc.game.on(cc.game.EVENT_HIDE, this.onHide, this);
         // cc.game.on(cc.game.EVENT_SHOW, this.onShow, this);
-        this.checkNotice();
         EventMgr.on("toastview", this.showToast, this);
         EventMgr.on("goHome", this.goHomeback, this);
         EventMgr.on("HttpError", this.onHttpError, this);
         EventMgr.on("HttpTimeOut", this.onHttpError, this);
         EventMgr.on("offline", this.offline,this);
+        EventMgr.on("onGetPlayerInfo", this.onGetPlayerInfo,this);
         window.addEventListener("offline",()=>{
             EventMgr.emit("offline");
         } )
@@ -48,21 +48,76 @@ export default class Game extends cc.Component {
         });
 
     }
+    onGetPlayerInfo(){
+        if(GameLogic.instance.playerInfo.pop==0){//不弹
+            this.playNotice.active = false;
+        }
+        if(GameLogic.instance.playerInfo.pop==1){//每次弹
+            this.playNotice.active = true;
+        }
+        if(GameLogic.instance.playerInfo.pop==2){//每天弹一次
+            this.checkNotice(2);
+        }
+        if(GameLogic.instance.playerInfo.pop==3){//每周弹一次
+            this.checkNotice(3);
+        }
+        if(GameLogic.instance.playerInfo.pop==4){//每天弹一次
+            this.checkNotice(4);
+        }
+    }
+    getISOWeek(date: Date): { year: number, week: number } {
+        const tempDate = new Date(date.getTime());
+        tempDate.setHours(0, 0, 0, 0);
+        // 调整到本周的星期四
+        tempDate.setDate(tempDate.getDate() + 3 - ((tempDate.getDay() + 6) % 7));
+        
+        const yearStart = new Date(tempDate.getFullYear(), 0, 4);
+        // 调整到当年第一个星期四
+        yearStart.setDate(yearStart.getDate() + 3 - ((yearStart.getDay() + 6) % 7));
+        
+        const weekNumber = Math.round((tempDate.getTime() - yearStart.getTime()) / (7 * 24 * 3600000)) + 1;
+        
+        return {
+            year: tempDate.getFullYear(),
+            week: weekNumber
+        };
+    }
+    checkNotice(flag) {
+        this.playNotice.active = true;
+        let lastTime = cc.sys.localStorage.getItem("agree_notice_pop");
+        let oldDate = new Date(lastTime);
+        let date = new Date();
+        // 判断是否是同一天
+        if(flag==2){
+            if(date.getDate()==oldDate.getDate()){
+                this.playNotice.active = false;
+            }
+        }
+        if(flag==3){
+            // 使用ISO周标准比较
+            const dateWeek = this.getISOWeek(date);
+            const oldDateWeek = this.getISOWeek(oldDate);
+            
+            if(dateWeek.year === oldDateWeek.year && 
+            dateWeek.week === oldDateWeek.week){
+                this.playNotice.active = false;
+            }
+        }
+        //判断是否是同一月
+        if(flag==4){
+            if(date.getMonth()==oldDate.getMonth()){
+                this.playNotice.active = false;
+            }
+        }  
+        
+    }
+
     offline(){
         GameLogic.instance.isOffLine = true;
         this.showToast("网络断开")
     }
     onHttpError(){
         this.showToast("网络异常")
-    }
-    checkNotice() {
-        this.playNotice.active = true;
-        let str = cc.sys.localStorage.getItem("agree_notice");
-        let day = new Date().getDate();
-        let dayStr = cc.sys.localStorage.getItem("agree_notice_today");
-        if (str && Number(dayStr) == day) {
-            this.playNotice.active = false;
-        }
     }
 
     //加载全局飘框

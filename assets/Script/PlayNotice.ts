@@ -18,6 +18,8 @@ export default class PlayNotice extends cc.Component {
         this.todayTog.isChecked = true;
         // this.explainTxt.string="";
         EventMgr.on("agree_notice", this.onAgreeNotice, this);
+        let time = new Date().getTime();
+        cc.sys.localStorage.setItem("agree_notice_pop", time);
     }
     onAgreeNotice(){
         this.agreeTog.isChecked = true;
