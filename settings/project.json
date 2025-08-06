@@ -5,30 +5,12 @@
     ]
   ],
   "excluded-modules": [
-    "Collider",
-    "DragonBones",
-    "EditBox",
-    "Geom Utils",
-    "Intersection",
-    "Mesh",
-    "MotionStreak",
-    "NodePool",
-    "Native Socket",
-    "Physics",
-    "PageView",
-    "PageViewIndicator",
-    "ProgressBar",
-    "Slider",
     "StudioComponent",
-    "TiledMap",
-    "VideoPlayer",
-    "WebView",
     "3D",
     "3D Primitive",
     "3D Physics/cannon.js",
     "3D Physics/Builtin",
-    "3D Particle",
-    "SafeArea"
+    "3D Particle"
   ],
   "group-list": [
     "default"

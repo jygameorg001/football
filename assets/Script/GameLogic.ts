@@ -394,11 +394,6 @@ export class GameLogic {
     }
     onAudioPlay() {
         console.log("===onAudioPlay");
-        // 关闭点击声音
-        const clickAudio = document.getElementById('customAudio') as HTMLAudioElement;
-        clickAudio && clickAudio.focus();
-        clickAudio && clickAudio.pause();
-        // clickAudio && clickAudio.play();
         setTimeout(()=>{
              AudioMgr.playMusic("audio/homeMusic");
         },200)

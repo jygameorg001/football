@@ -119,9 +119,9 @@ export default class Game extends cc.Component {
     }
 
     start() {
-        if(GameLogic.instance.isIosMobile()){         
-            return;
-        }
+        // if(GameLogic.instance.isIosMobile()){         
+        //     return;
+        // }
         GameLogic.instance.setClickBG();
     }
 
