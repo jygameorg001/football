@@ -31,7 +31,7 @@ export default class Shoot extends cc.Component {
     //自动射门预制体item
     // @property(cc.Prefab) autorewardItem: cc.Prefab = null;//rewardItemtips
     isAuto: boolean = false;
-    @property(cc.Node) light: cc.Node = null;
+    // @property(cc.Node) light: cc.Node = null;
     @property(cc.Node) btnShoot: cc.Node = null;
 
     @property(cc.ScrollView) scrollView: cc.ScrollView = null;
@@ -291,11 +291,16 @@ export default class Shoot extends cc.Component {
             this.beginAutoShoot();
         }
     }
-
+    
+    timeJinzhong=null;
     //播放击中中奖效果
     kuangAni(index: number) {
         console.log("击中", index);
         // 先判断是不是有序列帧，播放前清空
+        if (this.timeJinzhong) {
+            this.unschedule(this.timeJinzhong);
+            this.timeJinzhong = null;
+        }
         this.Jinzhong.active = false;
         this.Jinzhong.getComponent(cc.Animation).stop();
         //改成播放序列帧动画
@@ -304,6 +309,19 @@ export default class Shoot extends cc.Component {
         //    设置位置
         this.Jinzhong.setPosition(this.giftList[index].getPosition().x, this.giftList[index].getPosition().y + 167);
         AudioMgr.playSound("audio/jinzhongClick");
+
+        this.timeJinzhong=this.scheduleOnce(() => {
+            this.clearKuangAni();
+        }, 0.5)
+    }
+
+    // 清除击中动画
+    clearKuangAni() {
+        if (this.Jinzhong) {
+            this.Jinzhong.active = false;
+            this.Jinzhong.getComponent(cc.Animation).stop();
+        }
+
     }
 
 
@@ -315,7 +333,7 @@ export default class Shoot extends cc.Component {
             this.svga.node.active = true;
             this.svga.playSVGA();
             this.showDoorBlink();
-            this.light.active = true;
+            // this.light.active = true;
             this.tiemout = this.scheduleOnce(() => {
                 this.closeSVGA()
             }, 4)
@@ -326,7 +344,7 @@ export default class Shoot extends cc.Component {
                 this.svga.node.active = true;
                 this.svga.playSVGA();
                 this.showDoorBlink();
-                this.light.active = true;
+                // this.light.active = true;
                 this.tiemout = this.scheduleOnce(() => {
                     this.closeSVGA()
                 }, 4)
@@ -354,7 +372,7 @@ export default class Shoot extends cc.Component {
 
 
     closeRewardview() {
-        this.light.active = false;
+        // this.light.active = false;
         this.scheduleOnce(() => {
             this.checkAutoShoot();
         }, 0)
