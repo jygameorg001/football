@@ -102,6 +102,7 @@ export class HttpHelper {
                         // show error---
                         console.log("error code:",path, rsp);
                         EventMgr.emit("toastview", JSON.stringify(rsp));
+                        callback(3, rsp);
                         return;
                     }
                     callback(0,rsp.result);

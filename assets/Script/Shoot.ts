@@ -210,7 +210,7 @@ export default class Shoot extends cc.Component {
             return;
         }
         this.isSuperShoot = times == 10;
-        this.isTimeshoot = true;
+        this.shootByAuto = false;
         this.resetShootBtns(true);
         GameLogic.instance.reqShooting(times);
         this.clearAutoReward();
@@ -237,6 +237,9 @@ export default class Shoot extends cc.Component {
     onShooting(data) {
         GameLogic.instance.reqPlayerInfo();
         this.shootPlay();
+    }
+    onShootingHttpError(path){
+
     }
     onShootingError() {
         this.resetShootBtns();
@@ -386,7 +389,8 @@ export default class Shoot extends cc.Component {
     //不弹框显示奖励
     noShowReward() {
         // 创建一个奖励节点
-        if (GameLogic.instance.ShootingInfo) {
+        if (GameLogic.instance.ShootingInfo && GameLogic.instance.ShootingInfo.rewardList
+             && GameLogic.instance.ShootingInfo.rewardList.length>0 ) {
             const rewardInfo = GameLogic.instance.ShootingInfo.rewardList[0];
             Game.instance.showView("rewardItemtips", this.autoWindow, (node) => {
                 let item: RewardItemtips = node.getComponent(RewardItemtips);
