@@ -250,6 +250,15 @@ export default class Shoot extends cc.Component {
     }
     shootPlay() {
         let data = GameLogic.instance.ShootingInfo;
+        let canRunning = false;
+        if(data && data.rewardList && data.rewardList.length > 0){
+            canRunning = true;
+        }
+        if(!canRunning){
+            Game.instance.showToast("服务器数据异常...")
+            this.onShootingError();
+            return;
+        }
         let giftId = data.rewardList[0].giftId;
         let id = this.getIdByGiftId(giftId);
         this.beginRunning();
