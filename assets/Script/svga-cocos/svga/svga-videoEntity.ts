@@ -35,6 +35,8 @@ export class SVGAVideoEntity {
      * SpriteEntity[]
      */
     sprites = []
+    //每帧 图片
+    frameImages=[];
 
     /**
      * AudioEntity[]
@@ -73,9 +75,25 @@ export class SVGAVideoEntity {
 
     resetSprites(spec) {
         if (spec.sprites instanceof Array) {
-            this.sprites = spec.sprites.map((obj) => {
-                return new SVGASpriteEntity(obj)
-            })
+            let sprites = spec.sprites;
+            this.frameImages =[];
+            // for(let i=0;i<this.frames;i++){
+            //     this.frameImages[i] =[];
+            // }
+            // 每帧显示的图片
+            for(let i=0;i<sprites.length;i++){
+                let frames = sprites[i].frames;
+                let imageKey = sprites[i].imageKey;
+                for(let j=0;j<frames.length;j++){
+                    let frame = frames[j];
+                    if(frame.alpha){
+                        this.frameImages[j]=imageKey;
+                    }
+                }
+            }
+            // this.sprites = spec.sprites.map((obj) => {
+            //     return new SVGASpriteEntity(obj)
+            // })
         }
     }
 

@@ -114,17 +114,19 @@ export class SVGARenderer {
     }
 
     drawFrame(frame) {
-        // console.log("=====this._owner.contentLayer====",this._owner.contentLayer.childrenCount)
         for (let index = 0; index < this._owner.contentLayer.childrenCount; index++) {
             const child = this._owner.contentLayer.children[index];
-            let vl = child.getComponent(SVGAVectorLayer);
-            if (vl) {
-                vl.stepToFrame(frame);
-            }
-            let ss = child.getComponent(SVGASprite);
-            if (ss) {
-                ss.stepToFrame(frame);
-            }
+            // let vl = child.getComponent(SVGAVectorLayer);
+            // if (vl) {
+            //     vl.stepToFrame(frame);
+            // }
+            // let ss = child.getComponent(SVGASprite);
+            // if (ss) {
+            //     ss.stepToFrame(frame);
+            // }
+            let sprite:cc.Sprite = child.getComponent(cc.Sprite);
+            const imageKey =  this._owner.videoItem.frameImages[frame];
+            sprite.spriteFrame = SVGAPool._spriteFrames[imageKey];
         }
     }
 

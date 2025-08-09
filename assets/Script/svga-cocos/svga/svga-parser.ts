@@ -14,13 +14,11 @@ export class SVGAParser {
         }
         SVGAMockWorker.getInstance().loadAssets(arraybuffer, (data) => {
             let movie = data.movie;
-            movie["version"] = data.ver;
             let images = data.images;
+            // console.log("====loadAssets======",data)
             let videoItem = new SVGAVideoEntity(movie, images);
             SVGAParser.videoEntitys[svgaBinData.name] = videoItem
             success(videoItem);
-            // svgaBinData.decRef();
-            // svgaBinData=null;
         }, failure);
     }
 }

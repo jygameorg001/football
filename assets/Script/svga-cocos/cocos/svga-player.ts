@@ -1,4 +1,5 @@
 import { SVGAParser } from "../svga/svga-parser";
+import {SVGASpriteEntity} from "../svga/svga-spriteEntity";
 import {SVGAVideoEntity} from "../svga/svga-videoEntity";
 import SVGAPool from "./svga-pool";
 import { SVGARenderer } from "./svga-renderer";
@@ -92,10 +93,10 @@ export default class SVGAPlayer extends cc.Component {
         this.svgaData = svgaBinData;
         if (!this._isSVGAInit) {
             this.rootNode = new cc.Node();
-            this.rootNode.setAnchorPoint(0, 1);
+            // this.rootNode.setAnchorPoint(0, 1);
             this.node.addChild(this.rootNode);
             this.contentLayer = new cc.Node();
-            this.contentLayer.setAnchorPoint(0, 1);
+            // this.contentLayer.setAnchorPoint(0, 1);
             this.rootNode.addChild(this.contentLayer);
             // this.contentLayer.setContentSize(this.node.getContentSize());
             this.pool = new SVGAPool();
@@ -105,7 +106,7 @@ export default class SVGAPlayer extends cc.Component {
                 if(SVGAParser.videoEntitys[svgaBinData.name]){
                     let videoItem = SVGAParser.videoEntitys[svgaBinData.name];
                     this.setVideoItem(videoItem);
-                    this.rootNode.setPosition(-videoItem.videoSize.width / 2, videoItem.videoSize.height / 2);
+                    // this.rootNode.setPosition(-videoItem.videoSize.width / 2, videoItem.videoSize.height / 2);
                     if (autoplay !== false) {
                         this.startAnimation(false);
                     }
@@ -114,7 +115,7 @@ export default class SVGAPlayer extends cc.Component {
                 SVGAParser.load(svgaBinData, (videoItem) => {
                     this._prepareLoadAssets(videoItem, () => {
                         this.setVideoItem(videoItem);
-                        this.rootNode.setPosition(-videoItem.videoSize.width / 2, videoItem.videoSize.height / 2);
+                        // this.rootNode.setPosition(-videoItem.videoSize.width / 2, videoItem.videoSize.height / 2);
                         if (autoplay !== false) {
                             this.startAnimation(false);
                         }
@@ -345,9 +346,13 @@ export default class SVGAPlayer extends cc.Component {
 
 
     _addLayers() {
-        this.videoItem.sprites.forEach((sprite) => {
-            this.contentLayer.addChild(this._renderer.requestContentLayer(sprite));
-        })
+        // this.videoItem.sprites.forEach((sprite) => {
+        //     this.contentLayer.addChild(this._renderer.requestContentLayer(sprite));
+        // })
+        let node = new  cc.Node();
+        let sprite:cc.Sprite =  node.addComponent(cc.Sprite);
+        this.contentLayer.addChild(node);
+        sprite.spriteFrame = null;
         this._currentFrame = 0;
         this._update();
     }
