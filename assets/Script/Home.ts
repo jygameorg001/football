@@ -54,8 +54,10 @@ export default class Home extends cc.Component {
         this.initPicsPosition();
         this.addBreathingEffect(this.leftBtn, -1);
         this.addBreathingEffect(this.rightBtn, 1);
+        this.svgaGuan.node.active = true
         this.svgaGuan.playSVGA();
-
+        this.svgaGuan.node.scale = 1.12;
+        this.svgaGuan.node.y=10;
         // for(let i=0;i<100;i++){
         //     let node = cc.instantiate(this.svgaGuan.node);
         //     node.parent = this.node;
@@ -331,7 +333,7 @@ export default class Home extends cc.Component {
         cc.tween(text1).to(0.5, { scale: 1.5, opacity: 0 }).removeSelf().start();
     }
 
-    onBtnClickBG(){
+    onBtnClickBG() {
         GameLogic.instance.setClickBG();
     }
 
