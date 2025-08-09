@@ -656,7 +656,7 @@
       "__id__": 9
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 14
@@ -723,7 +723,7 @@
     "svgaData": {
       "__uuid__": "f0b29238-1705-4ebb-83ba-fedfa13f4130"
     },
-    "loops": 1000,
+    "loops": -1,
     "_id": "83xtbyRElB+IvJU792BvIH"
   },
   {

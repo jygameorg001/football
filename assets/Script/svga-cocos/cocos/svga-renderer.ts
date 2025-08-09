@@ -8,6 +8,7 @@ import { SvgaTransform } from '../svga/svga-transform'
 import { SVGAEllipsePath } from '../svga/svga-ellipsePath'
 import { SVGARectPath } from '../svga/svga-rectPath'
 import SVGAPool from './svga-pool'
+// import SVGAPool from './svga-pool'
 
 const validMethods = 'MLHVCSQAZmlhvcsqaz'
 
@@ -47,16 +48,20 @@ export class SVGARenderer {
         let ss = ssl.addComponent(SVGASprite);
         if (sprite.imageKey) {
             did = this._owner.dynamicImage[sprite.imageKey];
+
             if (!did) {
                 let base64 = this._owner.videoItem.images[sprite.imageKey];
                 if (base64) {
                     did = {
                         type: SVGADynamicImageType.Base64,
                         base64: base64,
-                    };
+                        imageKey: sprite.imageKey,
+                    } as SVGADynamicImage;
 
                 }
+                
             }
+            // SVGAPool._spriteFrames[sprite.imageKey]
             if (did) {
                 this.requestBitmapLayer(ss, did, this._owner.dynamicImageTransform[sprite.imageKey], sprite.frames);
             }
@@ -109,6 +114,7 @@ export class SVGARenderer {
     }
 
     drawFrame(frame) {
+        // console.log("=====this._owner.contentLayer====",this._owner.contentLayer.childrenCount)
         for (let index = 0; index < this._owner.contentLayer.childrenCount; index++) {
             const child = this._owner.contentLayer.children[index];
             let vl = child.getComponent(SVGAVectorLayer);

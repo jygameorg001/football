@@ -7,7 +7,6 @@ import Home from "./Home";
 import Shoot from "./Shoot";
 
 const { ccclass, property } = cc._decorator;
-
 @ccclass
 export default class Game extends cc.Component {
     @property(cc.Node) playNotice: cc.Node = null;

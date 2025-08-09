@@ -3,19 +3,21 @@ import { SVGADynamicImage, SVGADynamicImageType } from "./svga-player";
 
 export default class SVGAPool {
     private _svgaMark: any = {};
-    private _spriteFrames: any = {};
+    static _spriteFrames: any = {};
     private _audioClips: any = {};
+    static loadKey: any={};
+    // public static svgaFrameCaches ={};
 
     private _getSpriteFrame(name: string, svgaMark: string): cc.SpriteFrame {
-        if (this._spriteFrames[name]) {
+        if (SVGAPool._spriteFrames[name]) {
             this.pushSvgaMarkData(name, svgaMark);
-            return this._spriteFrames[name];
+            return SVGAPool._spriteFrames[name];
         }
         return null;
     }
 
     private _pushSpriteFrame(name: string, svgaMark: string, sf: cc.SpriteFrame) {
-        this._spriteFrames[name] = sf;
+        SVGAPool._spriteFrames[name] = sf;
         this.pushSvgaMarkData(name, svgaMark);
         sf.addRef();
     }
@@ -35,12 +37,12 @@ export default class SVGAPool {
     }
 
     pushSvgaMarkData(name: string, svgaMark: string) {
-        if (!this._svgaMark[svgaMark]) {
-            this._svgaMark[svgaMark] = {};
-        }
-        if (!this._svgaMark[svgaMark][name]) {
-            this._svgaMark[svgaMark][name] = true;
-        }
+        // if (!this._svgaMark[svgaMark]) {
+        //     this._svgaMark[svgaMark] = {};
+        // }
+        // if (!this._svgaMark[svgaMark][name]) {
+        //     this._svgaMark[svgaMark][name] = true;
+        // }
     }
 
     getSpriteFrame(dynamicImageData: SVGADynamicImage, svgaMark: string, cb: Function) {
@@ -58,8 +60,8 @@ export default class SVGAPool {
         else {
             spu = "data:image/png;base64," + dynamicImageData.base64;
         }
-
-        let sf = this._getSpriteFrame(spu, svgaMark);
+        let key = dynamicImageData.imageKey;
+        let sf = this._getSpriteFrame(key, svgaMark);
         if (sf) {
             cb(sf);
         }
@@ -70,13 +72,14 @@ export default class SVGAPool {
                     cb(null);
                     return;
                 }
+                // console.log("====getSprite Frame=====",key)
                 let sf = new cc.SpriteFrame(texture);
-                this._pushSpriteFrame(spu, svgaMark, sf);
+                this._pushSpriteFrame(key, svgaMark, sf);
                 cb(sf);
+                spu = null;
             });
         }
     }
-
     getAudioClip(base64Data: string, svgaMark: string, cb: Function) {
         if (!base64Data || !cb) {
             cc.error("data or callback is null");
@@ -85,7 +88,7 @@ export default class SVGAPool {
             }
             return;
         }
-
+        console.log("===getAudioClip===1==");
         const spu = "data:audio/x-mpeg;base64," + base64Data;
         let ac = this._getAudioClip(spu, svgaMark);
         if (ac) {
@@ -139,11 +142,11 @@ export default class SVGAPool {
             delete this._svgaMark[svgaMark];
         }
         for (let i = 0; i < clearList.length; ++i) {
-            if (this._spriteFrames[clearList[i]]) {
-                this._spriteFrames[clearList[i]].getTexture().decRef();
-                this._spriteFrames[clearList[i]].decRef();
-                delete this._spriteFrames[clearList[i]];
-            }
+            // if (this._spriteFrames[clearList[i]]) {
+            //     this._spriteFrames[clearList[i]].getTexture().decRef();
+            //     this._spriteFrames[clearList[i]].decRef();
+            //     delete this._spriteFrames[clearList[i]];
+            // }
             if (this._audioClips[clearList[i]]) {
                 this._audioClips[clearList[i]].decRef();
                 delete this._audioClips[clearList[i]];

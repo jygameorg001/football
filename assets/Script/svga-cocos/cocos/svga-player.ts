@@ -1,11 +1,5 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
-
 import { SVGAParser } from "../svga/svga-parser";
+import {SVGAVideoEntity} from "../svga/svga-videoEntity";
 import SVGAPool from "./svga-pool";
 import { SVGARenderer } from "./svga-renderer";
 
@@ -17,6 +11,7 @@ export enum SVGADynamicImageType {
 }
 
 export interface SVGADynamicImage {
+    imageKey:string
     type: SVGADynamicImageType
     spriteFrame: cc.SpriteFrame
     remoteUrl: string
@@ -60,7 +55,7 @@ export default class SVGAPlayer extends cc.Component {
 
     public rootNode: cc.Node = null;
     public contentLayer: cc.Node = null;
-    public videoItem = null;
+    public videoItem:SVGAVideoEntity = null;
     public dynamicImage = {};
     public dynamicImageTransform = {};
     public dynamicText = {};
@@ -80,6 +75,8 @@ export default class SVGAPlayer extends cc.Component {
 
     private _isSVGAInit: boolean = false;
 
+    public static svgaAssert ={};
+
     // onLoad () {}
 
     start() {
@@ -91,9 +88,8 @@ export default class SVGAPlayer extends cc.Component {
     }
 
     private _initSVGAPlayer(svgaBinData: cc.BufferAsset, autoplay) {
-        const svgaBuffer = svgaBinData['_buffer'];
+       
         this.svgaData = svgaBinData;
-
         if (!this._isSVGAInit) {
             this.rootNode = new cc.Node();
             this.rootNode.setAnchorPoint(0, 1);
@@ -104,24 +100,34 @@ export default class SVGAPlayer extends cc.Component {
             // this.contentLayer.setContentSize(this.node.getContentSize());
             this.pool = new SVGAPool();
             this._renderer = new SVGARenderer(this);
-        }
-        this._isSVGAInit = true;
-
-        if (svgaBuffer) {
-            SVGAParser.load(svgaBuffer, (videoItem) => {
-                // cc.log("videoItem", videoItem);
-                this._prepareLoadAssets(videoItem, () => {
+            
+            if (svgaBinData) {
+                if(SVGAParser.videoEntitys[svgaBinData.name]){
+                    let videoItem = SVGAParser.videoEntitys[svgaBinData.name];
                     this.setVideoItem(videoItem);
                     this.rootNode.setPosition(-videoItem.videoSize.width / 2, videoItem.videoSize.height / 2);
                     if (autoplay !== false) {
                         this.startAnimation(false);
                     }
+                    return ;
+                }
+                SVGAParser.load(svgaBinData, (videoItem) => {
+                    this._prepareLoadAssets(videoItem, () => {
+                        this.setVideoItem(videoItem);
+                        this.rootNode.setPosition(-videoItem.videoSize.width / 2, videoItem.videoSize.height / 2);
+                        if (autoplay !== false) {
+                            this.startAnimation(false);
+                        }
+                    })
+                }, (err) => {
+                    cc.error("initSVGAPlayer err", err);
+                    this._onError && this._onError(err);
                 })
-            }, (err) => {
-                cc.error("initSVGAPlayer err", err);
-                this._onError && this._onError(err);
-            })
+            }
         }
+        this._isSVGAInit = true;
+
+        
     }
 
     setVideoBuffer(svgaBinData: cc.BufferAsset, autoplay) {
@@ -134,11 +140,11 @@ export default class SVGAPlayer extends cc.Component {
             return
         }
         this.videoItem = null;
-
         if (!this._isSVGAInit) {
             this._initSVGAPlayer(this.svgaData, true);
         }
         else {
+            // this._isSVGAInit = true;
             this.setVideoBuffer(this.svgaData, true);
         }
     }
@@ -378,7 +384,6 @@ export default class SVGAPlayer extends cc.Component {
 
         let count = 0;
         let maxCount = Object.keys(videoItem.images).length;
-
         for (var imageKey in videoItem.images) {
             let src = videoItem.images[imageKey];
             if (src.indexOf("SUQz") === 0) {
@@ -393,9 +398,10 @@ export default class SVGAPlayer extends cc.Component {
             }
             else {
                 let did = {
+                    imageKey:imageKey,
                     type: SVGADynamicImageType.Base64,
                     base64: src,
-                } as SVGADynamicImage;
+                } as SVGADynamicImage;  
                 this._renderer.preloadSpriteFrame(did, (sf) => {
                     count++;
                     if (count >= maxCount) {
@@ -443,7 +449,7 @@ export default class SVGAPlayer extends cc.Component {
         }
         this._resize();
         this._renderer.drawFrame(this._currentFrame);
-        this._playAudio(this._currentFrame);
+        // this._playAudio(this._currentFrame);
     }
 
     update(dt) {
@@ -493,7 +499,7 @@ export default class SVGAPlayer extends cc.Component {
             this._onFrame(this._currentFrame);
         }
         if (typeof this._onPercentage === "function") {
-            let percent = parseFloat(this._currentFrame + 1 as any) / parseFloat(this.videoItem.frames);
+            let percent = parseFloat(this._currentFrame + 1 as any) / Number(this.videoItem.frames);
             if (this._animator.reverse) {
                 this._onPercentage(1 - percent);
             }

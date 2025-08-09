@@ -55,10 +55,18 @@ export default class Home extends cc.Component {
         this.addBreathingEffect(this.leftBtn, -1);
         this.addBreathingEffect(this.rightBtn, 1);
         this.svgaGuan.playSVGA();
-        this.schedule(() => {
-            this.playGoBtn();
-        }, 1.2);
-        this.playGoBtn();
+
+        // for(let i=0;i<100;i++){
+        //     let node = cc.instantiate(this.svgaGuan.node);
+        //     node.parent = this.node;
+        //     let player =node.getComponent(SVGAPlayer)
+        //     // player.playSVGA()
+        //     player.loops = 1000;
+        // }
+        // this.schedule(() => {
+        //     this.playGoBtn();
+        // }, 1.2);
+        // this.playGoBtn();
         this.initView();
         EventMgr.on("OnCheckOver", this.onCheckOver, this);
     }
