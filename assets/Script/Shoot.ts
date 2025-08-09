@@ -238,7 +238,7 @@ export default class Shoot extends cc.Component {
         GameLogic.instance.reqPlayerInfo();
         this.shootPlay();
     }
-    onShootingHttpError(path){
+    onShootingHttpError(path) {
 
     }
     onShootingError() {
@@ -254,10 +254,10 @@ export default class Shoot extends cc.Component {
     shootPlay() {
         let data = GameLogic.instance.ShootingInfo;
         let canRunning = false;
-        if(data && data.rewardList && data.rewardList.length > 0){
+        if (data && data.rewardList && data.rewardList.length > 0) {
             canRunning = true;
         }
-        if(!canRunning){
+        if (!canRunning) {
             Game.instance.showToast("服务器数据异常...")
             this.onShootingError();
             return;
@@ -294,8 +294,8 @@ export default class Shoot extends cc.Component {
             this.beginAutoShoot();
         }
     }
-    
-    timeJinzhong=null;
+
+    timeJinzhong = null;
     //播放击中中奖效果
     kuangAni(index: number) {
         console.log("击中", index);
@@ -313,7 +313,7 @@ export default class Shoot extends cc.Component {
         this.Jinzhong.setPosition(this.giftList[index].getPosition().x, this.giftList[index].getPosition().y + 167);
         AudioMgr.playSound("audio/jinzhongClick");
 
-        this.timeJinzhong=this.scheduleOnce(() => {
+        this.timeJinzhong = this.scheduleOnce(() => {
             this.clearKuangAni();
         }, 0.5)
     }
@@ -335,8 +335,8 @@ export default class Shoot extends cc.Component {
             this.showTenReward();
             this.svga.node.active = true;
             this.svga.playSVGA();
-            this.svga.node.scale=1.12;
-            this.svga.node.y=10;
+            this.svga.node.scale = 1.12;
+            this.svga.node.y = 10;
             this.showDoorBlink();
             // this.light.active = true;
             this.tiemout = this.scheduleOnce(() => {
@@ -348,6 +348,8 @@ export default class Shoot extends cc.Component {
                 this.closeSVGA();
                 this.svga.node.active = true;
                 this.svga.playSVGA();
+                this.svga.node.scale = 1.12;
+                this.svga.node.y = 10;
                 this.showDoorBlink();
                 // this.light.active = true;
                 this.tiemout = this.scheduleOnce(() => {
@@ -392,7 +394,7 @@ export default class Shoot extends cc.Component {
     noShowReward() {
         // 创建一个奖励节点
         if (GameLogic.instance.ShootingInfo && GameLogic.instance.ShootingInfo.rewardList
-             && GameLogic.instance.ShootingInfo.rewardList.length>0 ) {
+            && GameLogic.instance.ShootingInfo.rewardList.length > 0) {
             const rewardInfo = GameLogic.instance.ShootingInfo.rewardList[0];
             Game.instance.showView("rewardItemtips", this.autoWindow, (node) => {
                 let item: RewardItemtips = node.getComponent(RewardItemtips);
