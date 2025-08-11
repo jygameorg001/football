@@ -32,8 +32,8 @@ export class AudioMgr {
     static set muted(v) {
         AudioMgr._muted = v;
         // StorageMgr.instance.set(MuteStoreKey, v);
-        cc.audioEngine.setMusicVolume(this.musicVolume);
-        cc.audioEngine.setEffectsVolume(this.effectVolume);
+        cc.audioEngine.setMusicVolume(this.bgmVolume);
+        cc.audioEngine.setEffectsVolume(this.effectsVolume);
 
     }
 
@@ -60,17 +60,19 @@ export class AudioMgr {
         let str = cc.sys.localStorage.getItem("isPaused","");
         if(str=="1"){
             AudioMgr.isPaused = true;
-            this.setMusicVolume(0);
-            this.setEffectsVolume(0)
+            AudioMgr.bgmVolume=0;
+            AudioMgr.effectsVolume=0;
         }else{
-            cc.audioEngine.setMusicVolume(AudioMgr.musicVolume);
-            cc.audioEngine.setEffectsVolume(AudioMgr.effectVolume);
+            AudioMgr.bgmVolume=1;
+            AudioMgr.effectsVolume=1;
         }
+        cc.audioEngine.setMusicVolume(AudioMgr.bgmVolume);
+        cc.audioEngine.setEffectsVolume(AudioMgr.effectsVolume);
         cc.game.on(cc.game.EVENT_SHOW, () => {
             AudioMgr.isInBackground = false;
 
-            !AudioMgr.isVolumeLowered && AudioMgr.setMusicVolume(AudioMgr.musicVolume);
-            AudioMgr.setEffectsVolume(AudioMgr.effectVolume);
+            AudioMgr.setMusicVolume(AudioMgr.bgmVolume);
+            AudioMgr.setEffectsVolume(AudioMgr.effectsVolume);
 
             const ctx = (cc.sys as any).__audioSupport?.context;
             if (!ctx) return;
@@ -123,7 +125,7 @@ export class AudioMgr {
 
             if (AudioMgr.currentMusicClip) {
                 AudioMgr.currentMusicId = cc.audioEngine.playMusic(AudioMgr.currentMusicClip, AudioMgr.currentMusicLoop ?? true);
-                cc.audioEngine.setMusicVolume(AudioMgr.musicVolume);
+                cc.audioEngine.setMusicVolume(AudioMgr.bgmVolume);
             }
         } catch (e) {
             console.error("[Audio Debug] AudioContext 重建失败", e);
@@ -155,10 +157,10 @@ export class AudioMgr {
                 }
                 AudioMgr.currentMusicClip = clip;
                 AudioMgr.currentMusicLoop = isLoop;
-                console.log("====AudioMgr", 'playMusic', AudioMgr.musicVolume,AudioMgr.bgmVolume);
+                console.log("====AudioMgr", 'playMusic',AudioMgr.bgmVolume);
                 // WebAudio 正常播放
                 AudioMgr.currentMusicId = cc.audioEngine.playMusic(clip, isLoop);
-                cc.audioEngine.setMusicVolume(AudioMgr.musicVolume);
+                cc.audioEngine.setMusicVolume(AudioMgr.bgmVolume);
                 const state = cc.audioEngine.getState(AudioMgr.currentMusicId);
             }
         )
@@ -171,29 +173,33 @@ export class AudioMgr {
 
     static pauseMusic() {
         // this.originMusicVolume = cc.audioEngine.getMusicVolume();
+        this.bgmVolume =0;
+        this.effectsVolume =0;
         cc.audioEngine.setMusicVolume(0);
         // cc.audioEngine.pauseMusic();
     }
 
     static resumeMusic() {
+        this.bgmVolume =1;
+        this.effectsVolume =1;
         cc.audioEngine.setMusicVolume(1);
         cc.audioEngine.setEffectsVolume(1);
         // cc.audioEngine.resumeMusic();
     }
 
-    static get musicVolume() {
-        if (AudioMgr._muted) return 0;
-        return AudioMgr.bgmVolume;
-    }
+    // static get musicVolume() {
+    //     if (AudioMgr._muted) return 0;
+    //     return AudioMgr.bgmVolume;
+    // }
 
-    static get effectVolume() {
-        if (AudioMgr._muted) return 0;
-        return AudioMgr.effectsVolume;
-    }
+    // static get effectVolume() {
+    //     if (AudioMgr._muted) return 0;
+    //     return AudioMgr.effectsVolume;
+    // }
 
     static setMusicVolume(volume: number) {
         AudioMgr.bgmVolume = volume;
-        cc.audioEngine.setMusicVolume(AudioMgr.musicVolume);
+        cc.audioEngine.setMusicVolume(AudioMgr.bgmVolume);
     }
 
     /**
@@ -202,7 +208,7 @@ export class AudioMgr {
      */
     static setEffectsVolume(volume: number) {
         AudioMgr.effectsVolume = volume;
-        cc.audioEngine.setEffectsVolume(AudioMgr.effectVolume);
+        cc.audioEngine.setEffectsVolume(AudioMgr.effectsVolume);
     }
 
     /**
@@ -247,7 +253,7 @@ export class AudioMgr {
                 AudioMgr.isVolumeLowered = true;
             }
         } else {
-            cc.audioEngine.setMusicVolume(AudioMgr.musicVolume);
+            cc.audioEngine.setMusicVolume(AudioMgr.bgmVolume);
             AudioMgr.isVolumeLowered = false;
         }
     }
