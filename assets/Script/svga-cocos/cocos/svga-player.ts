@@ -135,7 +135,7 @@ export default class SVGAPlayer extends cc.Component {
         this._initSVGAPlayer(svgaBinData, autoplay);
     }
 
-    playSVGA() {
+    playSVGA(times) {
         if (!this.svgaData) {
             cc.warn("svgaData is null")
             return
@@ -143,10 +143,13 @@ export default class SVGAPlayer extends cc.Component {
         this.videoItem = null;
         if (!this._isSVGAInit) {
             this._initSVGAPlayer(this.svgaData, true);
+            
         }
         else {
-            this.loops =1;
             this._currentFrame = 0;
+        }
+        if(times){
+            this._animator.loops = times;
         }
     }
 
