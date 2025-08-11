@@ -393,7 +393,6 @@ export class GameLogic {
         this.onAudioPlay();
     }
     onAudioPlay() {
-        console.log("===onAudioPlay");
         // AudioMgr.playMusic("audio/homeMusic");
         setTimeout(()=>{
             AudioMgr.playMusic("audio/homeMusic");

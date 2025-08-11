@@ -19,8 +19,8 @@ const isIOS = cc.sys.os === cc.sys.OS_IOS;
 export class AudioMgr {
     static EventMuteChanged = "EventMuteChanged";
     static bgAudioSource: cc.AudioSource = null;
-    private static bgmVolume = 1; // 背景音乐音量
-    private static effectsVolume = 1; // 音效音量
+    static bgmVolume = 1; // 背景音乐音量
+    static effectsVolume = 1; // 音效音量
     private static isVolumeLowered = false; // 标记是否是特殊情况降低的音量
     private static currentMusicId: number = -1; // 记录当前播放的音乐ID
     static isPaused: boolean = false;
@@ -155,7 +155,7 @@ export class AudioMgr {
                 }
                 AudioMgr.currentMusicClip = clip;
                 AudioMgr.currentMusicLoop = isLoop;
-
+                console.log("====AudioMgr", 'playMusic', AudioMgr.musicVolume,AudioMgr.bgmVolume);
                 // WebAudio 正常播放
                 AudioMgr.currentMusicId = cc.audioEngine.playMusic(clip, isLoop);
                 cc.audioEngine.setMusicVolume(AudioMgr.musicVolume);
