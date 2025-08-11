@@ -341,7 +341,7 @@ export default class Shoot extends cc.Component {
             this.svga.node.active = true;
             this.svga.playSVGA(1);
             this.svga.node.scale = 1.12;
-            this.svga.node.y = 10;
+            this.svga.node.y = -5;
             this.showDoorBlink();
             // this.light.active = true;
             this.tiemout = this.scheduleOnce(() => {
@@ -354,7 +354,7 @@ export default class Shoot extends cc.Component {
                 this.svga.node.active = true;
                 this.svga.playSVGA(1);
                 this.svga.node.scale = 1.12;
-                this.svga.node.y = 10;
+                this.svga.node.y = -5;
                 this.showDoorBlink();
                 // this.light.active = true;
                 this.tiemout = this.scheduleOnce(() => {
