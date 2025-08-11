@@ -85,7 +85,7 @@ export default class Shoot extends cc.Component {
         this.shootByAuto = false;//自动射门中
         this.initListItems();
 
-        
+
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);
@@ -133,7 +133,7 @@ export default class Shoot extends cc.Component {
         for (let i = 0; i < this.giftList.length; i++) {
             let gift = GameLogic.instance.giftList[i];
             let node = this.giftList[i];
-            GameLogic.instance.loadRemoteSprite(gift.giftImage, node.getComponent(cc.Sprite), 90,70);
+            GameLogic.instance.loadRemoteSprite(gift.giftImage, node.getComponent(cc.Sprite), 90, 70);
         }
     }
     protected initBtnClickHandle() {
@@ -252,7 +252,7 @@ export default class Shoot extends cc.Component {
         this.setSheBtnState(this.btnOne, !isShoot);
         this.setSheBtnState(this.btnTen, !isShoot);
         this.isTimeshoot = isShoot;
-        this.autoBtn.opacity = isShoot?165:255;
+        this.autoBtn.opacity = isShoot ? 165 : 255;
         let canClick = this.shootByAuto || this.canShoot
         this.autoBtn.getComponent(cc.Button).interactable = canClick;
     }
@@ -338,12 +338,14 @@ export default class Shoot extends cc.Component {
         if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
             this.closeSVGA();
             this.showTenReward();
-            this.svga.node.active = true;
-            this.svga.playSVGA(1);
-            this.svga.node.scale = 1.12;
-            this.svga.node.y = -5;
+            if (this.isHasReward(GameLogic.instance.ShootingInfo.rewardList)) {
+                this.svga.node.active = true;
+                this.svga.playSVGA(1);
+                this.svga.node.scale = 1.12;
+                this.svga.node.y = -5;
+            }
+
             this.showDoorBlink();
-            // this.light.active = true;
             this.tiemout = this.scheduleOnce(() => {
                 this.closeSVGA()
             }, 2.5)
@@ -356,7 +358,6 @@ export default class Shoot extends cc.Component {
                 this.svga.node.scale = 1.12;
                 this.svga.node.y = -5;
                 this.showDoorBlink();
-                // this.light.active = true;
                 this.tiemout = this.scheduleOnce(() => {
                     this.closeSVGA()
                 }, 2.5)
@@ -391,7 +392,7 @@ export default class Shoot extends cc.Component {
         this.scheduleOnce(() => {
             this.checkAutoShoot();
         }, 0)
-        
+
     }
 
     closeRewardviewShoot(time) {
