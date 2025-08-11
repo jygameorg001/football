@@ -339,7 +339,7 @@ export default class Shoot extends cc.Component {
             this.closeSVGA();
             this.showTenReward();
             this.svga.node.active = true;
-            this.svga.playSVGA();
+            this.svga.playSVGA(1);
             this.svga.node.scale = 1.12;
             this.svga.node.y = 10;
             this.showDoorBlink();
@@ -352,7 +352,7 @@ export default class Shoot extends cc.Component {
             if (GameLogic.instance.ShootingInfo.rewardList[0].reward > 0) {
                 this.closeSVGA();
                 this.svga.node.active = true;
-                this.svga.playSVGA();
+                this.svga.playSVGA(1);
                 this.svga.node.scale = 1.12;
                 this.svga.node.y = 10;
                 this.showDoorBlink();
@@ -386,6 +386,7 @@ export default class Shoot extends cc.Component {
     closeRewardview() {
         console.log("====closeRewardview=====")
         // this.light.active = false;
+        this.clearAutoReward();
         this.resetShootBtns();
         this.scheduleOnce(() => {
             this.checkAutoShoot();
