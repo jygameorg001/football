@@ -141,15 +141,15 @@ export default class SVGAPlayer extends cc.Component {
             return
         }
         this.videoItem = null;
+        if(times){
+            this.loops  = times;
+        }
         if (!this._isSVGAInit) {
             this._initSVGAPlayer(this.svgaData, true);
-            
         }
         else {
             this._currentFrame = 0;
-        }
-        if(times){
-            this._animator.loops = times;
+            this.startAnimation(false);
         }
     }
 
