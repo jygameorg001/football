@@ -145,8 +145,7 @@ export default class SVGAPlayer extends cc.Component {
             this._initSVGAPlayer(this.svgaData, true);
         }
         else {
-            // this._isSVGAInit = true;
-            this.setVideoBuffer(this.svgaData, true);
+            this._currentFrame = 0;
         }
     }
 
