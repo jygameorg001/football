@@ -101,7 +101,8 @@ export class HttpHelper {
                     if(rsp.code != 200){
                         // show error---
                         console.log("error code:",path, rsp);
-                        EventMgr.emit("toastview", JSON.stringify(rsp));
+                       
+                        EventMgr.emit("toastview",  rsp.message);
                         callback(3, rsp);
                         return;
                     }

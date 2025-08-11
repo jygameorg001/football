@@ -53,6 +53,7 @@ export default class Game extends cc.Component {
         }
         if(GameLogic.instance.playerInfo.pop==1){//每次弹
             this.playNotice.active = true;
+            this.checkNotice(1);
         }
         if(GameLogic.instance.playerInfo.pop==2){//每天弹一次
             this.checkNotice(2);
@@ -84,8 +85,13 @@ export default class Game extends cc.Component {
     checkNotice(flag) {
         this.playNotice.active = true;
         let lastTime = cc.sys.localStorage.getItem("agree_notice_pop");
-        let oldDate = new Date(lastTime);
+        let oldDate = new Date(Number(lastTime));
         let date = new Date();
+        if(flag==1){
+            if(date.getDate()==oldDate.getDate()){
+                this.playNotice.active = false;
+            }
+        }
         // 判断是否是同一天
         if(flag==2){
             if(date.getDate()==oldDate.getDate()){

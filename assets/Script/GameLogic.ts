@@ -4,8 +4,8 @@ import { HttpHelper } from "./common/HttpHelper";
 import Game from "./Game";
 import { NameConfig } from "./Home";
 
-const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjMzM2JmNmU1LTdkYTYtNDBlZi1iMjA2LTUzY2M1MWQxYTU1ZCIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.OFoO8rEkF0QQzFJhV3SkEKmgNtM1G0PSusqKH3U9bAB8RS4yPIDfW2LHi8Lq33wdSR9HoWRYXBJZvUs-zZTK1Q"
 
+const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6ImNjMGU4NzhjLTk5ZGItNDk0NC04MTI2LWI5Nzc5YTNiNDYwNCIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.-WgRyu6CWNUqbEQXfg3OiJDkeMX-PiGypzOZmVad4XrY8zFyMPu1Nztp5vNUi-33qSrlwjBkp23Sca-YpJCMmg";
 export interface IUserInfo {
     appToken: string; // appToken
     authStatus: 0 | 1; // 实名状态：0->未实名，1->已实名
@@ -80,6 +80,7 @@ export class GameLogic {
     loadCount:  number = 0;
     isOffLine: boolean;
     isFirstClick: boolean = false;
+    isTest: boolean = true;
     public static get instance() {
         return this._instance;
     }
@@ -190,6 +191,28 @@ export class GameLogic {
             anchorId: GameLogic.instance.anchorId||1603148,
             num: times
         }
+
+        if(this.isTest){
+            let rewardList =[];
+            for(let i=0;i<times;i++){
+                let info = {
+                        giftId: 1,
+                        giftImage: 1,
+                        id: 1,
+                        reward: 1000,
+                    }
+                rewardList.push(info);
+            }
+            let data ={
+                rewardList: rewardList,
+                sendMoney: 500,
+                totalMoney: 9999999
+            }
+            GameLogic.instance.ShootingInfo = data;
+            console.log("返回shooting", data);
+            EventMgr.emit("onShooting", data)
+            return;
+        }
         HttpHelper.httpPost("football-api/football/shooting", params, (err, data) => {
             if (err) {
                 EventMgr.emit("onShootingError")
@@ -284,7 +307,7 @@ export class GameLogic {
         return this.loadCount==0;
     }
 
-    loadRemoteSprite(url, spriteNode: cc.Sprite,width=0) {
+    loadRemoteSprite(url, spriteNode: cc.Sprite,width=0,height=0) {
         cc.assetManager.loadRemote(url, (err: Error, asset: cc.Texture2D) => {
             if (err) {
                 return;
@@ -296,8 +319,13 @@ export class GameLogic {
                     frame["_uuid"] = url + "_f";
                     frame.addRef();
                 }
+                let scale =1;
                 if(width>0){
-                    let scale = width/asset.width;
+                    scale = width/asset.width;
+                    if(height>0){
+                        let scale1 = height/asset.height;
+                        scale = Math.min(scale,scale1);
+                    }
                     spriteNode.sizeMode =  cc.Sprite.SizeMode.CUSTOM;
                     spriteNode.node.setContentSize(width,scale*asset.height);
                 }

@@ -2032,7 +2032,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -10,
+        0,
         170,
         0,
         0,
@@ -10575,7 +10575,6 @@
     "autoWindow": {
       "__id__": 191
     },
-    "light": null,
     "btnShoot": {
       "__id__": 124
     },

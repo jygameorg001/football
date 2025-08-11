@@ -294,9 +294,8 @@ export class  BallRun {
         if (!node) return;
         let kuang = node.getChildByName("kuang")
         kuang.active = true;
-        cc.tween(kuang).to(0.1, {scale:1.1})
-        .to(0.1,{scale:0.9})
-        .to(0.1,{scale:1})
+        cc.tween(kuang)
+        .delay(0.5)
         .call(()=>{
             kuang.active = false;
         })

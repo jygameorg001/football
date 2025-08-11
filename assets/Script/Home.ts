@@ -65,10 +65,10 @@ export default class Home extends cc.Component {
         //     // player.playSVGA()
         //     player.loops = 1000;
         // }
-        // this.schedule(() => {
-        //     this.playGoBtn();
-        // }, 1.2);
-        // this.playGoBtn();
+        this.schedule(() => {
+            this.playGoBtn();
+        }, 1.2);
+        this.playGoBtn();
         this.initView();
         EventMgr.on("OnCheckOver", this.onCheckOver, this);
     }
