@@ -145,6 +145,7 @@ export default class SVGAPlayer extends cc.Component {
             this._initSVGAPlayer(this.svgaData, true);
         }
         else {
+            this.loops =1;
             this._currentFrame = 0;
         }
     }
@@ -201,11 +202,11 @@ export default class SVGAPlayer extends cc.Component {
     }
 
     private _clear() {
-        if (this.contentLayer) {
-            this.contentLayer.active = false;
-        }
-        this.videoItem = null;
-        this.clearAudios();
+        // if (this.contentLayer) {
+        //     this.contentLayer.active = false;
+        // }
+        // this.videoItem = null;
+        // this.clearAudios();
     }
 
     clearSvagPlayer() {
