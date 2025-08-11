@@ -346,7 +346,7 @@ export default class Shoot extends cc.Component {
             // this.light.active = true;
             this.tiemout = this.scheduleOnce(() => {
                 this.closeSVGA()
-            }, 4)
+            }, 2.5)
         } else {
             this.showReward();
             if (GameLogic.instance.ShootingInfo.rewardList[0].reward > 0) {
@@ -359,7 +359,7 @@ export default class Shoot extends cc.Component {
                 // this.light.active = true;
                 this.tiemout = this.scheduleOnce(() => {
                     this.closeSVGA()
-                }, 4)
+                }, 2.5)
             }
         }
     }

@@ -140,7 +140,7 @@ export default class SVGAPlayer extends cc.Component {
             cc.warn("svgaData is null")
             return
         }
-        this.videoItem = null;
+        // this.videoItem = null;
         if(times){
             this.loops  = times;
         }
