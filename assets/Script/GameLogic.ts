@@ -4,7 +4,7 @@ import { HttpHelper } from "./common/HttpHelper";
 import Game from "./Game";
 import { NameConfig } from "./Home";
 
-const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6ImM4MGZmZDBiLTQyMjMtNGY2Yy05OGYxLWU5M2ZlODg0ZGJhMiIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.GPXaxX15IMl5WGtzbRGWxWKQn_7LchHzjeovIdTh7KLvW5MCQeXLiq-bqyyeUlQj8VsN0wjpGP1MvT9btg3dWw";
+const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6IjMzM2JmNmU1LTdkYTYtNDBlZi1iMjA2LTUzY2M1MWQxYTU1ZCIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.OFoO8rEkF0QQzFJhV3SkEKmgNtM1G0PSusqKH3U9bAB8RS4yPIDfW2LHi8Lq33wdSR9HoWRYXBJZvUs-zZTK1Q"
 
 export interface IUserInfo {
     appToken: string; // appToken
@@ -161,7 +161,7 @@ export class GameLogic {
         GameLogic.instance.reqGetqueryRates();
     }
     reqPlayerInfo() {
-        HttpHelper.httpPost("logic-api/logic/getPlayerInfoV2", {}, (err, data) => {
+        HttpHelper.httpPost("logic-api/logic/getPlayerInfoV2", {gameType:114}, (err, data) => {
             if (err) {
                 return;
             }
