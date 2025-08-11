@@ -23,7 +23,7 @@ export class AudioMgr {
     private static effectsVolume = 1; // 音效音量
     private static isVolumeLowered = false; // 标记是否是特殊情况降低的音量
     private static currentMusicId: number = -1; // 记录当前播放的音乐ID
-    static isPaused: boolean;
+    static isPaused: boolean = false;
 
     static get muted() {
         return AudioMgr._muted;
@@ -50,17 +50,22 @@ export class AudioMgr {
     /**
      * @description: 上次播放的音乐音量，用于恢复音量
      */
-    private static originMusicVolume;
+    // private static originMusicVolume;
 
     static init() {
+        
         AudioMgr.effectMap = new Map();
         AudioMgr.isVolumeLowered = false;
-
-        cc.audioEngine.setMusicVolume(AudioMgr.musicVolume);
-        cc.audioEngine.setEffectsVolume(AudioMgr.effectVolume);
-
-        this.originMusicVolume = this.musicVolume;
-
+        // this.originMusicVolume = 1;
+        let str = cc.sys.localStorage.getItem("isPaused","");
+        if(str=="1"){
+            AudioMgr.isPaused = true;
+            this.setMusicVolume(0);
+            this.setEffectsVolume(0)
+        }else{
+            cc.audioEngine.setMusicVolume(AudioMgr.musicVolume);
+            cc.audioEngine.setEffectsVolume(AudioMgr.effectVolume);
+        }
         cc.game.on(cc.game.EVENT_SHOW, () => {
             AudioMgr.isInBackground = false;
 
@@ -165,13 +170,14 @@ export class AudioMgr {
     }
 
     static pauseMusic() {
-        this.originMusicVolume = cc.audioEngine.getMusicVolume();
+        // this.originMusicVolume = cc.audioEngine.getMusicVolume();
         cc.audioEngine.setMusicVolume(0);
         // cc.audioEngine.pauseMusic();
     }
 
     static resumeMusic() {
-        cc.audioEngine.setMusicVolume(this.originMusicVolume);
+        cc.audioEngine.setMusicVolume(1);
+        cc.audioEngine.setEffectsVolume(1);
         // cc.audioEngine.resumeMusic();
     }
 
