@@ -18,6 +18,19 @@ export default class Game extends cc.Component {
     viewList:cc.Node[] = [];
 
     protected onLoad(): void {
+        let str = window.location.href;
+        console.log("=====Game onLoad",window.location.href);
+        let info = str.split("?");
+        if(info.length  > 1){
+            let param = info[1].split("&");
+            for(let i = 0; i < param.length; i++){
+                let kv = param[i].split("=");
+                if(kv[0] == "test"){
+                    GameLogic.instance.isTest = true;
+                }
+            }
+        }
+
         Game.instance = this;
         AudioMgr.init();
         this.initView();
@@ -85,16 +98,20 @@ export default class Game extends cc.Component {
     checkNotice(flag) {
         this.playNotice.active = true;
         let lastTime = cc.sys.localStorage.getItem("agree_notice_pop");
-        let oldDate = new Date(Number(lastTime));
+        let oldDate = null;
+        if(lastTime){
+            oldDate = new Date(Number(lastTime));
+        }
+        console.log("====lastTime", lastTime,oldDate);
         let date = new Date();
         if(flag==1){
-            if(date.getDate()==oldDate.getDate()){
+            if(oldDate && date.getDate()==oldDate.getDate()){
                 this.playNotice.active = false;
             }
         }
         // 判断是否是同一天
         if(flag==2){
-            if(date.getDate()==oldDate.getDate()){
+            if(oldDate && date.getDate()==oldDate.getDate()){
                 this.playNotice.active = false;
             }
         }
@@ -110,7 +127,7 @@ export default class Game extends cc.Component {
         }
         //判断是否是同一月
         if(flag==4){
-            if(date.getMonth()==oldDate.getMonth()){
+            if(oldDate && date.getMonth()==oldDate.getMonth()){
                 this.playNotice.active = false;
             }
         }  
