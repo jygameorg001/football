@@ -135,7 +135,7 @@ export default class SVGAPlayer extends cc.Component {
         this._initSVGAPlayer(svgaBinData, autoplay);
     }
 
-    playSVGA(times) {
+    playSVGA(times=-1) {
         if (!this.svgaData) {
             cc.warn("svgaData is null")
             return

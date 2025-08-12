@@ -5,7 +5,8 @@ import Game from "./Game";
 import { NameConfig } from "./Home";
 
 
-const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTQ4LCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6ImNjMGU4NzhjLTk5ZGItNDk0NC04MTI2LWI5Nzc5YTNiNDYwNCIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszMwNTExNiJ9.-WgRyu6CWNUqbEQXfg3OiJDkeMX-PiGypzOZmVad4XrY8zFyMPu1Nztp5vNUi-33qSrlwjBkp23Sca-YpJCMmg";
+const Token = "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTYyLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6Ijk4NDY0Nzc5LTYwMDEtNDE4NC1hYjNmLWNlYWRhYWQ1MDc4MyIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcxNzAyNiJ9.ipeKv2CN-wwEx34a_w9qwQ2j-qPWlALplkkAgYrrrVLuXWqrHGNfTRjtJPvXO0p99WVi5sD_RoFnm24_OHfG2A"
+
 export interface IUserInfo {
     appToken: string; // appToken
     authStatus: 0 | 1; // 实名状态：0->未实名，1->已实名
@@ -185,10 +186,9 @@ export class GameLogic {
     }
 
     reqShooting(times: number) {
-        
         let params = {
-            roomId: GameLogic.instance.roomId||1000152,
-            anchorId: GameLogic.instance.anchorId||1603148,
+            roomId: GameLogic.instance.roomId||1000128,
+            anchorId: GameLogic.instance.anchorId||1601109,
             num: times
         }
 

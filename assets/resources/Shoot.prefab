@@ -1445,7 +1445,7 @@
   {
     "__type__": "cc.Node",
     "_name": "xingxing",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": {
       "__id__": 3
     },
@@ -1460,7 +1460,7 @@
         "__id__": 39
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 42

@@ -56,7 +56,7 @@ export default class Home extends cc.Component {
         this.addBreathingEffect(this.rightBtn, 1);
         this.svgaGuan.node.active = true
         this.svgaGuan.playSVGA();
-        this.svgaGuan.node.scale = 1.12;
+        this.svgaGuan.node.scale = 1.111;
         this.svgaGuan.node.y=10;
         // for(let i=0;i<100;i++){
         //     let node = cc.instantiate(this.svgaGuan.node);
