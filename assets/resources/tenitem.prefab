@@ -435,7 +435,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 137.39,
+      "width": 113.39,
       "height": 27.72
     },
     "_anchorPoint": {
@@ -487,8 +487,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "幸运分x1000",
-    "_N$string": "幸运分x1000",
+    "_string": "优币x1000",
+    "_N$string": "优币x1000",
     "_fontSize": 24,
     "_lineHeight": 22,
     "_enableWrapText": true,
