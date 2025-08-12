@@ -27,7 +27,7 @@ export interface IPlayerInfo {
     currency: number,
     pop: number,
     luckValue: number,
-    luckScore: number // 幸运分
+    luckScore: number 
 }
 
 export interface IGiftInfo {
@@ -425,6 +425,10 @@ export class GameLogic {
         setTimeout(()=>{
             AudioMgr.playMusic("audio/homeMusic");
         },200)
+    }
+
+    getCurrencyName(){
+        return "U币"
     }
 }
 window["GLogic"] = window["GLogic"] || GameLogic.instance;

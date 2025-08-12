@@ -5125,7 +5125,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 177.38,
+      "width": 136.04,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -5177,8 +5177,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "每次消耗500U币",
-    "_N$string": "每次消耗500U币",
+    "_string": "每次消耗500",
+    "_N$string": "每次消耗500",
     "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,
@@ -10560,7 +10560,7 @@
     "energy": {
       "__id__": 37
     },
-    "luckScore": {
+    "userCurrencyLabel": {
       "__id__": 131
     },
     "tuowei": {

@@ -19,7 +19,7 @@ export default class Shoot extends cc.Component {
     @property(cc.Node) giftNode: cc.Node = null;
     @property(cc.Label) currency: cc.Label = null;
     @property(cc.Label) energy: cc.Label = null;
-    // @property(cc.Label) luckScore: cc.Label = null;
+    @property(cc.Label) userCurrencyLabel: cc.Label = null;
     @property(cc.Node) tuowei: cc.Node = null;
     // @property(cc.Prefab) rewardview: cc.Prefab = null;
     // @property(cc.Prefab) rewardTenview: cc.Prefab = null;
@@ -84,8 +84,7 @@ export default class Shoot extends cc.Component {
         this.resetShootBtns(false);
         this.shootByAuto = false;//自动射门中
         this.initListItems();
-
-
+        this.userCurrencyLabel.string="每次消耗500"+GameLogic.instance.getCurrencyName();
     }
     onEvent() {
         EventMgr.on("onGetPlayerInfo", this.upinfo, this);
@@ -110,7 +109,6 @@ export default class Shoot extends cc.Component {
     upinfo() {
         // this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
         this.currency.string = GameLogic.instance.playerInfo.currency + "";
-        // this.luckScore.string = "消耗: " + GameLogic.instance.playerInfo.luckScore + "U币";
     }
     upLuck() {
 
@@ -470,7 +468,7 @@ export default class Shoot extends cc.Component {
             let rewardInfo = rewardList[i];
             let names1 = this.getGiftNameById(rewardInfo.giftId) + "x1 ";
             if (rewardInfo.reward > 0) {
-                let names2 = " 幸运分x" + rewardInfo.reward;
+                let names2 = GameLogic.instance.getCurrencyName()+"x" + rewardInfo.reward;
                 str += "<color=#ffffff>" + names1 + "</color><color=#FFEF40>" + names2 + "</color>";
             } else {
                 str += "<color=#ffffff>" + names1 + "</color>";

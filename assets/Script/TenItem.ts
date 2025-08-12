@@ -32,7 +32,7 @@ export default class TenItem extends cc.Component {
         this.giftName.string = this.getGiftNameById(data.giftId) + "x" + data.count;
         if (data.reward > 0) {
             this.sart.node.active = true;
-            this.reward.string = "幸运分X" + data.reward;
+            this.reward.string = GameLogic.instance.getCurrencyName()+"X" + data.reward;
         } else {
             if(this.sart&&this.sart.node){
                 this.sart.node.active = false;

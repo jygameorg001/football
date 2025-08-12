@@ -17,7 +17,7 @@ export default class RewardItemtips extends cc.Component {
         if (rewardInfo.reward > 0) {
             names = "太棒了!恭喜获得 \n";
             let names1 = this.getGiftNameById(rewardInfo.giftId) + "x1 ";
-            let names2 = " 幸运分x" + rewardInfo.reward;
+            let names2 = GameLogic.instance.getCurrencyName()+" x" + rewardInfo.reward;
             this.winlabel.string = names + "<color=#ffffff>" + names1 + "</color><color=#FFEF40>" + names2 + "</color>";
         } else {
             names = "恭喜获得 ";
