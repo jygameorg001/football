@@ -185,6 +185,12 @@ export class GameLogic {
         })
     }
 
+    randomGift(){
+        const giftList = GameLogic.instance.giftList;
+        let idx = Math.floor(Math.random()*giftList.length);
+        return giftList[idx];
+    }
+
     reqShooting(times: number) {
         let params = {
             roomId: GameLogic.instance.roomId||1000128,
@@ -195,12 +201,8 @@ export class GameLogic {
         if(this.isTest){
             let rewardList =[];
             for(let i=0;i<times;i++){
-                let info = {
-                        giftId: 1,
-                        giftImage: 1,
-                        id: 1,
-                        reward: 1000,
-                    }
+                let info:any =this.randomGift();
+                info.reward  = Math.random()>0.7?1000:0;
                 rewardList.push(info);
             }
             let data ={

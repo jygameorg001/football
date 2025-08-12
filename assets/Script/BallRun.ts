@@ -240,18 +240,15 @@ export class  BallRun {
         if (!node) return;
         let kuang = node.getChildByName("kuang")
         kuang.active = true;
-        cc.tween(kuang).to(0.2, {scale:1.1})
-        .to(0.2,{scale:0.9})
-        .to(0.2,{scale:1.05})
-        .to(0.2,{scale:1})
-        .delay(0.5)
+        cc.tween(kuang)
+        .delay(1)
         .call(()=>{
             kuang.active = false;
             kuang.setPosition(this.kuangPos[this.targetIdx]);
         })
         .start();
         EventMgr.emit("kuangAni",this.targetIdx)
-        Game.instance.shakeNode(node,15,()=>{
+        Game.instance.shakeNode(node,10,()=>{
             node.setPosition(this.giftPos[this.targetIdx])
         });
         Game.instance.shakeNode(this.doorNode,15,()=>{

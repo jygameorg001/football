@@ -404,6 +404,10 @@ export default class Shoot extends cc.Component {
             && GameLogic.instance.ShootingInfo.rewardList.length > 0) {
             const rewardInfo = GameLogic.instance.ShootingInfo.rewardList[0];
             Game.instance.showView("rewardItemtips", this.autoWindow, (node) => {
+                if(this.autoWindow.childrenCount>=50){
+                    let child = this.autoWindow.children[0];
+                    child.destroy();
+                }
                 let item: RewardItemtips = node.getComponent(RewardItemtips);
                 item.setDataOne(rewardInfo)
                 this.scheduleOnce(() => {
