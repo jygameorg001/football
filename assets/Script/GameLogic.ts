@@ -80,7 +80,7 @@ export class GameLogic {
     loadCount:  number = 0;
     isOffLine: boolean;
     isFirstClick: boolean = false;
-    isTest: boolean = true;
+    isTest: boolean = false;
     public static get instance() {
         return this._instance;
     }

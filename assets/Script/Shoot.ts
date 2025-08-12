@@ -395,6 +395,7 @@ export default class Shoot extends cc.Component {
     }
 
     closeRewardviewShoot(time) {
+        this.canShoot = true;
         this.timsShoot = time;
         this.onBtnShoot(time);
     }
