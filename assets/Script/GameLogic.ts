@@ -447,7 +447,7 @@ export class GameLogic {
   }
 
   getCurrencyName() {
-    return "优币";
+    return "金幣";
   }
 }
 window["GLogic"] = window["GLogic"] || GameLogic.instance;

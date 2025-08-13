@@ -16,7 +16,7 @@ export default class RewardItem extends cc.Component {
     console.log("initView----------------", isstar);
     if (isstar) {
       this.nameLabel.string =
-        "优币x" + GameLogic.instance.ShootingInfo.rewardList[0].reward;
+        "金幣x" + GameLogic.instance.ShootingInfo.rewardList[0].reward;
       this.icon.scale = 1;
       // 设置nameLabel的颜色
       this.nameLabel.node.color = new cc.Color(255, 239, 64);
