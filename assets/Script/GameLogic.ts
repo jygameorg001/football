@@ -278,7 +278,6 @@ export class GameLogic {
       }
     );
   }
-
   reqGetqueryRates() {
     HttpHelper.httpGet("/football-api/football/queryRates", (err, data) => {
       if (err != 200) {
