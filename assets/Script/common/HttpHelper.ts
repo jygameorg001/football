@@ -2,7 +2,7 @@ import { GameLogic } from "../GameLogic";
 import { EventMgr } from "./EventManager";
 
 export class HttpHelper {
-  static BaseURL = CC_DEBUG ? "https://test-youyin.daqiezi.cc/game/" : ""; // logic/getPlayerInfo
+  static BaseURL = CC_DEBUG ? "https://test-youyin.daqiezi.cc/game/" : "/game/"; // logic/getPlayerInfo
   static token = "";
   static initBaseUrl() {}
 
