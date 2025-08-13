@@ -4,6 +4,109 @@ import { GameLogic } from "./GameLogic";
 
 const { ccclass, property } = cc._decorator;
 
+// 测试数据
+let data = [
+    {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     },
+         {
+        "count": 1,
+        "giftId": 1600074191,
+        "giftImage": "https://zykj-app-test.oss-cn-beijing.aliyuncs.com/zykj/admin/other/Group%20390-21754308366680.png",
+        "giftPrice": 500,
+        "id": 2,
+        "multiple": 1,
+        "reward": 0,
+     }
+]
+
 @ccclass
 export default class rewardListview extends cc.Component {
 
@@ -16,26 +119,52 @@ export default class rewardListview extends cc.Component {
 
     @property(cc.Node)
     topNode: cc.Node = null;
+    //总的奖励数据
+    @property(cc.Label)
+    labTotalLW: cc.Label = null;
+    //总的U币数据
+    @property(cc.Label)
+    labTotalYB: cc.Label = null;
+
+    @property(cc.Node)
+    ybNode: cc.Node = null;
 
     start() {
         // "tenitem"
+        // 奖励数据
         let rewardList = GameLogic.instance.ShootingInfo.rewardList;
+        console.log("============start=================",rewardList);
+
+        let totalMoney = GameLogic.instance.ShootingInfo.totalMoney;
         let hasReward = this.isHasReward(rewardList);
         let mergedLists = this.mergeRewardList(rewardList);
+        // 测试
+        // hasReward = false;
         let tempItem = hasReward?this.rewardItem:this.oneItem;
         if(hasReward){
             this.topNode.children[0].active = false;
             this.topNode.children[1].active = true;
+            this.ybNode.active = true;
+            this.labTotalYB.string = totalMoney.toString();
             AudioMgr.playSound("audio/bigwin");
         }else{
             this.topNode.children[0].active = true;
             this.topNode.children[1].active = false;
+             this.ybNode.active = false;
         }
-        for (let i = 0; i < mergedLists.length; i++) {
+
+        // console.log("=========rewardListview.mergedLists==============",mergedLists.length);
+        // console.log("==========rewardListview.rewardList=======",mergedLists);
+        // 测试
+        // mergedLists =  data;
+         for (let i = 0; i < mergedLists.length; i++) {
             let rewardItem = cc.instantiate(tempItem);
             rewardItem.parent = this.contentView;
             rewardItem.getComponent("TenItem").init(mergedLists[i]);
         }
+
+        let totalJL = this.getToalReward(rewardList);
+        this.labTotalLW.string = totalJL.toString();
     }
 
     isHasReward(rewardList) { 
@@ -46,6 +175,22 @@ export default class rewardListview extends cc.Component {
             }
         }
         return false;
+    }
+
+    /**
+     * 
+     * @param rewardList 获取总的奖励数据
+     * @returns 
+     */
+    getToalReward(rewardList) { 
+        let res = 0;
+        for(let i=0;i<rewardList.length;i++){
+            let rewardInfo = rewardList[i];
+            if(rewardInfo.reward > 0){
+                res += rewardInfo.reward;
+            }
+        }
+        return res;
     }
 
     //关闭窗口
