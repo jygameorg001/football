@@ -13,11 +13,11 @@ export default class RewardItem extends cc.Component {
   }
 
   initView(isstar: boolean = false) {
-    console.log("initView----------------", isstar);
     if (isstar) {
       this.nameLabel.string =
         "金幣x" + GameLogic.instance.ShootingInfo.rewardList[0].reward;
       this.icon.scale = 1;
+      this.icon.getComponent(cc.Sprite).sizeMode = cc.Sprite.SizeMode.TRIMMED;
       // 设置nameLabel的颜色
       this.nameLabel.node.color = new cc.Color(255, 239, 64);
     } else {
@@ -27,7 +27,7 @@ export default class RewardItem extends cc.Component {
       GameLogic.instance.loadRemoteSprite(
         GameLogic.instance.ShootingInfo.rewardList[0].giftImage,
         this.icon.getComponent(cc.Sprite),
-        70
+        104
       );
       this.nameLabel.node.color = new cc.Color(255, 255, 255);
     }

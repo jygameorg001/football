@@ -241,37 +241,40 @@ export class GameLogic {
           return;
         }
 
-        console.log("onGetGameInfo:", data);
-        // 提取 regulation 属性
-        let regulation = data.regulation;
+        const parser = new window.DOMParser();
+        const html = parser.parseFromString(data.regulation, "text/html");
+        let extractedData = { gameId: data.gameId, pre: [], after: [] };
+        console.log("html", html);
+        const nodes = html.getElementsByTagName("*");
+        let key = "pre";
+        let str = "";
+        let index = 0;
+        for (let i = 0; i < nodes.length; i += 1) {
+          const item = nodes[i];
+          const tagNameVal = item.tagName?.toUpperCase();
+          const isA = tagNameVal === "A";
 
-        // 使用正则表达式匹配 <span> 标签及其后的内容，直到下一个 <span> 标签或字符串结束
-        let spanMatches = regulation.match(/<span[^>]*>([\s\S]*?)<\/span>/g);
-        // 使用正则表达式匹配 <a> 标签及其后的内容，直到下一个 <a> 标签或字符串结束
-        let aMatches = regulation.match(
-          /<a[^>]*href="(.*?)"[^>]*>([\s\S]*?)<\/a>/g
-        );
-        let extractedData = { gameId: data.gameId };
+          if (isA) {
+            const attr = item.getAttribute("href");
 
-        if (spanMatches) {
-          spanMatches.forEach((match, index) => {
-            // 去除 <span> 和 </span> 标签，得到纯文本
-            let text = match.replace(/<[^>]*>/g, "");
-            // 将文本作为属性添加到 extractedData 对象中
-            extractedData[`span${index + 1}`] = text;
-          });
+            if (attr === "概率列表") {
+              extractedData["a1"] = item.textContent;
+              key = "after";
+              i += item.childNodes.length;
+            }
+          } else if (
+            item.childNodes[0]?.nodeName?.toLocaleLowerCase() === "#text"
+          ) {
+            extractedData[key].push(`${str}${item.textContent}`);
+            str = "";
+          } else if (tagNameVal === "OL") {
+            index = 0;
+          } else if (tagNameVal === "LI") {
+            ++index;
+            str = `${index}. `;
+          }
         }
 
-        if (aMatches) {
-          aMatches.forEach((match, index) => {
-            // 去除 <a> 和 </a> 标签，得到纯文本
-            let text = match.replace(/<[^>]*>/g, "");
-            // 将文本作为属性添加到 extractedData 对象中
-            extractedData[`a${index + 1}`] = text;
-          });
-        }
-
-        console.log("Extracted Data:", extractedData);
         GameLogic.instance.gameInfo = extractedData;
         EventMgr.emit("onGetGameInfo", extractedData);
         this.loadCount--;

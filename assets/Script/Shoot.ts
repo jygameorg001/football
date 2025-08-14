@@ -336,18 +336,18 @@ export default class Shoot extends cc.Component {
   shootOver() {
     this.timsShoot = 0;
     if (GameLogic.instance.ShootingInfo.rewardList.length > 1) {
-      // this.closeSVGA();
+      this.closeSVGA();
       this.showTenReward(); //十局只需要显示弹框就行
-      // if (this.isHasReward(GameLogic.instance.ShootingInfo.rewardList)) {
-      //     this.svga.node.active = true;
-      //     this.svga.playSVGA(1);
-      //     this.svga.node.scale = 1.12;
-      //     this.svga.node.y = -5;
-      //     this.showDoorBlink();
-      // }
-      // this.tiemout = this.scheduleOnce(() => {
-      //     this.closeSVGA()
-      // }, 2.5)
+      if (this.isHasReward(GameLogic.instance.ShootingInfo.rewardList)) {
+        this.svga.node.active = true;
+        this.svga.playSVGA(1);
+        this.svga.node.scale = 1.12;
+        this.svga.node.y = -5;
+        this.showDoorBlink();
+      }
+      this.tiemout = this.scheduleOnce(() => {
+        this.closeSVGA();
+      }, 2.5);
     } else {
       this.showReward();
       if (GameLogic.instance.ShootingInfo.rewardList[0].reward > 0) {
