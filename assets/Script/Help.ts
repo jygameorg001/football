@@ -33,19 +33,26 @@ export default class Help extends cc.Component {
   setText() {
     if (GameLogic.instance.gameInfo) {
       let info = GameLogic.instance.gameInfo;
-      let str =
-        info["span1"] +
-        "\n" +
-        "1." +
-        info["span2"] +
-        "\n" +
-        "2." +
-        info["span3"];
+      console.log(info);
+      let str = "";
+      for (let i = 0; i < info.pre.length; i += 1) {
+        if (i > 0) {
+          str += "\n";
+        }
+        str += info.pre[i];
+      }
       this.toptxt.string = str;
-      let str2 = info["span6"] + "\n" + info["span7"];
+
+      let str2 = "";
+      for (let i = 1; i < info.after.length; i += 1) {
+        if (i > 1) {
+          str2 += "\n";
+        }
+        str2 += info.after[i];
+      }
       this.bottomtxt.string = str2;
-      this.title1.string = info["span4"];
-      this.title2.string = info["span5"];
+      this.title1.string = "概率";
+      this.title2.string = info.after[0];
     }
   }
 
