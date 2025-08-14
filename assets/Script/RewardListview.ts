@@ -143,7 +143,6 @@ export default class rewardListview extends cc.Component {
     // "tenitem"
     // 奖励数据
     let rewardList = GameLogic.instance.ShootingInfo.rewardList;
-    console.log("============start=================", rewardList);
 
     let hasReward = this.isHasReward(rewardList);
     let mergedLists = this.mergeRewardList(rewardList);
@@ -188,7 +187,6 @@ export default class rewardListview extends cc.Component {
       let rewardInfo = rewardList[i];
       if (rewardInfo.giftPrice > 0) {
         res += rewardInfo.giftPrice;
-        console.log("hexuejie", rewardInfo);
       }
     }
     return res;

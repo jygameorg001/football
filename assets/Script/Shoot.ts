@@ -303,7 +303,6 @@ export default class Shoot extends cc.Component {
   timeJinzhong = null;
   //播放击中中奖效果
   kuangAni(index: number) {
-    console.log("击中", index);
     // 先判断是不是有序列帧，播放前清空
     if (this.timeJinzhong) {
       this.unschedule(this.timeJinzhong);
@@ -381,7 +380,6 @@ export default class Shoot extends cc.Component {
   }
 
   closeRewardview() {
-    console.log("====closeRewardview=====");
     // this.light.active = false;
     this.clearAutoReward();
     this.resetShootBtns();
