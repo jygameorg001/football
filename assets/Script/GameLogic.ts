@@ -123,11 +123,8 @@ export class GameLogic {
   }
   callBridge(methodName, params, callback) {
     let WebViewJavascriptBridge = window["WebViewJavascriptBridge"];
-    console.log("====WebViewJavascriptBridge begin");
     if (WebViewJavascriptBridge) {
-      console.log("====WebViewJavascriptBridge   callHandler:" + methodName);
       WebViewJavascriptBridge.callHandler(methodName, params, (res) => {
-        console.log("====WebViewJavascriptBridge res:" + methodName, res);
         callback(res);
       });
     }
@@ -149,7 +146,6 @@ export class GameLogic {
     this.callBridge("getUserInfo", {}, (res: IBridgeResponse<IUserInfo>) => {
       HttpHelper.token = res.data.appToken;
       this.token = HttpHelper.token;
-      console.log("===== token:", HttpHelper.token);
       this.onGetUserInfo();
     });
   }
@@ -168,7 +164,7 @@ export class GameLogic {
         if (err) {
           return;
         }
-        console.log("返回getPlayerInfoV2", data);
+        console.info("返回getPlayerInfoV2", data);
         GameLogic.instance.playerInfo = data;
         EventMgr.emit("onGetPlayerInfo");
         this.loadCount--;
@@ -180,7 +176,7 @@ export class GameLogic {
       if (err != 200) {
         return;
       }
-      console.log("返回queryGiftList", data.result);
+      console.info("返回queryGiftList", data.result);
       GameLogic.instance.giftList = data.result;
       EventMgr.emit("onGetGiftList");
       this.loadCount--;

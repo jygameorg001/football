@@ -19,7 +19,6 @@ export default class Game extends cc.Component {
 
   protected onLoad(): void {
     let str = window.location.href;
-    console.log("=====Game onLoad", window.location.href);
     let info = str.split("?");
     if (info.length > 1) {
       let param = info[1].split("&");
@@ -109,7 +108,6 @@ export default class Game extends cc.Component {
     if (lastTime) {
       oldDate = new Date(Number(lastTime));
     }
-    console.log("====lastTime", lastTime, oldDate);
     let date = new Date();
     if (flag == 1) {
       if (oldDate && date.getDate() == oldDate.getDate()) {
@@ -174,7 +172,6 @@ export default class Game extends cc.Component {
   }
   refreshPlayerInfo() {
     GameLogic.instance.callBridge("refreshAmount", {}, (res) => {
-      console.log("refreshAmount res", res);
       if (res.code == 0) {
         EventMgr.emit("onGetPlayerInfo", res.data);
       }
@@ -211,7 +208,7 @@ export default class Game extends cc.Component {
     let bundle = cc.assetManager.getBundle("resources");
     bundle.load(path, cc.Prefab, (err, prefab: cc.Prefab) => {
       if (err) {
-        console.log(err);
+        console.error(err);
         return;
       }
       //设置只有一个

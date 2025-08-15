@@ -33,7 +33,6 @@ export default class Help extends cc.Component {
   setText() {
     if (GameLogic.instance.gameInfo) {
       let info = GameLogic.instance.gameInfo;
-      console.log(info);
       let str = "";
       for (let i = 0; i < info.pre.length; i += 1) {
         if (i > 0) {

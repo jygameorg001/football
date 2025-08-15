@@ -15,6 +15,7 @@ export default class Shoot extends cc.Component {
   @property(cc.Node) soundBtn: cc.Node = null;
   @property(cc.Node) baiDoor: cc.Node = null;
   @property(sp.Skeleton) ribbon: sp.Skeleton = null;
+  //球
   @property(cc.Node) football: cc.Node = null;
   @property(cc.Node) giftNode: cc.Node = null;
   @property(cc.Label) currency: cc.Label = null;
@@ -303,6 +304,7 @@ export default class Shoot extends cc.Component {
   timeJinzhong = null;
   //播放击中中奖效果
   kuangAni(index: number) {
+    console.log("==========kuangAni==========");
     // 先判断是不是有序列帧，播放前清空
     if (this.timeJinzhong) {
       this.unschedule(this.timeJinzhong);
@@ -429,6 +431,7 @@ export default class Shoot extends cc.Component {
   tenRewardItemTips: RewardItemtips = null;
   noShowRewardTen(times: number) {
     if (times > 10) return;
+
     let str = this.getRewardStr(times);
     if (this.tenRewardItemTips) {
       const layout = this.autoWindow.getComponent(cc.Layout);
@@ -541,8 +544,10 @@ export default class Shoot extends cc.Component {
     // console.log("===beginRunning===",this.dxIdx,this.ballIdx)
     this.unschedule(this.onBallRunning);
     this.schedule(this.onBallRunning);
+    console.log();
   }
   onBallRunning(dt) {
+    // console.log("onBallRunning = dt ==", dt);
     this.ballIdx = this.ballIdx + this.dxIdx;
 
     this.ballIdx = (this.ballIdx % 60) + 1;
@@ -561,6 +566,7 @@ export default class Shoot extends cc.Component {
     if (this.dxIdx < 5) {
       this.dxIdx = 5;
     }
+
     // console.log("======",this.dxIdx,this.ballIdx)
   }
   onBtnClickHandle(name, btn) {
