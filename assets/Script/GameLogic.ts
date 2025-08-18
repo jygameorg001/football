@@ -271,8 +271,8 @@ export class GameLogic {
     //     {
     //         "id": 7,
     //         "giftId": 1600074207,
-    //         "reward": 0,
-    //         "multiple": 0,
+    //         "reward": 500,
+    //         "multiple": 10,
     //         "giftImage": "https://oss-test.liveboxs.live/admin/other/0WmwVIdiUW_DdmMTpTnND1755499678643.png",
     //         "giftPrice": 500
     //     },
@@ -287,8 +287,8 @@ export class GameLogic {
     //     {
     //         "id": 4,
     //         "giftId": 1600074208,
-    //         "reward": 0,
-    //         "multiple": 0,
+    //         "reward": 5000,
+    //         "multiple": 20,
     //         "giftImage": "https://oss-test.liveboxs.live/admin/other/RH5iMvbQpUsHW0QzkQwRg1755499708698.png",
     //         "giftPrice": 500
     //     },
