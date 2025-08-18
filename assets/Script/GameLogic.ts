@@ -196,8 +196,8 @@ export class GameLogic {
 
   reqShooting(times: number) {
     let params = {
-      roomId: GameLogic.instance.roomId || 1000128,
-      anchorId: GameLogic.instance.anchorId || 1601109,
+      roomId: GameLogic.instance.roomId || 1000009,
+      anchorId: GameLogic.instance.anchorId || 152,
       num: times,
     };
 
@@ -214,7 +214,7 @@ export class GameLogic {
         totalMoney: 9999999,
       };
       GameLogic.instance.ShootingInfo = data;
-      console.log("返回shooting", data);
+      console.log("返回shooting1", data);
       EventMgr.emit("onShooting", data);
       return;
     }
@@ -226,8 +226,92 @@ export class GameLogic {
           EventMgr.emit("onShootingError");
           return;
         }
+    //     // 测试数据
+    //     data.rewardList = [
+    //     {
+    //         "id": 9,
+    //         "giftId": 1600074206,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 4,
+    //         "giftId": 1600074208,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/RH5iMvbQpUsHW0QzkQwRg1755499708698.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 8,
+    //         "giftId": 1600074187,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/LoCuUXEm6JO56kan_q4dr1755180402972.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 5,
+    //         "giftId": 1600074209,
+    //         "reward": 500000000,
+    //         "multiple": 100,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/5TXFmgZT_qbpTYRVnHQAr1755499748739.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 7,
+    //         "giftId": 1600074207,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/0WmwVIdiUW_DdmMTpTnND1755499678643.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 7,
+    //         "giftId": 1600074207,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/0WmwVIdiUW_DdmMTpTnND1755499678643.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 9,
+    //         "giftId": 1600074206,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 4,
+    //         "giftId": 1600074208,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/RH5iMvbQpUsHW0QzkQwRg1755499708698.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 6,
+    //         "giftId": 1600074190,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/e6acZyfdRIKx0mBpvpbpo1755180578459.png",
+    //         "giftPrice": 500
+    //     },
+    //     {
+    //         "id": 9,
+    //         "giftId": 1600074206,
+    //         "reward": 0,
+    //         "multiple": 0,
+    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
+    //         "giftPrice": 500
+    //     }
+    // ]
+
         GameLogic.instance.ShootingInfo = data;
-        console.log("返回shooting", data);
+        console.log("返回shooting2", data);
         EventMgr.emit("onShooting", data);
       }
     );

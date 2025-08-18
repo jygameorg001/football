@@ -1,3 +1,4 @@
+import { EventMgr } from "./common/EventManager";
 import { GameLogic, ShootingItemInfo } from "./GameLogic";
 import RewardItem from "./RewardItem";
 
@@ -11,6 +12,7 @@ export default class RewardItemtips extends cc.Component {
   @property(cc.RichText) winlabel: cc.RichText = null;
 
   setDataOne(rewardInfo: ShootingItemInfo) {
+    console.log("=========RewardItemtips.setDataOne=========", rewardInfo);
     let names = "";
     if (rewardInfo.reward > 0) {
       names = "太棒了!恭喜獲得 \n";
@@ -35,7 +37,18 @@ export default class RewardItemtips extends cc.Component {
     }
   }
   setString(str) {
+    // console.log("=========RewardItemtips.setString=========", str);
     this.winlabel.string = str;
+
+    //更新尺寸
+    let width = this.winlabel.node.getContentSize().width;
+    let size = this.node.getContentSize();
+    this.node.setContentSize(width+30,size.height);
+
+    let widget = this.winlabel.node.getComponent(cc.Widget);
+    widget.left = 15;
+    widget.updateAlignment();
+  
   }
 
   getGiftNameById(id) {
