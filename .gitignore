@@ -2,3 +2,5 @@ library
 build
 temp
 local
+
+.vscode/
