@@ -2056,7 +2056,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -220.291,
+        -240,
         0,
         0,
         0,
@@ -2152,7 +2152,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 48,
+      "width": 96,
       "height": 30.24
     },
     "_anchorPoint": {
@@ -2164,7 +2164,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        85.08,
+        253.428,
         0,
         0,
         0,
@@ -2204,8 +2204,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "金幣",
-    "_N$string": "金幣",
+    "_string": "贈送金幣",
+    "_N$string": "贈送金幣",
     "_fontSize": 24,
     "_lineHeight": 24,
     "_enableWrapText": true,
@@ -2272,7 +2272,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        244.081,
+        90.912,
         0,
         0,
         0,
