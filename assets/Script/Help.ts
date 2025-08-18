@@ -58,7 +58,7 @@ export default class Help extends cc.Component {
 
   setItemtXT() {
     let list = GameLogic.instance.queryRatesInfo;
-
+    console.log("============setItemtXT==============",list);
     if (Array.isArray(list)) {
       for (let i = 0; i < list.length; i++) {
         let temp = cc.instantiate(this.itemG);

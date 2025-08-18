@@ -6,8 +6,9 @@ import { NameConfig } from "./Home";
 
 // 10018710
 const Token =
-  "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTYyLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6Ijk4NDY0Nzc5LTYwMDEtNDE4NC1hYjNmLWNlYWRhYWQ1MDc4MyIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcxNzAyNiJ9.ipeKv2CN-wwEx34a_w9qwQ2j-qPWlALplkkAgYrrrVLuXWqrHGNfTRjtJPvXO0p99WVi5sD_RoFnm24_OHfG2A";
-
+  // "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTYyLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6Ijk4NDY0Nzc5LTYwMDEtNDE4NC1hYjNmLWNlYWRhYWQ1MDc4MyIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcxNzAyNiJ9.ipeKv2CN-wwEx34a_w9qwQ2j-qPWlALplkkAgYrrrVLuXWqrHGNfTRjtJPvXO0p99WVi5sD_RoFnm24_OHfG2A";
+  //线上测试的Token
+  "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNDQsImxvZ2luX3R5cGUiOjEsInVzZXJfa2V5IjoiYmYzNGU4NTYtYjk1Ny00MTM1LTk3OTUtMDg5NWM2YWJiOGVhIiwidG9rZW5fdHlwZSI6ImFwcCIsInVzZXJuYW1lIjoi55So5oi3Mjk3NDU4In0._90zY6M_zonma_h6HhZPWZMZK6jh9W16O7Jy9LqcKIEyjara-DlB8V4UkY2LxtXEGJf_utTkgot7ppsk2lT3GA";
 export interface IUserInfo {
   appToken: string; // appToken
   authStatus: 0 | 1; // 实名状态：0->未实名，1->已实名

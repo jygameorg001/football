@@ -6,6 +6,9 @@ export default class HelpItem extends cc.Component {
   labName: cc.Label = null;
 
   @property(cc.Label)
+  labPrice: cc.Label = null;
+
+  @property(cc.Label)
   labCoin: cc.Label = null;
 
   @property(cc.Label)
@@ -32,7 +35,7 @@ export default class HelpItem extends cc.Component {
     this.lineDown.active = this.isShowDowm;
   }
 
-  start() {}
+  start() { }
 
   /**
    *
@@ -44,6 +47,7 @@ export default class HelpItem extends cc.Component {
     this.labName.string = data["title"];
     this.labCoin.string = data["reward"].toString();
     this.labJiLv.string = data["rate"];
+    this.labPrice.string = data["giftPrice"].toString();
     this.lineUp.active = showUp;
     this.lineDown.active = isShowDowm;
   }
