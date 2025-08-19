@@ -2,14 +2,12 @@ import { AudioMgr } from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
 import Game from "./Game";
-import { GameType } from "./GameConfig";
+import { GameCfg } from "./GameConfig";
 import { NameConfig } from "./Home";
 
 // 10018710
-const Token =
-  // "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNjAzMTYyLCJsb2dpbl90eXBlIjoxLCJ1c2VyX2tleSI6Ijk4NDY0Nzc5LTYwMDEtNDE4NC1hYjNmLWNlYWRhYWQ1MDc4MyIsInRva2VuX3R5cGUiOiJhcHAiLCJ1c2VybmFtZSI6IuS8mOmfszcxNzAyNiJ9.ipeKv2CN-wwEx34a_w9qwQ2j-qPWlALplkkAgYrrrVLuXWqrHGNfTRjtJPvXO0p99WVi5sD_RoFnm24_OHfG2A";
-  //线上测试的Token
-  "eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX2lkIjoxNDQsImxvZ2luX3R5cGUiOjEsInVzZXJfa2V5IjoiYmYzNGU4NTYtYjk1Ny00MTM1LTk3OTUtMDg5NWM2YWJiOGVhIiwidG9rZW5fdHlwZSI6ImFwcCIsInVzZXJuYW1lIjoi55So5oi3Mjk3NDU4In0._90zY6M_zonma_h6HhZPWZMZK6jh9W16O7Jy9LqcKIEyjara-DlB8V4UkY2LxtXEGJf_utTkgot7ppsk2lT3GA";
+const Token = GameCfg.token;
+
 export interface IUserInfo {
   appToken: string; // appToken
   authStatus: 0 | 1; // 实名状态：0->未实名，1->已实名
@@ -165,7 +163,7 @@ export class GameLogic {
   reqPlayerInfo() {
     HttpHelper.httpPost(
       "logic-api/logic/getPlayerInfoV2",
-      { gameType: GameType.gameType },
+      { gameType: GameCfg.gameType },
       (err, data) => {
         if (err) {
           return;
@@ -178,7 +176,7 @@ export class GameLogic {
     );
   }
   reqQueryGiftList() {
-    let url = `${GameType.url}/queryGiftList`
+    let url = `${GameCfg.url}/queryGiftList`
     HttpHelper.httpGet(url, (err, data) => {
       if (err != 200) {
         return;
@@ -221,7 +219,7 @@ export class GameLogic {
       return;
     }
 
-    let url = `${GameType.url}/shooting`
+    let url = `${GameCfg.url}/shooting`
     HttpHelper.httpPost(
       url,
       params,
@@ -324,7 +322,7 @@ export class GameLogic {
   reqGetGameCfg() {
     HttpHelper.httpPost(
       "/logic-api/logic/getGames",
-      { gameType: GameType.gameType },
+      { gameType: GameCfg.gameType },
       (err, data) => {
         if (err) {
           return;
@@ -371,7 +369,7 @@ export class GameLogic {
     );
   }
   reqGetqueryRates() {
-    let url = `${GameType.url}/queryRates`
+    let url = `${GameCfg.url}/queryRates`
     HttpHelper.httpGet(url, (err, data) => {
       if (err != 200) {
         return;

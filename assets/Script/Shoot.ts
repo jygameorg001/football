@@ -92,8 +92,9 @@ export default class Shoot extends cc.Component {
 
   protected onEnable(): void {
     console.log("========Shoot.onEnable========");
+    this.initSoundIcon();
   }
-  
+
 
   onEvent() {
     EventMgr.on("onGetPlayerInfo", this.upinfo, this);
@@ -687,7 +688,7 @@ export default class Shoot extends cc.Component {
   }
 
   initSoundIcon() {
-    console.log("===========Shoot.initSoundIcon=========",AudioMgr.isPaused);
+    console.log("===========Shoot.initSoundIcon=========", AudioMgr.isPaused);
     if (AudioMgr.isPaused) {
       AudioMgr.pauseMusic();
     } else {

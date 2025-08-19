@@ -85,8 +85,9 @@ export default class Home extends cc.Component {
 
   protected onEnable(): void {
     console.log("========Home.onEnable========");
+     this.initSoundIcon();
   }
-  
+
   initView() {
     this.initSoundIcon();
     this.roleChangeEffect.active = false;
