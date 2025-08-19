@@ -89,6 +89,12 @@ export default class Shoot extends cc.Component {
     this.userCurrencyLabel.string =
       "每次消耗500" + GameLogic.instance.getCurrencyName();
   }
+
+  protected onEnable(): void {
+    console.log("========Shoot.onEnable========");
+  }
+  
+
   onEvent() {
     EventMgr.on("onGetPlayerInfo", this.upinfo, this);
     EventMgr.on("onShooting", this.onShooting, this);
@@ -113,7 +119,7 @@ export default class Shoot extends cc.Component {
     // this.energy.string = GameLogic.instance.playerInfo.luckScore + "";
     this.currency.string = GameLogic.instance.playerInfo.currency + "";
   }
-  upLuck() {}
+  upLuck() { }
   initGiftNodes() {
     for (let i = 0; i < 9; i++) {
       this.giftList[i] = this.giftNode.getChildByName("gift" + (i + 1));
@@ -242,7 +248,7 @@ export default class Shoot extends cc.Component {
     GameLogic.instance.reqPlayerInfo();
     this.shootPlay();
   }
-  onShootingHttpError(path) {}
+  onShootingHttpError(path) { }
   onShootingError() {
     this.resetShootBtns();
     this.shootByAuto = false;
@@ -403,6 +409,7 @@ export default class Shoot extends cc.Component {
       GameLogic.instance.ShootingInfo.rewardList.length > 0
     ) {
       const rewardInfo = GameLogic.instance.ShootingInfo.rewardList[0];
+      console.log("=========noShowReward.rewardItemtips===========");
       Game.instance.showView("rewardItemtips", this.autoWindow, (node) => {
         if (this.autoWindow.childrenCount >= 50) {
           let child = this.autoWindow.children[0];
@@ -446,6 +453,7 @@ export default class Shoot extends cc.Component {
         }, 0.1);
       }
     } else {
+      console.log("=========noShowRewardTen.rewardItemtips===========");
       Game.instance.showView("rewardItemtips", this.autoWindow, (node) => {
         let item: RewardItemtips = node.getComponent(RewardItemtips);
         item.setString(str);
@@ -679,6 +687,7 @@ export default class Shoot extends cc.Component {
   }
 
   initSoundIcon() {
+    console.log("===========Shoot.initSoundIcon=========",AudioMgr.isPaused);
     if (AudioMgr.isPaused) {
       AudioMgr.pauseMusic();
     } else {
@@ -694,7 +703,7 @@ export default class Shoot extends cc.Component {
     GameLogic.instance.callBridge(
       "navigateNativeRoute",
       { to: "customerChargeCenter" },
-      (res) => {}
+      (res) => { }
     );
   }
   //弹球次数 从1到10

@@ -33,13 +33,20 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Home extends cc.Component {
-  @property(cc.Node) soundBtn: cc.Node = null;
-  @property(cc.Node) leftBtn: cc.Node = null;
-  @property(cc.Node) rightBtn: cc.Node = null;
-  @property([cc.Node]) pics: cc.Node[] = [];
-  @property(cc.Node) roleChangeEffect: cc.Node = null; //选中球星特效
-  @property(cc.Node) goBtn: cc.Node = null;
-  @property(cc.Node) loadBtn: cc.Node = null;
+  @property(cc.Node)
+  soundBtn: cc.Node = null;  // 音效
+  @property(cc.Node)
+  leftBtn: cc.Node = null;
+  @property(cc.Node)
+  rightBtn: cc.Node = null;
+  @property([cc.Node])
+  pics: cc.Node[] = [];
+  @property(cc.Node)
+  roleChangeEffect: cc.Node = null; //选中球星特效
+  @property(cc.Node)
+  goBtn: cc.Node = null;
+  @property(cc.Node)
+  loadBtn: cc.Node = null;
 
   @property(SVGAPlayer) svgaGuan: SVGAPlayer = null;
   // private currentIndex: number = 1; // 当前中间图片索引
@@ -75,6 +82,11 @@ export default class Home extends cc.Component {
   protected onDestroy(): void {
     EventMgr.off("OnCheckOver", this.onCheckOver, this);
   }
+
+  protected onEnable(): void {
+    console.log("========Home.onEnable========");
+  }
+  
   initView() {
     this.initSoundIcon();
     this.roleChangeEffect.active = false;
@@ -276,7 +288,9 @@ export default class Home extends cc.Component {
     cc.sys.localStorage.setItem("isPaused", AudioMgr.isPaused ? "1" : "0");
     this.initSoundIcon();
   }
+
   initSoundIcon() {
+    console.log("===========Home.initSoundIcon=========", AudioMgr.isPaused);
     if (AudioMgr.isPaused) {
       AudioMgr.pauseMusic();
     } else {

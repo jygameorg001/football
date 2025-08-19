@@ -2,6 +2,7 @@ import { AudioMgr } from "./common/AudioMgr";
 import { EventMgr } from "./common/EventManager";
 import { HttpHelper } from "./common/HttpHelper";
 import Game from "./Game";
+import { GameType } from "./GameConfig";
 import { NameConfig } from "./Home";
 
 // 10018710
@@ -164,7 +165,7 @@ export class GameLogic {
   reqPlayerInfo() {
     HttpHelper.httpPost(
       "logic-api/logic/getPlayerInfoV2",
-      { gameType: 114 },
+      { gameType: GameType.gameType },
       (err, data) => {
         if (err) {
           return;
@@ -177,7 +178,8 @@ export class GameLogic {
     );
   }
   reqQueryGiftList() {
-    HttpHelper.httpGet("football-api/football/queryGiftList", (err, data) => {
+    let url = `${GameType.url}/queryGiftList`
+    HttpHelper.httpGet(url, (err, data) => {
       if (err != 200) {
         return;
       }
@@ -218,97 +220,99 @@ export class GameLogic {
       EventMgr.emit("onShooting", data);
       return;
     }
+
+    let url = `${GameType.url}/shooting`
     HttpHelper.httpPost(
-      "football-api/football/shooting",
+      url,
       params,
       (err, data) => {
         if (err) {
           EventMgr.emit("onShootingError");
           return;
         }
-    //     // 测试数据
-    //     data.rewardList = [
-    //     {
-    //         "id": 9,
-    //         "giftId": 1600074206,
-    //         "reward": 0,
-    //         "multiple": 0,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 4,
-    //         "giftId": 1600074208,
-    //         "reward": 0,
-    //         "multiple": 0,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/RH5iMvbQpUsHW0QzkQwRg1755499708698.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 8,
-    //         "giftId": 1600074187,
-    //         "reward": 0,
-    //         "multiple": 0,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/LoCuUXEm6JO56kan_q4dr1755180402972.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 5,
-    //         "giftId": 1600074209,
-    //         "reward": 500000000,
-    //         "multiple": 100,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/5TXFmgZT_qbpTYRVnHQAr1755499748739.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 7,
-    //         "giftId": 1600074207,
-    //         "reward": 0,
-    //         "multiple": 0,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/0WmwVIdiUW_DdmMTpTnND1755499678643.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 7,
-    //         "giftId": 1600074207,
-    //         "reward": 500,
-    //         "multiple": 10,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/0WmwVIdiUW_DdmMTpTnND1755499678643.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 9,
-    //         "giftId": 1600074206,
-    //         "reward": 0,
-    //         "multiple": 0,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 4,
-    //         "giftId": 1600074208,
-    //         "reward": 5000,
-    //         "multiple": 20,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/RH5iMvbQpUsHW0QzkQwRg1755499708698.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 6,
-    //         "giftId": 1600074190,
-    //         "reward": 0,
-    //         "multiple": 0,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/e6acZyfdRIKx0mBpvpbpo1755180578459.png",
-    //         "giftPrice": 500
-    //     },
-    //     {
-    //         "id": 9,
-    //         "giftId": 1600074206,
-    //         "reward": 0,
-    //         "multiple": 0,
-    //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
-    //         "giftPrice": 500
-    //     }
-    // ]
+        //     // 测试数据
+        //     data.rewardList = [
+        //     {
+        //         "id": 9,
+        //         "giftId": 1600074206,
+        //         "reward": 0,
+        //         "multiple": 0,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 4,
+        //         "giftId": 1600074208,
+        //         "reward": 0,
+        //         "multiple": 0,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/RH5iMvbQpUsHW0QzkQwRg1755499708698.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 8,
+        //         "giftId": 1600074187,
+        //         "reward": 0,
+        //         "multiple": 0,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/LoCuUXEm6JO56kan_q4dr1755180402972.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 5,
+        //         "giftId": 1600074209,
+        //         "reward": 500000000,
+        //         "multiple": 100,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/5TXFmgZT_qbpTYRVnHQAr1755499748739.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 7,
+        //         "giftId": 1600074207,
+        //         "reward": 0,
+        //         "multiple": 0,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/0WmwVIdiUW_DdmMTpTnND1755499678643.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 7,
+        //         "giftId": 1600074207,
+        //         "reward": 500,
+        //         "multiple": 10,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/0WmwVIdiUW_DdmMTpTnND1755499678643.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 9,
+        //         "giftId": 1600074206,
+        //         "reward": 0,
+        //         "multiple": 0,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 4,
+        //         "giftId": 1600074208,
+        //         "reward": 5000,
+        //         "multiple": 20,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/RH5iMvbQpUsHW0QzkQwRg1755499708698.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 6,
+        //         "giftId": 1600074190,
+        //         "reward": 0,
+        //         "multiple": 0,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/e6acZyfdRIKx0mBpvpbpo1755180578459.png",
+        //         "giftPrice": 500
+        //     },
+        //     {
+        //         "id": 9,
+        //         "giftId": 1600074206,
+        //         "reward": 0,
+        //         "multiple": 0,
+        //         "giftImage": "https://oss-test.liveboxs.live/admin/other/D36a0fKQ6r3ZBhVSeQp5C1755499645522.png",
+        //         "giftPrice": 500
+        //     }
+        // ]
 
         GameLogic.instance.ShootingInfo = data;
         console.log("返回shooting2", data);
@@ -320,7 +324,7 @@ export class GameLogic {
   reqGetGameCfg() {
     HttpHelper.httpPost(
       "/logic-api/logic/getGames",
-      { gameType: 114 },
+      { gameType: GameType.gameType },
       (err, data) => {
         if (err) {
           return;
@@ -367,7 +371,8 @@ export class GameLogic {
     );
   }
   reqGetqueryRates() {
-    HttpHelper.httpGet("/football-api/football/queryRates", (err, data) => {
+    let url = `${GameType.url}/queryRates`
+    HttpHelper.httpGet(url, (err, data) => {
       if (err != 200) {
         return;
       }
@@ -461,7 +466,7 @@ export class GameLogic {
   }
 
   closeGame() {
-    this.callBridge("goBack", {}, () => {});
+    this.callBridge("goBack", {}, () => { });
   }
   getLiveRoomInfo() {
     this.callBridge("getLiveRoomInfo", {}, (res) => {
