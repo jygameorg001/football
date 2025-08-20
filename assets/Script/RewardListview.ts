@@ -145,7 +145,12 @@ export default class rewardListview extends cc.Component {
     let rewardList = GameLogic.instance.ShootingInfo.rewardList;
 
     let hasReward = this.isHasReward(rewardList);
+    console.log("==============排序前================", rewardList);
     let mergedLists = this.mergeRewardList(rewardList);
+    // 数据排序
+    mergedLists.sort((a:any, b:any) => a.idx - b.idx);
+
+    console.log("==============排序后================", mergedLists);
     // 测试
     // hasReward = false;
     let tempItem = hasReward ? this.rewardItem : this.oneItem;
@@ -233,6 +238,7 @@ export default class rewardListview extends cc.Component {
     // 创建一个临时对象来存储合并结果
     const mergedMap: { [key: string]: any } = {};
 
+    let idx = 0; //加个字段标记顺序
     // 遍历原始数组
     for (const item of rewardList) {
       const giftId = item.giftId;
@@ -243,7 +249,9 @@ export default class rewardListview extends cc.Component {
         mergedMap[giftId] = {
           ...item,
           count: 1, // 初始化数量为1
+          idx: idx
         };
+        idx++;
       } else {
         // 如果这个 giftId 已经处理过
         const existingItem = mergedMap[giftId];
