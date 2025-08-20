@@ -200,6 +200,7 @@ export default class Shoot extends cc.Component {
     }
     this.autoShoot();
   }
+  
   autoShoot() {
     this.resetShootBtns(true);
     this.shootByAuto = true;
@@ -218,6 +219,7 @@ export default class Shoot extends cc.Component {
   onBtnShoot(times: number = 1) {
     // 是否可以射击
     if (!this.canShoot) {
+      console.log("============onBtnShoot 是否可以射击=============");
       return;
     }
     let total = GameLogic.instance.playerInfo.currency;
@@ -258,11 +260,14 @@ export default class Shoot extends cc.Component {
     this.shootPlay();
   }
   onShootingHttpError(path) { }
+
   onShootingError() {
     this.resetShootBtns();
     this.shootByAuto = false;
   }
+
   resetShootBtns(isShoot = false) {
+    console.log("============Shoot.resetShootBtns===========");
     this.canShoot = !isShoot;
     this.setSheBtnState(this.btnOne, !isShoot);
     this.setSheBtnState(this.btnTen, !isShoot);
@@ -540,6 +545,7 @@ export default class Shoot extends cc.Component {
 
   //显示10局奖励
   showTenReward() {
+    console.log("===========Shoot.showTenReward============");
     this.rewardViewNode.destroyAllChildren();
     Game.instance.showView("rewardListview", this.rewardViewNode, (node) => {
       let bg = node.getChildByName("bg");
@@ -549,7 +555,7 @@ export default class Shoot extends cc.Component {
         .to(0.2, { scale: 0.9 })
         .to(0.2, { scale: 1 })
         .call(() => {
-          // this.resetShootBtns();
+          this.resetShootBtns(false);
         })
         .start();
     });
