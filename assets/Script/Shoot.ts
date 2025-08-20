@@ -44,7 +44,7 @@ export default class Shoot extends cc.Component {
 
   @property(cc.Node)
   btnOne: cc.Node = null;
-  @property(cc.Node)
+  @property(cc.Node)   //10连射
   btnTen: cc.Node = null;
 
   @property(cc.Node) xingxingTips: cc.Node = null;
@@ -54,7 +54,7 @@ export default class Shoot extends cc.Component {
   isTimeshoot: boolean = false;
   timsShoot: number = 0; //射球剩下次数
   @property(cc.SpriteAtlas) ballAltlas: cc.SpriteAtlas = null;
-  giftList: cc.Node[] = [];
+  giftList: cc.Node[] = [];     //
   canShoot: boolean = false;
   ballSprite: cc.Sprite = null;
   isSuperShoot: boolean = false; //十次模式
@@ -121,21 +121,28 @@ export default class Shoot extends cc.Component {
     this.currency.string = GameLogic.instance.playerInfo.currency + "";
   }
   upLuck() { }
+
+  /**
+   * 初始化足球区域
+   */
   initGiftNodes() {
     for (let i = 0; i < 9; i++) {
       this.giftList[i] = this.giftNode.getChildByName("gift" + (i + 1));
       let kuang = this.giftList[i].getChildByName("kuang");
       kuang.active = false;
     }
-    if (GameLogic.instance.giftList.length > 0) {
+    let infoGiftList = GameLogic.instance.giftList;
+    if (infoGiftList.length > 0) {
       this.updateGifts();
     } else {
       GameLogic.instance.reqQueryGiftList();
     }
   }
+
   updateGifts() {
+    let infoGiftList = GameLogic.instance.giftList;
     for (let i = 0; i < this.giftList.length; i++) {
-      let gift = GameLogic.instance.giftList[i];
+      let gift = infoGiftList[i];
       let node = this.giftList[i];
       GameLogic.instance.loadRemoteSprite(
         gift.giftImage,
@@ -145,6 +152,7 @@ export default class Shoot extends cc.Component {
       );
     }
   }
+
   protected initBtnClickHandle() {
     this.getComponentsInChildren(cc.Button).forEach((btn) => {
       if (btn.transition === cc.Button.Transition.NONE) {
@@ -263,8 +271,10 @@ export default class Shoot extends cc.Component {
     let canClick = this.shootByAuto || this.canShoot;
     this.autoBtn.getComponent(cc.Button).interactable = canClick;
   }
+
   shootPlay() {
     let data = GameLogic.instance.ShootingInfo;
+    console.log("==============Shoot.shootPlay==========", data);
     let canRunning = false;
     if (data && data.rewardList && data.rewardList.length > 0) {
       canRunning = true;
@@ -283,6 +293,7 @@ export default class Shoot extends cc.Component {
     }
     let shadow = this.football.getChildByName("shadow");
     shadow.active = false;
+    console.log("==============Shoot.shootPlay1==========", id);
     BallRun.getInstance().shootGiftId(id, this.isSuperShoot, () => {
       if (this.isHasReward(GameLogic.instance.ShootingInfo.rewardList)) {
         this.upLuck();
@@ -301,6 +312,7 @@ export default class Shoot extends cc.Component {
       this.shootOver();
     });
   }
+
   checkAutoShoot() {
     if (this.isAuto) {
       this.beginAutoShoot();
@@ -310,6 +322,7 @@ export default class Shoot extends cc.Component {
   timeJinzhong = null;
   //播放击中中奖效果
   kuangAni(index: number) {
+    // console.log("=============Shoot.kuangAni============",index);
     // 先判断是不是有序列帧，播放前清空
     if (this.timeJinzhong) {
       this.unschedule(this.timeJinzhong);

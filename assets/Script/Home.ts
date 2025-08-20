@@ -35,20 +35,28 @@ const { ccclass, property } = cc._decorator;
 export default class Home extends cc.Component {
   @property(cc.Node)
   soundBtn: cc.Node = null;  // 音效
+
   @property(cc.Node)
   leftBtn: cc.Node = null;
+
   @property(cc.Node)
   rightBtn: cc.Node = null;
+
   @property([cc.Node])
   pics: cc.Node[] = [];
+
   @property(cc.Node)
   roleChangeEffect: cc.Node = null; //选中球星特效
+
   @property(cc.Node)
   goBtn: cc.Node = null;
+
   @property(cc.Node)
   loadBtn: cc.Node = null;
 
-  @property(SVGAPlayer) svgaGuan: SVGAPlayer = null;
+  @property(SVGAPlayer)
+  svgaGuan: SVGAPlayer = null;
+
   // private currentIndex: number = 1; // 当前中间图片索引
   private readonly totalPics: number = 3; // 总共三张图片
   private isAnimating: boolean = false; // 动画是否在播放
@@ -56,6 +64,7 @@ export default class Home extends cc.Component {
   private positions: cc.Vec2[] = []; // 存储图片的初始位置
   private picItems: IPicItem[] = [];
   isAniOver: boolean;
+
   start() {
     Game.instance.homeView = this;
     this.initPicsPosition();
@@ -76,6 +85,7 @@ export default class Home extends cc.Component {
       this.playGoBtn();
     }, 1.2);
     this.playGoBtn();
+
     this.initView();
     EventMgr.on("OnCheckOver", this.onCheckOver, this);
   }
@@ -85,7 +95,7 @@ export default class Home extends cc.Component {
 
   protected onEnable(): void {
     console.log("========Home.onEnable========");
-     this.initSoundIcon();
+    this.initSoundIcon();
   }
 
   initView() {
@@ -95,6 +105,7 @@ export default class Home extends cc.Component {
     this.goBtn.active = true;
     this.isAnimating = false;
   }
+
   addBreathingEffect(btn: cc.Node, scaleX) {
     cc.tween(btn)
       .repeatForever(
@@ -228,6 +239,7 @@ export default class Home extends cc.Component {
     }
   }
 
+  // 点击Go
   onBtnGo() {
     GameLogic.instance.setClickBG();
     if (!GameLogic.instance.checkCanEnterGame()) {
@@ -308,6 +320,7 @@ export default class Home extends cc.Component {
     GameLogic.instance.closeGame();
   }
 
+  // go 按钮的动画
   playGoBtn() {
     let kuang = this.goBtn.getChildByName("kuang");
     let bg = this.goBtn.getChildByName("bg");
@@ -320,6 +333,7 @@ export default class Home extends cc.Component {
       })
       .start();
   }
+
   onCheckOver() {
     this.onBtnGo();
   }

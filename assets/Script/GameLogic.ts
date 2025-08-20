@@ -39,9 +39,9 @@ export interface IGiftInfo {
 }
 
 export interface ShootingItemInfo {
-  giftId: number;
+  giftId: number;         //中奖的礼物id
   giftImage: string;
-  id: number;
+  id: number;             //中奖的id
   reward: number;
 }
 
@@ -104,6 +104,24 @@ export class GameLogic {
     return this._ShootingInfo;
   }
   set ShootingInfo(data: ShootingInfo) {
+    console.log("==================GameLogic.ShootingInfo===========", data);
+
+    // 测试射门数据
+    // 单次射门 改giftId
+    // data.rewardList[0].giftId = 1600074207;
+
+    // 10连射测试机数据
+    // data.rewardList[0].giftId = 1600074189;
+    // data.rewardList[1].giftId = 1600074185;
+    // data.rewardList[2].giftId = 1600074207;
+    // data.rewardList[3].giftId = 1600074185;
+    // data.rewardList[4].giftId = 1600074189;
+    // data.rewardList[5].giftId = 1600074207;
+    // data.rewardList[6].giftId = 1600074189;
+    // data.rewardList[7].giftId = 1600074185;
+    // data.rewardList[8].giftId = 1600074189;
+    // data.rewardList[9].giftId = 1600074207;
+
     this._ShootingInfo = data;
   }
 
