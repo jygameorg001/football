@@ -318,7 +318,7 @@ export class BallRun {
      *100: 上下间隔100，180 左右间隔180
      */
     ballShoot2Idx(idx: number, callback) {
-        console.log("==============BallRun.ballShoot2Idx==========", idx);
+        // console.log("==============BallRun.ballShoot2Idx==========", idx);
         // 这里注意在第一行
         let offsetX = Math.random() * 180 - 90;
         let offsetY = this.getOffSetY(idx); // 在第一行， 第二行就是是Math.random() * 100 + 100
