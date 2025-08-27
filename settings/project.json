@@ -5,7 +5,14 @@
     ]
   ],
   "excluded-modules": [
+    "DragonBones",
+    "Graphics",
+    "Mask",
+    "Physics",
+    "ScrollView",
+    "Spine Skeleton",
     "StudioComponent",
+    "TiledMap",
     "3D",
     "3D Primitive",
     "3D Physics/cannon.js",
@@ -27,7 +34,7 @@
     "width": 960,
     "height": 640
   },
-  "last-module-event-record-time": 1755659162281,
+  "last-module-event-record-time": 1756296547690,
   "preview-port": 7456,
   "clear-simulator-cache": true,
   "facebook": {

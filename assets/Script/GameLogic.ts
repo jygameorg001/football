@@ -342,6 +342,7 @@ export class GameLogic {
       "/logic-api/logic/getGames",
       { gameType: GameCfg.gameType },
       (err, data) => {
+        console.log("======reqGeatGmeCfg======", data);
         if (err) {
           return;
         }
@@ -388,7 +389,9 @@ export class GameLogic {
   }
   reqGetqueryRates() {
     let url = `${GameCfg.url}/queryRates`
+    console.log("===============reqGetqueryRates=========", url);
     HttpHelper.httpGet(url, (err, data) => {
+      console.log("===============reqGetqueryRates1=========", err,data);
       if (err != 200) {
         return;
       }
@@ -400,6 +403,7 @@ export class GameLogic {
   }
 
   checkCanEnterGame() {
+    console.log("===============checkCanEnterGame=========");
     if (
       this.playerInfo &&
       this.giftList.length > 0 &&
@@ -409,22 +413,27 @@ export class GameLogic {
       return true;
     }
     this.loadCount = 0;
+    console.log("===============checkCanEnterGame1=========", this.playerInfo);
     if (!this.playerInfo) {
       this.reqPlayerInfo();
       this.loadCount++;
     }
+    console.log("===============checkCanEnterGame2=========", this.giftList);
     if (this.giftList && this.giftList.length == 0) {
       this.reqQueryGiftList();
       this.loadCount++;
     }
+    console.log("===============checkCanEnterGame3=========", this.gameInfo);
     if (!this.gameInfo) {
       this.reqGetGameCfg();
       this.loadCount++;
     }
+    console.log("===============checkCanEnterGame4=========", this.queryRatesInfo);
     if (!this.queryRatesInfo) {
       this.reqGetqueryRates();
       this.loadCount++;
     }
+    console.log("===============checkCanEnterGame5=========");
     Game.instance.beginCheck();
     return false;
   }

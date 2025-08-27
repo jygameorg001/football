@@ -3,10 +3,11 @@ import { EventMgr } from "./EventManager";
 
 export class HttpHelper {
   // static BaseURL = CC_DEBUG ? "https://test-youyin.daqiezi.cc/game/" : "/game/"; // logic/getPlayerInfo
-  static BaseURL = CC_DEBUG ? "https://test-youyin.liveboxs.live/game/" : "/game/"; // logic/getPlayerInfo
-  
+  // static BaseURL = CC_DEBUG ? "https://test-youyin.liveboxs.live/game/" : "/game/"; // logic/getPlayerInfo
+  static BaseURL = CC_DEBUG ? "https://gm-test.liveboxs.live/game/" : "https://gm.liveboxs.live/game/";
+
   static token = "";
-  static initBaseUrl() {}
+  static initBaseUrl() { }
 
   // static get<T>(url: string): Promise<T> {
   //     return new Promise((resole, reject) => {
@@ -94,6 +95,7 @@ export class HttpHelper {
     }
     let url = HttpHelper.BaseURL + path;
     let xhr = new XMLHttpRequest();
+    console.log("===========httpPost==========",url);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status == 200) {
